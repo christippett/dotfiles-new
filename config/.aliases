@@ -1,5 +1,13 @@
 #!/usr/bin/env bash
 
+# get machine type - https://stackoverflow.com/a/3466183
+osType="$(uname -s)"
+
+# identify where environment is running as windows subsystem for linux - https://stackoverflow.com/a/38859331
+function is_wsl() {
+    egrep -q -m 1 microsoft /proc/version 2>/dev/null || false
+}
+
 ### enable aliases to be sudo’ed
 #
 #   http://askubuntu.com/questions/22037/aliases-not-available-when-using-sudo
@@ -7,6 +15,25 @@ alias sudo="sudo "
 alias please="sudo"
 alias pls="sudo"
 alias plz="sudo"
+
+### cli tool overrides
+#
+# replace cat with the bat - https://github.com/sharkdp/bat
+alias cat="bat"
+# replace ping with prettyping - https://github.com/denilsonsa/prettyping
+alias ping="prettyping"
+# replace top with htop - http://hisham.hm/htop/
+alias top="htop"
+# replace du with ncdu - https://dev.yorhel.nl/ncdu
+alias du="ncdu --color dark -rr -x --exclude .git --exclude node_modules"
+
+### clipboard
+#
+if [[ $osType == *"Darwin"* ]]; then
+	alias copy="pbcopy"
+elif is_wsl; then
+	alias copy="clip.exe"
+fi
 
 ### ubuntu update & upgrade
 #

@@ -1,0 +1,33 @@
+Host remote.github.net remote.github.com
+	ForwardAgent yes
+	User christippett
+
+Host *.github.com *.github.net *.githubapp.com
+	ForwardAgent no
+	User christippett
+
+Host *
+	StrictHostKeyChecking ask
+	VerifyHostKeyDNS ask
+	NoHostAuthenticationForLocalhost yes
+	IdentityFile ~/.ssh/id_rsa
+	AddKeysToAgent yes
+	ControlMaster auto
+	ControlPath /tmp/ssh-%C.socket
+
+Host windows
+    Hostname desktop.local
+    User ctipp
+
+Host wsl
+    HostName desktop.local
+	User chris
+	Port 2222
+
+Host nas
+    HostName tennis-bot-3000.local
+    User chris
+
+Host laptop
+	HostName chriss-macbook-pro
+	User chris

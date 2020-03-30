@@ -132,13 +132,7 @@ else
 fi
 log_success "Successfully installed Extras"
 
-# Homebrew
-if [[ $osType == *"Darwin"* ]]; then
-    log_info "ℹ️  Installing Homebrew packages"
-    ln -sv ~/projects/dotfiles/config/.Brewfile ~/.Brewfile
-    brew bundle --global
-    log_success "Successfully installed Homebrew packages"
-fi
+
 
 ############ END: Tools
 

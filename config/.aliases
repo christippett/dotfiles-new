@@ -18,6 +18,13 @@ alias plz="sudo"
 
 ### cli tool overrides
 #
+alias mkdir="mkdir -vp"
+alias df="df -H"
+alias rm="rm -iv"
+alias mv="mv -iv"
+alias cp="cp -irv"
+alias grep="grep --color=auto"
+alias make="nice make"
 # replace cat with the bat - https://github.com/sharkdp/bat
 alias cat="bat"
 # replace ping with prettyping - https://github.com/denilsonsa/prettyping

@@ -111,6 +111,13 @@ asdf install terraform 0.12.23
 asdf global terraform 0.12.23
 log_success "Successfully installed Terraform"
 
+# Golang
+log_info "ℹ️  Installing Go"
+asdf plugin-add golang https://github.com/kennyp/asdf-golang.git
+asdf install golang 1.14
+asdf global golang 1.14
+log_success "Successfully installed Go"
+
 # Extras
 log_info "ℹ️  Installing Extras"
 if [ -n "$LINUX" ]; then

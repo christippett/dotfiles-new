@@ -139,19 +139,19 @@ and all system dependencies required by each of the above tools.
 - run the `setup-shell.bash` script
 
   ```shell
-  ~/projects/dotfiles/scripts/setup-shell.bash
+  ~/.dotfiles/scripts/setup-shell.bash
   ```
 
 - run the `setup-devtools.bash` script
 
   ```shell
-  ~/projects/dotfiles/scripts/setup-devtools.bash
+  ~/.dotfiles/scripts/setup-devtools.bash
   ```
 
 - run the `setup-devtools.bash` script again (this is because `asdf` requires a shell restart to take effect. The script accounts for re-running)
 
   ```shell
-  ~/projects/dotfiles/scripts/setup-devtools.bash
+  ~/.dotfiles/scripts/setup-devtools.bash
   ```
 
 ### Automated Cleanup
@@ -159,7 +159,7 @@ and all system dependencies required by each of the above tools.
 - run the `cleanup.bash` script
 
 ```shell
-~/projects/dotfiles/scripts/cleanup.bash
+~/.dotfiles/scripts/cleanup.bash
 ```
 
 ### Manual Installation

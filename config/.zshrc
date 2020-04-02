@@ -176,5 +176,8 @@ source_if_exists "$HOME/.aliases"
 printf "🚀  Load Starship shell prompt\\n"
 eval "$(starship init zsh)"
 
+# Add Go bin to PATH
+export PATH="$PATH:$(go env GOPATH)/bin"
+
 # printf "\\n🏞  Environment Variables: \\n\\n"
 # printenv

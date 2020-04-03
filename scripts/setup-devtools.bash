@@ -59,6 +59,11 @@ fi
 asdf plugin add python
 asdf install python 3.8.2
 asdf global python 3.8.2
+pipx install black
+pipx install awscli
+pipx install youtube-dl
+pipx install poetry
+mkdir $ZSH/custom/plugins/poetry && poetry completions zsh > $ZSH/custom/plugins/poetry/_poetry
 log_success "Successfully installed Python"
 
 # firebase

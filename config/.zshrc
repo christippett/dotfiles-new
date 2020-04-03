@@ -91,6 +91,9 @@ plugins=(
   zsh-syntax-highlighting
 )
 
+# enable aws completions
+# source $HOME/.local/bin/aws_zsh_completer.sh
+
 # User configuration
 
 # export MANPATH="/usr/local/man:$MANPATH"

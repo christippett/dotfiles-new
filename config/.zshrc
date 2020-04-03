@@ -172,6 +172,16 @@ source_if_exists "$HOME/.aliases"
 # WIP. See here for now - https://code.visualstudio.com/docs/setup/mac#_launching-from-the-command-line
 # add_path_to_global_path "/Applications/Visual Studio Code.app/Contents/Resources/app/bin"
 
+### Python
+# Add packages installed with pipx to PATH
+quiet_which pipx && PATH="$HOME/.local/bin:$PATH"
+
+# virtualenvwrapper
+PIP_REQUIRE_VIRTUALENV=true
+PROJECT_HOME="$HOME/projects"
+WORKON_HOME="$HOME/.virtualenvs"
+source_if_exists "$HOME/.local/bin/virtualenvwrapper.sh"
+
 ### https://starship.rs
 printf "🚀  Load Starship shell prompt\\n"
 eval "$(starship init zsh)"

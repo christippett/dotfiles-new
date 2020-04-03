@@ -87,6 +87,7 @@ plugins=(
   npx
   python
   pip
+  poetry
   zsh-syntax-highlighting
 )
 
@@ -152,6 +153,11 @@ source_if_exists() {
   fi
 }
 
+# Check if binary installed before running command
+quiet_which() {
+  which "$1"&>/dev/null
+}
+
 ### oh-my-zsh
 source_if_exists "$ZSH/oh-my-zsh.sh"
 
@@ -172,6 +178,10 @@ source_if_exists "$HOME/.aliases"
 # WIP. See here for now - https://code.visualstudio.com/docs/setup/mac#_launching-from-the-command-line
 # add_path_to_global_path "/Applications/Visual Studio Code.app/Contents/Resources/app/bin"
 
+### Go
+# Add Go bin to PATH
+quiet_which go && PATH="$(go env GOPATH)/bin:$PATH"
+
 ### Python
 # Add packages installed with pipx to PATH
 quiet_which pipx && PATH="$HOME/.local/bin:$PATH"
@@ -185,9 +195,6 @@ source_if_exists "$HOME/.local/bin/virtualenvwrapper.sh"
 ### https://starship.rs
 printf "🚀  Load Starship shell prompt\\n"
 eval "$(starship init zsh)"
-
-# Add Go bin to PATH
-export PATH="$PATH:$(go env GOPATH)/bin"
 
 # printf "\\n🏞  Environment Variables: \\n\\n"
 # printenv

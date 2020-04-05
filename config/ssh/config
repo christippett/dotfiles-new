@@ -12,8 +12,6 @@ Host *
 	NoHostAuthenticationForLocalhost yes
 	IdentityFile ~/.ssh/id_rsa
 	AddKeysToAgent yes
-	ControlMaster auto
-	ControlPath /tmp/ssh-%C.socket
 
 Host windows
     Hostname desktop.local

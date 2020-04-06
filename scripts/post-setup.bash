@@ -101,7 +101,7 @@ function get_document() {
     log_success "Saved file to $path (chmod: ${chmod:-644})"
 }
 
-if [ -z "$OP_SESSION_my" ]; then
+if [ -n "$OP_SESSION_my" ]; then
     eval $(op signin "$op_subdomain")
 else
     op list documents | jq -c -r '.[] | [.uuid, .overview.title] | @tsv' |

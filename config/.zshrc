@@ -79,6 +79,7 @@ plugins=(
   asdf
   docker
   fzf
+  aws
   # gcloud
   git
   go
@@ -90,9 +91,6 @@ plugins=(
   poetry
   zsh-syntax-highlighting
 )
-
-# enable aws completions
-# source $HOME/.local/bin/aws_zsh_completer.sh
 
 # User configuration
 

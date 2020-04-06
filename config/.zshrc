@@ -187,7 +187,10 @@ quiet_which go && PATH="$(go env GOPATH)/bin:$PATH"
 
 ### Python
 # Add packages installed with pipx to PATH
-quiet_which pipx && PATH="$HOME/.local/bin:$PATH"
+if (quiet_which pipx); then
+  PATH="$HOME/.local/bin:$PATH"
+  VIRTUALENVWRAPPER_PYTHON="$HOME/.local/pipx/venvs/virtualenvwrapper/bin/python"
+fi
 
 # virtualenvwrapper
 PIP_REQUIRE_VIRTUALENV=true

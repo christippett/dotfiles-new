@@ -101,10 +101,12 @@ plugins=(
 
 # Preferred editor for local and remote sessions
 if [[ -n $SSH_CONNECTION ]]; then
-  export EDITOR='code'
+  export EDITOR='vim'
 else
-  export EDITOR='nano'
+  export EDITOR='vim'
 fi
+
+bindkey -e # use emacs bindings even with vim as EDITOR
 
 # Compilation flags
 # export ARCHFLAGS="-arch x86_64"

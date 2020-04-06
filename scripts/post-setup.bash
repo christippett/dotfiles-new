@@ -1,13 +1,13 @@
 #!/bin/bash
 
-set -euo pipefail
+set -eo pipefail
 
 # shellcheck source=./utils.bash
 source "$(dirname "$0")/utils.bash"
 
 ### OS utilities
-if [ "$LINUX" ]; then
-    log_info "ℹ️  Installing linux utilities"
+if [ -n "$LINUX" ]; then
+    log_info "ℹ️  Installing Linux utilities"
 
     is_installed htop || sudo apt install -y htop # install jq: command-line json processor
     is_installed htop || sudo apt install -y htop # install htop: interactive process viewer
@@ -39,26 +39,26 @@ if [ "$LINUX" ]; then
     # install doctl: digital ocean cli
     if ! is_installed doctl; then
         wget -q -O /tmp/doctl.tar.gz https://github.com/digitalocean/doctl/releases/download/v1.39.0/doctl-1.39.0-linux-amd64.tar.gz
-        tar xf /tmp/doctl.tar.gz -C /tmp/doctl
+        mkdir /tmp/doctl && tar xf /tmp/doctl.tar.gz -C /tmp/doctl
         sudo mv -f /tmp/doctl/doctl /usr/local/bin
         rm -rfv /tmp/doctl*
     fi
 fi
 
-if [ "$MACOS" ]; then
+if [ -n "$MACOS" ]; then
     # note: in most cases macos packages/applications should be specified and installed from Brewfile
     log_info "ℹ️  Installing MacOS utilities"
     is_installed op || brew cask install 1password # install op: 1password
 fi
 
-if [ "$WSL" ]; then
+if [ -n "$WSL" ]; then
     log_info "ℹ️  Installing Windows utilities"
     username="$(cmd.exe /c "echo %USERNAME%" 2>/dev/null)" # get windows user name
 fi
 
 
 ### Python utilities
-if isinstalled pipx; then
+if is_installed pipx; then
     log_info "ℹ️  Installing Python utilities"
 
     is_installed black || pipx install black # install black: opinioned python formatter
@@ -69,14 +69,13 @@ if isinstalled pipx; then
     if ! is_installed poetry; then
         pipx install poetry
         mkdir -p $ZSH/custom/plugins/poetry && poetry completions zsh > $ZSH/custom/plugins/poetry/_poetry
-
     fi
 
     # install virtualenvwrapper: wrapper around python's virtualenv
-    if ! is_installed virtualenvwrapper; then
+    if [ ! -f "$HOME/.local/bin/virtualenvwrapper.sh" ]; then
         pipx install virtualenvwrapper
         pipx inject virtualenvwrapper virtualenv # required to resolve module import dependency
-        mkdir $HOME/.virtualenvs # should be set to the same value as $WORKON_HOME in ~/.zshrc
+        mkdir -p $HOME/.virtualenvs # should be set to the same value as $WORKON_HOME in ~/.zshrc
     fi
 else
     log_failure "Missing pipx installation, skipping install of Python utilities"

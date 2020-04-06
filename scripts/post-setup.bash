@@ -95,6 +95,7 @@ function get_document() {
     local item="$(op get item "$uuid")"
     local path="$(get_document_label "path" <<< "$item" | sed -e 's#~#'"$HOME"'#')"
     local chmod="$(get_document_label "chmod" <<< "$item")"
+    mkdir -p "$(dirname "$path")"
     backup_file "$path"
     op get document "$uuid" > "$path"
     chmod ${chmod:-644} "$path"

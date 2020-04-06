@@ -102,7 +102,8 @@ function get_document() {
 }
 
 if [ -n "$OP_SESSION_my" ]; then
-    eval $(op signin "$op_subdomain")
+    read -sp "Enter your 1Password email address: " email_address
+    eval $(op signin my "$email_address")
 else
     op list documents | jq -c -r '.[] | [.uuid, .overview.title] | @tsv' |
     while IFS=$'\t' read -r uuid title; do

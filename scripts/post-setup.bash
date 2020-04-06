@@ -101,13 +101,15 @@ function get_document() {
     log_success "Saved file to $path (chmod: ${chmod:-644})"
 }
 
+# configure / sign into 1password
 if [ -n "$OP_SESSION_my" ]; then
-    read -p "Enter your 1Password email address: " email_address && printf "\n"
+    read -p "Enter your 1Password email address: " email_address
     eval $(op signin my "$email_address")
-else
-    op list documents | jq -c -r '.[] | [.uuid, .overview.title] | @tsv' |
-    while IFS=$'\t' read -r uuid title; do
-        log_info "ℹ️  Getting document from 1Password: $title"
-        get_document $uuid </dev/null
-    done
 fi
+
+# loop through each 1password document and save to the relevant path
+op list documents | jq -c -r '.[] | [.uuid, .overview.title] | @tsv' |
+while IFS=$'\t' read -r uuid title; do
+    log_info "ℹ️  Getting document from 1Password: $title"
+    get_document $uuid </dev/null
+done

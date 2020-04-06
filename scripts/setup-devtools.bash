@@ -59,12 +59,6 @@ fi
 asdf plugin add python
 asdf install python 3.8.2
 asdf global python 3.8.2
-pipx install black
-pipx install awscli
-pipx install youtube-dl
-pipx install poetry
-pip install virtualenvwrapper && pip inject virtualenvwrapper virtualenv && mkdir $HOME/.virtualenvs
-mkdir $ZSH/custom/plugins/poetry && poetry completions zsh > $ZSH/custom/plugins/poetry/_poetry
 log_success "Successfully installed Python"
 
 # firebase
@@ -144,9 +138,6 @@ else
     log_failure_and_exit "Script only supports macOS and Ubuntu"
 fi
 log_success "Successfully installed Extras"
-
-
-
 ############ END: Tools
 
 log_info "🏁  Fin"

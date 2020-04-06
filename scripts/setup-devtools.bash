@@ -63,7 +63,7 @@ pipx install black
 pipx install awscli
 pipx install youtube-dl
 pipx install poetry
-pip install virtualenvwrapper && pip inject virtualenvwrapper virtualenv
+pip install virtualenvwrapper && pip inject virtualenvwrapper virtualenv && mkdir $HOME/.virtualenvs
 mkdir $ZSH/custom/plugins/poetry && poetry completions zsh > $ZSH/custom/plugins/poetry/_poetry
 log_success "Successfully installed Python"
 

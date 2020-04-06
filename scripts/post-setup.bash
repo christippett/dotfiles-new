@@ -102,7 +102,7 @@ function get_document() {
 }
 
 if [ -n "$OP_SESSION_my" ]; then
-    read -sp "Enter your 1Password email address: " email_address
+    read -p "Enter your 1Password email address: " email_address && printf "\n"
     eval $(op signin my "$email_address")
 else
     op list documents | jq -c -r '.[] | [.uuid, .overview.title] | @tsv' |

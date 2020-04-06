@@ -190,6 +190,7 @@ quiet_which go && PATH="$(go env GOPATH)/bin:$PATH"
 if (quiet_which pipx); then
   PATH="$HOME/.local/bin:$PATH"
   VIRTUALENVWRAPPER_PYTHON="$HOME/.local/pipx/venvs/virtualenvwrapper/bin/python"
+  unalias ipython >/dev/null 2>&1 # remove oh-my-zsh's alias for ipython
 fi
 
 # virtualenvwrapper

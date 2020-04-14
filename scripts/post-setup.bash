@@ -9,10 +9,9 @@ source "$(dirname "$0")/utils.bash"
 if [ -n "$LINUX" ]; then
     log_info "Installing Linux utilities"
 
-    is_installed htop || sudo apt install -y htop # install jq: command-line json processor
-    is_installed htop || sudo apt install -y htop # install htop: interactive process viewer
+    is_installed htop || sudo apt install -y htop # install htop: interactive text-mode process viewer
     is_installed ncdu || sudo apt install -y ncdu # install ncdu: disk usage analyzer
-    is_installed ncdu || sudo apt install -y ncdu # install ncdu: disk usage analyzer
+    is_installed jq || sudo apt install -y jq # install jq: command-line json processor
 
     # install bat: a cat clone with wings (https://github.com/sharkdp/bat)
     # note: package available in apt repository from 19.10

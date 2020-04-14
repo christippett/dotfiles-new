@@ -92,11 +92,11 @@ function get_document_label() {
 
 function get_document() {
     local item="$(op get item "$uuid")"
-    local path="$(get_document_label "path" <<< "$item" | sed -e 's#~#'"$HOME"'#')"
-    local chmod="$(get_document_label "chmod" <<< "$item")"
+    local path="$(get_document_label "path" <<< "$item" | sed -e 's#~#'"$HOME"'#')" # get value specified in document's `path` label
+    local chmod="$(get_document_label "chmod" <<< "$item")" # get value specified in document's `chmod` label
     mkdir -p "$(dirname "$path")"
     backup_file "$path"
-    op get document "$uuid" > "$path"
+    op get document "$uuid" > "$path" # download and save contents of document
     chmod ${chmod:-644} "$path"
     log_success "Saved file to $path (chmod: ${chmod:-644})"
 }
@@ -107,7 +107,7 @@ if [ -n "$OP_SESSION_my" ]; then
     eval $(op signin my "$email_address")
 fi
 
-# loop through each 1password document and save to the relevant path
+# loop through each 1password document and save it to the location specified by the document's `path` label
 op list documents | jq -c -r '.[] | [.uuid, .overview.title] | @tsv' |
 while IFS=$'\t' read -r uuid title; do
     log_info "Getting document from 1Password: $title"

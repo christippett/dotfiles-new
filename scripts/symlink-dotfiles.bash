@@ -11,17 +11,17 @@ shopt -s nullglob # do nothing if no files matched
 shopt -s dotglob  # match hidden files
 
 # get absolute path of dotfiles directory
-config_root="$(dirname "$(dirname "$0")")/dotfiles"
+dotfiles_root="$(dirname "$(dirname "$0")")/dotfiles"
 if [[ -n "$MACOS" ]]; then
-    config_root="$(greadlink -f "$config_root")" # requires coreutils
+    dotfiles_root="$(greadlink -f "$dotfiles_root")" # requires coreutils
 else
-    config_root="$(readlink -f "$config_root")"
+    dotfiles_root="$(readlink -f "$dotfiles_root")"
 fi
 
 # loop through every file in dotfiles/ and create symlinks in home directory
-for file in "$config_root"/**/*; do
+for file in "$dotfiles_root"/**/*; do
     file_absolute_path="$file"
-    file_relative_path="${file_absolute_path#$config_root/}"
+    file_relative_path="${file_absolute_path#$dotfiles_root/}"
     home_path="$HOME/$file_relative_path"
     if [[ ! -d $file ]]; then
         log_info "ℹ️  Symlinking ~/$file_relative_path"

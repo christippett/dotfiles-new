@@ -6,7 +6,7 @@ set -eo pipefail
 source "$(dirname "$0")/utils.bash"
 
 # Dependencies
-log_info "ℹ️  Installing dependencies"
+log_info "Installing dependencies"
 if [ -n "$LINUX" ]; then
     sudo apt install git curl shellcheck -y
     sudo apt install \
@@ -31,10 +31,10 @@ log_success "Successfully installed dependencies"
 ############ BEGIN: ZSH
 if [[ ! "$SHELL" == *"zsh"* ]]; then
     if [ -n "$LINUX" ]; then
-        log_info "ℹ️  Installing ZSH"
+        log_info "Installing ZSH"
         sudo apt install zsh
     elif [ -n "$MACOS" ]; then
-        log_info "ℹ️  macOS Catalina comes with ZSH as the default shell."
+        log_info "macOS Catalina comes with ZSH as the default shell."
     else
         log_failure_and_exit "🚨  Script only supports macOS and Ubuntu"
     fi
@@ -46,10 +46,10 @@ fi
 if [ -d "$HOME/.oh-my-zsh" ]; then
     log_success "oh-my-zsh already installed"
 else
-    log_info "ℹ️  Installing oh-my-zsh"
+    log_info "Installing oh-my-zsh"
     sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
 
-    log_info "ℹ️  Installing zsh-syntax-highlighting plugin"
+    log_info "Installing zsh-syntax-highlighting plugin"
     git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ~/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting
 fi
 
@@ -58,7 +58,7 @@ installed_fonts=$(fc-list : file family | grep -i powerline)
 if [ -n "$installed_fonts" ]; then
     log_success "Powerline fonts already installed"
 else
-    log_info "ℹ️  Installing powerline fonts"
+    log_info "Installing powerline fonts"
     git clone https://github.com/powerline/fonts.git --depth=1 "/tmp/fonts"
     /tmp/fonts/install.sh
     rm -rf /tmp/fonts
@@ -68,7 +68,7 @@ fi
 if [[ "$SHELL" == *"zsh"* ]]; then
     log_success "ZSH already set as default shell"
 else
-    log_info "ℹ️  Setting default shell to ZSH"
+    log_info "Setting default shell to ZSH"
     chsh -s "$(command -v zsh)"
 fi
 
@@ -78,7 +78,7 @@ fi
 if is_installed starship; then
     log_success "Starship theme already installed"
 else
-    log_info "🚀  Installing Starship theme"
+    log_info "Installing Starship theme 🚀"
     curl -fsSL https://starship.rs/install.sh | bash
 fi
 
@@ -86,7 +86,7 @@ fi
 if [ -f "${HOME}/z.sh" ]; then
     log_success "z.sh already installed"
 else
-    log_info "ℹ️  Installing z"
+    log_info "Installing z"
     wget -P "${HOME}" https://raw.githubusercontent.com/rupa/z/master/z.sh
 fi
 
@@ -94,7 +94,7 @@ fi
 if [ -d "${HOME}/.fzf" ]; then
     log_success "fzf already installed"
 else
-    log_info "ℹ️  Installing fzf"
+    log_info "Installing fzf"
     git clone --depth 1 https://github.com/junegunn/fzf.git "${HOME}/.fzf"
     ~/.fzf/install --key-bindings --completion --no-update-rc --no-bash --no-zsh
 fi

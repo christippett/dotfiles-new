@@ -1,0 +1,11 @@
+firebase latest
+gradle latest
+hadolint v1.17.5
+java adopt-openjdk-11.0.6+10
+maven latest
+nodejs 12.16.1
+ocaml latest
+python latest
+shellcheck latest
+terraform latest
+gcloud latest

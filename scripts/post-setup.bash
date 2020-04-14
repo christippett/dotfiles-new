@@ -7,7 +7,7 @@ source "$(dirname "$0")/utils.bash"
 
 ### OS utilities
 if [ -n "$LINUX" ]; then
-    log_info "ℹ️  Installing Linux utilities"
+    log_info "Installing Linux utilities"
 
     is_installed htop || sudo apt install -y htop # install jq: command-line json processor
     is_installed htop || sudo apt install -y htop # install htop: interactive process viewer
@@ -47,19 +47,19 @@ fi
 
 if [ -n "$MACOS" ]; then
     # note: in most cases macos packages/applications should be specified and installed from Brewfile
-    log_info "ℹ️  Installing MacOS utilities"
+    log_info "Installing MacOS utilities"
     is_installed op || brew cask install 1password # install op: 1password
 fi
 
 if [ -n "$WSL" ]; then
-    log_info "ℹ️  Installing Windows utilities"
+    log_info "Installing Windows utilities"
     username="$(cmd.exe /c "echo %USERNAME%" 2>/dev/null)" # get windows user name
 fi
 
 
 ### Python utilities
 if is_installed pipx; then
-    log_info "ℹ️  Installing Python utilities"
+    log_info "Installing Python utilities"
 
     is_installed black || pipx install black # install black: opinioned python formatter
     is_installed aws || pipx install awscli # install awscli: amazon web services cli
@@ -83,7 +83,7 @@ fi
 
 
 ### 1Password secrets
-log_info "ℹ️  Getting secrets and configuration files from 1Password"
+log_info "Getting secrets and configuration files from 1Password"
 
 function get_document_label() {
     local label="$1"
@@ -111,6 +111,6 @@ fi
 # loop through each 1password document and save to the relevant path
 op list documents | jq -c -r '.[] | [.uuid, .overview.title] | @tsv' |
 while IFS=$'\t' read -r uuid title; do
-    log_info "ℹ️  Getting document from 1Password: $title"
+    log_info "Getting document from 1Password: $title"
     get_document $uuid </dev/null
 done

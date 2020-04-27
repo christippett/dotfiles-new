@@ -10,6 +10,15 @@ Cross-platform dotfiles & developer environment for Ubuntu 18.04+, macOS Catalin
 
 </div>
 
+> Update: ./config was renamed to ./dotfiles. To upgrade run:
+>
+> ```shell
+> # cleanup old symlinks
+> rm -f ~/.zshrc ~/.aliases ~/.default-npm-packages ~/.config/starship.toml`
+> # link new symlinks
+> bash ./scripts/symlink-dotfiles.bash
+> ```
+
 ## Contents
 
 - [Preamble](#preamble)

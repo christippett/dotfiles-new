@@ -14,7 +14,7 @@ Cross-platform dotfiles & developer environment for Ubuntu 18.04+, macOS Catalin
 >
 > ```shell
 > # cleanup old symlinks
-> rm -f ~/.zshrc ~/.aliases ~/.default-npm-packages ~/.config/starship.toml`
+> rm -f ~/.zshrc ~/.aliases ~/.default-npm-packages ~/.config/starship.toml
 > # link new symlinks
 > bash ./scripts/symlink-dotfiles.bash
 > ```

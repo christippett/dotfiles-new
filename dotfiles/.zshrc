@@ -82,7 +82,7 @@ plugins=(
   aws
   # gcloud
   git
-  go
+  golang
   node
   npm
   npx

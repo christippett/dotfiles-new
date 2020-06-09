@@ -177,6 +177,9 @@ source_if_exists "$HOME/.asdf/plugins/java/set-java-home.sh"
 ### aliases
 source_if_exists "$HOME/.aliases"
 
+### custom zsh profile
+source_if_exists "$HOME/.zprofile"
+
 ### VSCode
 # WIP. See here for now - https://code.visualstudio.com/docs/setup/mac#_launching-from-the-command-line
 # add_path_to_global_path "/Applications/Visual Studio Code.app/Contents/Resources/app/bin"

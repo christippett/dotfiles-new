@@ -1,0 +1,26 @@
+\set QUIET 1
+
+\pset null '∞'
+\pset unicode_border_linestyle single
+\pset unicode_column_linestyle single
+\pset unicode_header_linestyle double
+\pset linestyle 'unicode'
+\pset footer on
+
+# \set PROMPT1 '%[%033[1m%][%/] # '
+\set PROMPT1 '%[%033[38;5;011m%]┄┄┄\n%[%033[38;5;7m%]☄ %[%033[3m%]%M\n%[%033[1m%]%[%033[01;38;5;013m%]%/ %[%033[0;38;5;007m%]» %[%033[3m%]%[%033[01;38;5;012m%]%n %[%033[38;5;008m%]%R%[%033[31;5;008m%]%[%033[0m%]%# '
+-- SELECT * FROM<enter>. %R shows what type of input it expects.
+\set PROMPT2 '%[%033[0;38;5;007m%]…%[%033[0m%] '
+
+\timing
+
+\x off
+\set VERBOSITY verbose
+\set HISTFILE ~/.psql_history- :DBNAME
+\set HISTCONTROL ignoredups
+\set COMP_KEYWORD_CASE upper
+\pset pager always
+\unset QUIET
+
+\set ON_ERROR_ROLLBACK interactive
+\set ON_ERROR_STOP on

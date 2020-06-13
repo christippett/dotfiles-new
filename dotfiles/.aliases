@@ -78,6 +78,17 @@ alias ll="ls -alF"
 alias la="ls -A"
 alias l="ls -CF"
 
+### terraform
+#
+function tfapply() {
+	opts=()
+	if [[ $1 =~ "-[a-z]*a" ]]; then opts+=( -auto-approve) fi
+	if [[ $1 =~ "-[a-z]*q" ]]; then opts+=( -refresh=false) fi
+	terraform apply -compact-warnings -parallelism=25 ${opts[@]}
+}
+alias tfplan="terraform apply -compact-warnings -parallelism=25"
+
+### colors
 ### PATH
 #
 # pretty print $PATH

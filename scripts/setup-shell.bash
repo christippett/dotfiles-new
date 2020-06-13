@@ -54,7 +54,8 @@ else
 fi
 
 # add fonts for powerline
-installed_fonts=$(fc-list : file family | grep -i powerline)
+# TODO: fix premature script exit if grep returns 1
+installed_fonts=$(fc-list : file family | grep -iqs powerline)
 if [ -n "$installed_fonts" ]; then
     log_success "Powerline fonts already installed"
 else

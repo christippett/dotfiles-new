@@ -99,6 +99,19 @@ else
     ~/.fzf/install --key-bindings --completion --no-update-rc --no-bash --no-zsh
 fi
 
+# install less (recent versions support mouse scrolling 🐁)
+less_version=551
+if [ -f "/usr/local/bin/less" && (less -V | grep -qs 551 || true) ]; then
+    log_success "less is already installed and up-to-date"
+else
+    log_info "Installing less (${less_version})"
+    wget -P /tmp "http://www.greenwoodsoftware.com/less/less-${less_version}.tar.gz"
+    tar -xzf "/tmp/less-${less_version}.tar.gz"
+    "/tmp/less-${less_version}/configure.sh"
+    make && sudo make install
+    rm -rf "/tmp/less-${less_version}*"
+fi
+
 # navi - https://github.com/denisidoro/navi
 
 # dynamically symlink all config/dotfiles to home directory

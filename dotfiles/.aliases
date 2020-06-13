@@ -18,6 +18,7 @@ alias plz="sudo"
 
 ### cli tool overrides
 #
+alias rake='noglob rake' # allow use of unescaped *[] in terminal
 alias mkdir="mkdir -vp"
 alias df="df -H"
 alias rm="rm -iv"

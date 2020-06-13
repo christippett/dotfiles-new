@@ -90,6 +90,7 @@ plugins=(
   pip
   poetry
   zsh-syntax-highlighting
+  fancy-ctrl-z
 )
 
 # User configuration

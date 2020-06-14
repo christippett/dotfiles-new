@@ -117,7 +117,7 @@ The filesystem used by the Linux shell is hidden deep in your user's AppData fol
 3. create a symlink by linking your new `projects` folder from Windows to our Ubuntu userspace.
 
    ```shell
-   ln -sv /mnt/c/Users/<username>/projects ~/projects
+   ln -sv /mnt/c/Users/<username>/projects ~/.dotfiles
    ```
 
 4. validate the symlink with `ls -la` and creating and editing a file from each userspace to see that the changes are reflected correctly.
@@ -143,28 +143,28 @@ and all system dependencies required by each of the above tools.
 - clone my dotiles into the `projects` dir
 
       	  	```shell
-      	  	cd ~ && git clone https://github.com/jthegedus/dotfiles ~/projects/dotfiles
+      	  	cd ~ && git clone https://github.com/christippett/dotfiles ~/.dotfiles/dotfiles
       	  	```
 
 - run the `setup-shell.bash` script
 
-  ```shell
-  ~/.dotfiles/scripts/setup-shell.bash
-  ```
+      	  	```shell
+      	  	~/.dotfiles/scripts/setup-shell.bash
+      	  	```
 
 - update `config/initial-asdf-plugins.txt` with the desired `asdf` plugins you wish to use. The defaults are listed at the beginning of this section.
 
 - run the `setup-devtools.bash` script
 
-  ```shell
-  ~/.dotfiles/scripts/setup-devtools.bash
-  ```
+      	  	```shell
+      	  	~/.dotfiles/scripts/setup-devtools.bash
+      	  	```
 
 - run the `setup-devtools.bash` script again (this is because `asdf` requires a shell restart to take effect. The script accounts for re-running)
 
-  ```shell
-  ~/.dotfiles/scripts/setup-devtools.bash
-  ```
+      	  	```shell
+      	  	~/.dotfiles/scripts/setup-devtools.bash
+      	  	```
 
 ### Automated Cleanup
 

@@ -148,30 +148,30 @@ and all system dependencies required by each of the above tools.
 
 - run the `setup-shell.bash` script
 
-      	  	```shell
-      	  	~/projects/dotfiles/scripts/setup-shell.bash
-      	  	```
+  ```shell
+  ~/.dotfiles/scripts/setup-shell.bash
+  ```
 
 - update `config/initial-asdf-plugins.txt` with the desired `asdf` plugins you wish to use. The defaults are listed at the beginning of this section.
 
 - run the `setup-devtools.bash` script
 
-      	  	```shell
-      	  	~/projects/dotfiles/scripts/setup-devtools.bash
-      	  	```
+  ```shell
+  ~/.dotfiles/scripts/setup-devtools.bash
+  ```
 
 - run the `setup-devtools.bash` script again (this is because `asdf` requires a shell restart to take effect. The script accounts for re-running)
 
-      	  	```shell
-      	  	~/projects/dotfiles/scripts/setup-devtools.bash
-      	  	```
+  ```shell
+  ~/.dotfiles/scripts/setup-devtools.bash
+  ```
 
 ### Automated Cleanup
 
 - run the `cleanup.bash` script
 
 ```shell
-~/projects/dotfiles/scripts/cleanup.bash
+~/.dotfiles/scripts/cleanup.bash
 ```
 
 ### Manual Installation

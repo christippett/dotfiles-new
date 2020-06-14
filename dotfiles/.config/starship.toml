@@ -4,10 +4,13 @@ charging_symbol = "⚡️  "
 discharging_symbol = "💀  "
 
 [character]
-symbol = "➜"
+symbol = "❯ "
 
 [cmd_duration]
 min_time = 500
+
+[directory]
+style = "cyan"
 
 # [time]
 # disabled = false

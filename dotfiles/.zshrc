@@ -2,7 +2,7 @@
 # shellcheck disable=SC2034
 
 # If you come from bash you might have to change your $PATH.
-export PATH=$HOME/bin:/usr/local/bin:$PATH
+export PATH=$HOME/bin:$HOME/.local/bin:/usr/local/bin:$PATH
 
 # Path to your oh-my-zsh installation.
 export ZSH="$HOME/.oh-my-zsh"
@@ -79,15 +79,18 @@ plugins=(
   asdf
   docker
   fzf
+  aws
   # gcloud
   git
-  go
+  golang
   node
   npm
   npx
   python
   pip
+  poetry
   zsh-syntax-highlighting
+  fancy-ctrl-z
 )
 
 # User configuration
@@ -99,10 +102,12 @@ plugins=(
 
 # Preferred editor for local and remote sessions
 if [[ -n $SSH_CONNECTION ]]; then
-  export EDITOR='code'
+  export EDITOR='vim'
 else
-  export EDITOR='nano'
+  export EDITOR='vim'
 fi
+
+bindkey -e # use emacs bindings even with vim as EDITOR
 
 # Compilation flags
 # export ARCHFLAGS="-arch x86_64"
@@ -152,6 +157,11 @@ source_if_exists() {
   fi
 }
 
+# Check if binary installed before running command
+quiet_which() {
+  which "$1"&>/dev/null
+}
+
 ### oh-my-zsh
 source_if_exists "$ZSH/oh-my-zsh.sh"
 
@@ -168,9 +178,30 @@ source_if_exists "$HOME/.asdf/plugins/java/set-java-home.sh"
 ### aliases
 source_if_exists "$HOME/.aliases"
 
+### custom zsh profile
+source_if_exists "$HOME/.zprofile"
+
 ### VSCode
 # WIP. See here for now - https://code.visualstudio.com/docs/setup/mac#_launching-from-the-command-line
 # add_path_to_global_path "/Applications/Visual Studio Code.app/Contents/Resources/app/bin"
+
+### Go
+# Add Go bin to PATH
+quiet_which go && PATH="$(go env GOPATH)/bin:$PATH"
+
+### Python
+# Add packages installed with pipx to PATH
+if (quiet_which pipx); then
+  PATH="$HOME/.local/bin:$PATH"
+  VIRTUALENVWRAPPER_PYTHON="$HOME/.local/pipx/venvs/virtualenvwrapper/bin/python"
+  unalias ipython >/dev/null 2>&1 # remove oh-my-zsh's alias for ipython
+fi
+
+# virtualenvwrapper
+PIP_REQUIRE_VIRTUALENV=true
+PROJECT_HOME="$HOME/projects"
+WORKON_HOME="$HOME/.virtualenvs"
+source_if_exists "$HOME/.local/bin/virtualenvwrapper.sh"
 
 ### https://starship.rs
 printf "🚀  Load Starship shell prompt\\n"

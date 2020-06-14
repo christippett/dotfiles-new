@@ -7,4 +7,6 @@ dialogflow
 @google-cloud/scheduler
 @google-cloud/spanner
 @google-cloud/storage
-vercel
+now
+eslint
+tldr

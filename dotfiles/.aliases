@@ -1,5 +1,13 @@
 #!/usr/bin/env bash
 
+# get machine type - https://stackoverflow.com/a/3466183
+osType="$(uname -s)"
+
+# identify where environment is running as windows subsystem for linux - https://stackoverflow.com/a/38859331
+function is_wsl() {
+    egrep -q -m 1 microsoft /proc/version 2>/dev/null || false
+}
+
 ### enable aliases to be sudo’ed
 #
 #   http://askubuntu.com/questions/22037/aliases-not-available-when-using-sudo
@@ -7,6 +15,33 @@ alias sudo="sudo "
 alias please="sudo"
 alias pls="sudo"
 alias plz="sudo"
+
+### cli tool overrides
+#
+alias rake='noglob rake' # allow use of unescaped *[] in terminal
+alias mkdir="mkdir -vp"
+alias df="df -H"
+alias rm="rm -iv"
+alias mv="mv -iv"
+alias cp="cp -irv"
+alias grep="grep --color=auto"
+alias make="nice make"
+# replace cat with the bat - https://github.com/sharkdp/bat
+alias cat="bat"
+# replace ping with prettyping - https://github.com/denilsonsa/prettyping
+alias ping="prettyping"
+# replace top with htop - http://hisham.hm/htop/
+alias top="htop"
+# replace du with ncdu - https://dev.yorhel.nl/ncdu
+alias du="ncdu --color dark -rr -x --exclude .git --exclude node_modules"
+
+### clipboard
+#
+if [[ $osType == *"Darwin"* ]]; then
+	alias copy="pbcopy"
+elif is_wsl; then
+	alias copy="clip.exe"
+fi
 
 ### ubuntu update & upgrade
 #
@@ -43,6 +78,49 @@ alias q="cd ~ && clear"
 alias ll="ls -alF"
 alias la="ls -A"
 alias l="ls -CF"
+
+### terraform
+#
+function tfapply() {
+	opts=()
+	if [[ $1 =~ "-[a-z]*a" ]]; then opts+=( -auto-approve) fi
+	if [[ $1 =~ "-[a-z]*q" ]]; then opts+=( -refresh=false) fi
+	terraform apply -compact-warnings -parallelism=25 ${opts[@]}
+}
+alias tfplan="terraform apply -compact-warnings -parallelism=25"
+
+### colors
+#
+function colorgrid() {
+	iter=16
+	while [ $iter -lt 52 ]; do
+		second=$[$iter+36]
+		third=$[$second+36]
+		four=$[$third+36]
+		five=$[$four+36]
+		six=$[$five+36]
+		seven=$[$six+36]
+		if [ $seven -gt 250 ];then seven=$[$seven-251]; fi
+
+		echo -en "\033[38;5;$(echo $iter )m██████ "
+		printf "%03d" $iter
+		echo -en "   \033[38;5;$(echo $second)m██████ "
+		printf "%03d" $second
+		echo -en "   \033[38;5;$(echo $third)m██████ "
+		printf "%03d" $third
+		echo -en "   \033[38;5;$(echo $four)m██████ "
+		printf "%03d" $four
+		echo -en "   \033[38;5;$(echo $five)m██████ "
+		printf "%03d" $five
+		echo -en "   \033[38;5;$(echo $six)m██████ "
+		printf "%03d" $six
+		echo -en "   \033[38;5;$(echo $seven)m██████ "
+		printf "%03d" $seven
+
+		iter=$[$iter+1]
+		printf '\r\n'
+	done
+}
 
 ### PATH
 #

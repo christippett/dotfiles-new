@@ -1,6 +1,6 @@
 firebase latest
-hadolint v1.17.5
-nodejs 12.16.1
+hadolint latest
+nodejs 12.80.0
 ruby latest
 python latest
 shellcheck latest

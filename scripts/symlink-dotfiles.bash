@@ -13,27 +13,27 @@ shopt -s dotglob  # match hidden files
 # get absolute path of dotfiles directory
 dotfiles_root="$(dirname "$(dirname "$0")")/dotfiles"
 if [[ -n "$MACOS" ]]; then
-    dotfiles_root="$(greadlink -f "$dotfiles_root")" # requires coreutils
+  dotfiles_root="$(greadlink -f "$dotfiles_root")" # requires coreutils
 else
-    dotfiles_root="$(readlink -f "$dotfiles_root")"
+  dotfiles_root="$(readlink -f "$dotfiles_root")"
 fi
 
 # loop through every file in dotfiles/ and create symlinks in home directory
 for file in "$dotfiles_root"/**/*; do
-    file_absolute_path="$file"
-    file_relative_path="${file_absolute_path#$dotfiles_root/}"
-    home_path="$HOME/$file_relative_path"
-    if [[ ! -d $file ]]; then
-        log_info "ℹ️  Symlinking ~/$file_relative_path"
-        if [[ -L $home_path ]]; then
-            rm -f "$home_path" # remove existing symlink
-        elif [[ -f $home_path ]]; then
-            backup_file="$home_path.$(date +'%Y%m%d').bak"
-            mv "$home_path" "$backup_file" # backup existing file
-            rm -f "$home_path"             # remove existing file
-        else
-            mkdir -p "$HOME/$(dirname "$file_relative_path")" # ensure directory hierarchy exists
-        fi
-        ln -sv "$file_absolute_path" "$home_path"
+  file_absolute_path="$file"
+  file_relative_path="${file_absolute_path#$dotfiles_root/}"
+  home_path="$HOME/$file_relative_path"
+  if [[ ! -d $file ]]; then
+    log_info "ℹ️  Symlinking ~/$file_relative_path"
+    if [[ -L $home_path ]]; then
+      rm -f "$home_path" # remove existing symlink
+    elif [[ -f $home_path ]]; then
+      backup_file="$home_path.$(date +'%Y%m%d').bak"
+      mv "$home_path" "$backup_file" # backup existing file
+      rm -f "$home_path"             # remove existing file
+    else
+      mkdir -p "$HOME/$(dirname "$file_relative_path")" # ensure directory hierarchy exists
     fi
+    ln -sv "$file_absolute_path" "$home_path"
+  fi
 done

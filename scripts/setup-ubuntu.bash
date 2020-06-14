@@ -14,7 +14,7 @@ sudo snap install gitkraken
 gitkraken_icon_path="Icon=/snap/gitkraken/current/usr/share/gitkraken/gitkraken.png"
 gitkraken_snap_path="/var/lib/snapd/desktop/applications/gitkraken_gitkraken.desktop"
 if ! grep -q "${gitkraken_icon_path}" "${gitkraken_snap_path}"; then
-	printf "\n%s" "${gitkraken_icon_path}" >>"${gitkraken_snap_path}"
+  printf "\n%s" "${gitkraken_icon_path}" >>"${gitkraken_snap_path}"
 fi
 
 # Barrier (cross-platform keyboard-mouse network sharing)
@@ -32,12 +32,12 @@ firefox_developer_destination_directory="/opt/firefox_dev"
 firefox_developer_desktop_entry_path="${HOME}/.local/share/applications/firefox_dev.desktop"
 
 if [[ ! -e "${firefox_developer_desktop_entry_path}" ]]; then
-	tmp_download_dir=$(mktemp -d -t 'firefox_developer_edition_XXXXXX')
-	trap 'rm -rf "${tmp_download_dir}"' EXIT
-	wget -O "${tmp_download_dir}/${firefox_developer_filename}" "${firefox_developer_download_url}"
-	tar -xvf "${tmp_download_dir}/${firefox_developer_filename}" --directory "${tmp_download_dir}"
-	sudo mv "${tmp_download_dir}/firefox" "${firefox_developer_destination_directory}"
-	cat >"${firefox_developer_desktop_entry_path}" <<EOL
+  tmp_download_dir=$(mktemp -d -t 'firefox_developer_edition_XXXXXX')
+  trap 'rm -rf "${tmp_download_dir}"' EXIT
+  wget -O "${tmp_download_dir}/${firefox_developer_filename}" "${firefox_developer_download_url}"
+  tar -xvf "${tmp_download_dir}/${firefox_developer_filename}" --directory "${tmp_download_dir}"
+  sudo mv "${tmp_download_dir}/firefox" "${firefox_developer_destination_directory}"
+  cat >"${firefox_developer_desktop_entry_path}" <<EOL
 [Desktop Entry]
 Name=Firefox Developer
 GenericName=Firefox Developer Edition
@@ -57,8 +57,8 @@ Exec=/home/egdoc/.local/bin/firefox-dev %u
 Name=Open a New Private Window
 Exec=/home/egdoc/.local/bin/firefox-dev --private-window %u
 EOL
-	chmod +x "${firefox_developer_desktop_entry_path}"
+  chmod +x "${firefox_developer_desktop_entry_path}"
 else
-	# cannot replace with utils.bash log_info as it will break remote file pull and execute.
-	printf "ℹ️  Firefox Developer Edition is already installed.\\n"
+  # cannot replace with utils.bash log_info as it will break remote file pull and execute.
+  printf "ℹ️  Firefox Developer Edition is already installed.\\n"
 fi

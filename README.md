@@ -4,7 +4,7 @@
 
 Cross-platform dotfiles & developer environment for Ubuntu 18.04+, macOS Catalina & Windows 10 with WSL2
 
-![Lint](https://github.com/jthegedus/asdf-firebase/workflows/Lint/badge.svg)
+![Lint](https://github.com/christippett/asdf-firebase/workflows/Lint/badge.svg)
 
 ⚡️ tools for shell superpowers ⚡️<br/>[asdf](https://github.com/asdf-vm/asdf) · [shellcheck](https://github.com/koalaman/shellcheck) · [fzf](https://github.com/junegunn/fzf) · [z](https://github.com/rupa/z)
 
@@ -134,7 +134,7 @@ Items installed in the following scripts include:
 
 - shell: [`zsh`](https://github.com/ohmyzsh/ohmyzsh/wiki/Installing-ZSH) · [`oh-my-zsh`](https://github.com/ohmyzsh/ohmyzsh) · [`powerline fonts`](https://github.com/powerline/fonts) · [`starship cross-shell theme`](https://starship.rs/)
 - tools: [`asdf`](https://github.com/asdf-vm/asdf) · [`shellcheck`](https://github.com/koalaman/shellcheck) · [`fzf`](https://github.com/junegunn/fzf) · [`z`](https://github.com/rupa/z)
-- tools with asdf: [`nodejs`](https://github.com/asdf-vm/asdf-nodejs) · [`firebase`](https://github.com/jthegedus/asdf-firebase) · [`gcloud`](https://github.com/jthegedus/asdf-gcloud) · [`gradle`](https://github.com/rfrancis/asdf-gradle) · [`hadolint`](https://github.com/looztra/asdf-hadolint) · [`java`](https://github.com/halcyon/asdf-java) · [`maven`](https://github.com/halcyon/asdf-maven) · [`python`](https://github.com/danhper/asdf-python) · [`ocaml`](https://github.com/asdf-community/asdf-ocaml) · [`shellcheck`](https://github.com/luizm/asdf-shellcheck) · [`terraform`](https://github.com/Banno/asdf-hashicorp)
+- tools with asdf: [`nodejs`](https://github.com/asdf-vm/asdf-nodejs) · [`firebase`](https://github.com/christippett/asdf-firebase) · [`gcloud`](https://github.com/christippett/asdf-gcloud) · [`gradle`](https://github.com/rfrancis/asdf-gradle) · [`hadolint`](https://github.com/looztra/asdf-hadolint) · [`java`](https://github.com/halcyon/asdf-java) · [`maven`](https://github.com/halcyon/asdf-maven) · [`python`](https://github.com/danhper/asdf-python) · [`ocaml`](https://github.com/asdf-community/asdf-ocaml) · [`shellcheck`](https://github.com/luizm/asdf-shellcheck) · [`terraform`](https://github.com/Banno/asdf-hashicorp)
 
 and all system dependencies required by each of the above tools.
 
@@ -183,9 +183,9 @@ and all system dependencies required by each of the above tools.
 Runs this installation script to install my Ubuntu 20.04 application setup:
 
 ```shell
-wget -O - https://raw.github.com/jthegedus/dotfiles/master/scripts/setup-ubuntu.bash | bash
+wget -O - https://raw.github.com/christippett/dotfiles/master/scripts/setup-ubuntu.bash | bash
 # or with curl if it is already on your system
-bash -c "$(curl -fsSL https://raw.github.com/jthegedus/dotfiles/master/scripts/setup-ubuntu.bash)"
+bash -c "$(curl -fsSL https://raw.github.com/christippett/dotfiles/master/scripts/setup-ubuntu.bash)"
 ```
 
 #### Comes with the following apps
@@ -216,7 +216,7 @@ From the Ubuntu Store (snaps):
 
 Add VSCode to macOS path: https://code.visualstudio.com/docs/setup/mac#_launching-from-the-command-line
 
-[My vscode sync-settings can be found here](https://gist.github.com/jthegedus/a692812095d3bf7efa132c5a1bfe8d71). Choice extensions include:
+[My vscode sync-settings can be found here](https://gist.github.com/christippett/a692812095d3bf7efa132c5a1bfe8d71). Choice extensions include:
 
 - [Settings Sync](https://marketplace.visualstudio.com/items?itemName=Shan.code-settings-sync): Store your config in the cloud making multi-machine and reinstallations a breeze!
 - [shellcheck](https://marketplace.visualstudio.com/items?itemName=timonwong.shellcheck): static analysis your `.sh` scripts. Requires [shellcheck itself](https://github.com/koalaman/shellcheck#shellcheck---a-shell-script-static-analysis-tool).
@@ -237,16 +237,16 @@ Add VSCode to macOS path: https://code.visualstudio.com/docs/setup/mac#_launchin
 
 Ubuntu installation will hang on a Lenovo ThinkPad E485/E585. Below are the instructions I followed to remedy the issues:
 
-- [18.04 / 18.10](https://medium.com/@jthegedus/ubuntu-18-04-lts-on-lenovo-thinkpad-e485-15e1d601473f)
-- [19.04](https://medium.com/@jthegedus/ubuntu-19-04-lts-on-lenovo-thinkpad-e485-bf2d6cfd9cad)
-- [19.04 - PopOS!](https://medium.com/@jthegedus/popos-19-04-on-lenovo-thinkpad-e485-ac3951199132)
+- [18.04 / 18.10](https://medium.com/@christippett/ubuntu-18-04-lts-on-lenovo-thinkpad-e485-15e1d601473f)
+- [19.04](https://medium.com/@christippett/ubuntu-19-04-lts-on-lenovo-thinkpad-e485-bf2d6cfd9cad)
+- [19.04 - PopOS!](https://medium.com/@christippett/popos-19-04-on-lenovo-thinkpad-e485-ac3951199132)
 - 20.04: it just works!
 
 ### Dell XPS15 9560
 
 On login the OS may hang. Below are the instructions I followed to remedy the issues:
 
-- [18.04 / 18.10](https://medium.com/@jthegedus/ubuntu-18-04-lts-on-a-dell-xps-db4dcee9a2f9)
+- [18.04 / 18.10](https://medium.com/@christippett/ubuntu-18-04-lts-on-a-dell-xps-db4dcee9a2f9)
 
 ## Resources worth Reading
 
@@ -259,8 +259,8 @@ ZSH:
 
 Contributions of any kind welcome!
 
-[Thanks goes to these contributors](https://github.com/jthegedus/dotfiles/graphs/contributors)!
+[Thanks goes to these contributors](https://github.com/christippett/dotfiles/graphs/contributors)!
 
 ## License
 
-[MIT License](LICENSE) © [James Hegedus](https://github.com/jthegedus/)
+[MIT License](LICENSE) © [James Hegedus](https://github.com/christippett/)

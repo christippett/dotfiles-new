@@ -79,45 +79,68 @@ alias ll="ls -alF"
 alias la="ls -A"
 alias l="ls -CF"
 
+### gcloud
+function gssh() {
+	readonly local name="$1"
+	local filter result instance_name zone
+	printf "🖥️   Connecting to instance: %s\\n\\n" "$name"
+	filter="(name:${1} AND status:RUNNING)"
+	result="$(gcloud compute instances list --sort-by=-createTime --format="value(name,zone)" --filter="$filter")"
+	instance_name="$(echo "$result" | awk 'NR==1 {print $1}')"
+	zone="$(echo "$result" | awk 'NR==1 {print $2}')"
+	if [ -n "$instance_name" ]; then
+		gcloud beta compute ssh "$name" --zone "$(basename "$zone")"
+	else
+		printf "❌  Instance not found\\n"
+	fi
+}
+
 ### terraform
 #
 function tfapply() {
 	opts=()
-	if [[ $1 =~ "-[a-z]*a" ]]; then opts+=( -auto-approve) fi
-	if [[ $1 =~ "-[a-z]*q" ]]; then opts+=( -refresh=false) fi
-	terraform apply -compact-warnings -parallelism=25 ${opts[@]}
+	if [[ $1 =~ -[a-z]*a ]]; then
+		opts+=("-auto-approve")
+	fi
+	if [[ $1 =~ -[a-z]*q ]]; then
+		opts+=("-refresh=false")
+	fi
+	if [[ -f "./terraform.tfvars" ]]; then
+		opts+=("-var-file=terraform.tfvars")
+	fi
+	terraform apply -compact-warnings -parallelism=25 "${opts[@]}"
 }
-alias tfplan="terraform apply -compact-warnings -parallelism=25"
+alias tfplan="terraform plan -compact-warnings -parallelism=25"
 
 ### colors
 #
 function colorgrid() {
 	iter=16
 	while [ $iter -lt 52 ]; do
-		second=$[$iter+36]
-		third=$[$second+36]
-		four=$[$third+36]
-		five=$[$four+36]
-		six=$[$five+36]
-		seven=$[$six+36]
-		if [ $seven -gt 250 ];then seven=$[$seven-251]; fi
+		second=$((iter + 36))
+		third=$((second + 36))
+		four=$((third + 36))
+		five=$((four + 36))
+		six=$((five + 36))
+		seven=$((six + 36))
+		if [ $seven -gt 250 ]; then seven=$((seven - 251)); fi
 
-		echo -en "\033[38;5;$(echo $iter )m██████ "
+		echo -en "\033[38;5;${iter}m██████ "
 		printf "%03d" $iter
-		echo -en "   \033[38;5;$(echo $second)m██████ "
+		echo -en "   \033[38;5;${second}m██████ "
 		printf "%03d" $second
-		echo -en "   \033[38;5;$(echo $third)m██████ "
+		echo -en "   \033[38;5;${third}m██████ "
 		printf "%03d" $third
-		echo -en "   \033[38;5;$(echo $four)m██████ "
+		echo -en "   \033[38;5;${four}m██████ "
 		printf "%03d" $four
-		echo -en "   \033[38;5;$(echo $five)m██████ "
+		echo -en "   \033[38;5;${five}m██████ "
 		printf "%03d" $five
-		echo -en "   \033[38;5;$(echo $six)m██████ "
+		echo -en "   \033[38;5;${six}m██████ "
 		printf "%03d" $six
-		echo -en "   \033[38;5;$(echo $seven)m██████ "
+		echo -en "   \033[38;5;${seven}m██████ "
 		printf "%03d" $seven
 
-		iter=$[$iter+1]
+		iter=$((iter + 1))
 		printf '\r\n'
 	done
 }
@@ -125,8 +148,8 @@ function colorgrid() {
 ### PATH
 #
 # pretty print $PATH
-alias path="print -l $path"
-alias fpath="print -l $fpath"
+alias path='print -l $path'
+alias fpath='print -l $fpath'
 
 ### download
 #

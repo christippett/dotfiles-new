@@ -19,3 +19,12 @@ config.tests/
 *.rej
 *.swp
 *~
+
+# Terraform
+*.tfstate*
+*.tfvars
+*.terraform/
+
+# Files
+*.zip
+*.tar.*

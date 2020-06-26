@@ -1,6 +1,36 @@
 #!/bin/bash
 # shellcheck disable=SC2034
 
+#QUIET_LOG=1
+
+# add resource to path (once and only once)
+add_path_to_global_path() {
+  local TO_ADD="$1"
+
+  # if in $PATH, remove
+  # replace all occurrences - ${parameter//pattern/string}
+  [[ ":$PATH:" == *":${TO_ADD}:"* ]] && PATH="${PATH//$TO_ADD:/}"
+  # add to PATH
+  PATH="${TO_ADD}:$PATH"
+  printf "✅  added to global path:\\t%s\\n" "$1"
+}
+
+# Will source the provided resource if the resource exists
+source_if_exists() {
+  if [ -f "$1" ]; then
+    # shellcheck disable=SC1090
+    . "$1"
+    [ -z "$QUIET_LOG" ] && printf "✅  Sourced:\\t%s\\n" "$1"
+  else
+    printf "🚨  Failed to source: %s\\n" "$1"
+  fi
+}
+
+# Check if binary installed before running command
+quiet_which() {
+  which "$1" &>/dev/null
+}
+
 # If you come from bash you might have to change your $PATH.
 export PATH=$HOME/bin:$HOME/.local/bin:/usr/local/bin:$PATH
 
@@ -30,7 +60,7 @@ HYPHEN_INSENSITIVE="true"
 # DISABLE_AUTO_UPDATE="true"
 
 # Uncomment the following line to automatically update without prompting.
-# DISABLE_UPDATE_PROMPT="true"
+DISABLE_UPDATE_PROMPT="true"
 
 # Uncomment the following line to change how often to auto-update (in days).
 # export UPDATE_ZSH_DAYS=13
@@ -61,14 +91,20 @@ HYPHEN_INSENSITIVE="true"
 # "mm/dd/yyyy"|"dd.mm.yyyy"|"yyyy-mm-dd"
 # or set a custom format using the strftime function format specifications,
 # see 'man strftime' for details.
-HIST_STAMPS="mm/dd/yyyy"
+HIST_STAMPS="dd/mm/yyyy"
 
 # Would you like to use another custom folder than $ZSH/custom?
 # ZSH_CUSTOM=/path/to/new-custom-folder
 
-printf "✅  %s\\n" "Source asdf completions prior to oh-my-zsh running it's own compinit."
+# source asdf completions prior to oh-my-zsh running it's own compinit
 # shellcheck disable=SC2206
 fpath=($HOME/.asdf/completions $fpath)
+
+# activate asdf before oh-my-zsh so we can use `asdf which` to get gcloud's path
+source_if_exists "$HOME/.asdf/asdf.sh"
+
+# shellcheck disable=SC2155
+export CLOUDSDK_HOME="$(dirname "$(dirname "$(asdf which gcloud)")")"
 
 # Which plugins would you like to load?
 # Standard plugins can be found in ~/.oh-my-zsh/plugins/*
@@ -79,18 +115,19 @@ plugins=(
   asdf
   docker
   fzf
-  aws
-  # gcloud
+  # aws
+  gcloud
   git
   golang
   node
   npm
-  npx
+  # npx
   python
   pip
   poetry
   zsh-syntax-highlighting
   fancy-ctrl-z
+  kubectl
 )
 
 # User configuration
@@ -134,34 +171,6 @@ HISTSIZE=1000
 SAVEHIST=1000
 HISTFILE=~/.zsh_history
 
-# add resource to path (once and only once)
-add_path_to_global_path() {
-  local TO_ADD="$1"
-
-  # if in $PATH, remove
-  # replace all occurrences - ${parameter//pattern/string}
-  [[ ":$PATH:" == *":${TO_ADD}:"* ]] && PATH="${PATH//$TO_ADD:/}"
-  # add to PATH
-  PATH="${TO_ADD}:$PATH"
-  printf "✅  added to global path:\\t%s\\n" "$1"
-}
-
-# Will source the provided resource if the resource exists
-source_if_exists() {
-  if [ -f "$1" ]; then
-    # shellcheck disable=SC1090
-    . "$1"
-    printf "✅  Sourced:\\t%s\\n" "$1"
-  else
-    printf "🚨  Failed to source: %s\\n" "$1"
-  fi
-}
-
-# Check if binary installed before running command
-quiet_which() {
-  which "$1"&>/dev/null
-}
-
 ### oh-my-zsh
 source_if_exists "$ZSH/oh-my-zsh.sh"
 
@@ -173,7 +182,7 @@ source_if_exists "$HOME/z.sh"
 
 ### asdf plugins
 #### JAVA_HOME
-source_if_exists "$HOME/.asdf/plugins/java/set-java-home.sh"
+# source_if_exists "$HOME/.asdf/plugins/java/set-java-home.sh"
 
 ### aliases
 source_if_exists "$HOME/.aliases"
@@ -204,7 +213,7 @@ WORKON_HOME="$HOME/.virtualenvs"
 source_if_exists "$HOME/.local/bin/virtualenvwrapper.sh"
 
 ### https://starship.rs
-printf "🚀  Load Starship shell prompt\\n"
+[ -z "$QUIET_LOG" ] && printf "\\n🚀  Load Starship shell prompt\\n"
 eval "$(starship init zsh)"
 
 # printf "\\n🏞  Environment Variables: \\n\\n"

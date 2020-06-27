@@ -143,4 +143,6 @@ source_if_exists "$ZSH/oh-my-zsh.sh"
 source_if_exists "$HOME/.aliases"
 
 ### Shell setup complete
-printf "\\r🕒  %s (%s)                      \\n" "$(date +"%A %d %B, %Y")" "$(date +"%r")"
+printf "\\r                                                                                "
+printf "\n🕒  %s (%s)                      \\n\\n" "$(date +"%A %d %B, %Y")" "$(date +"%r")"
+

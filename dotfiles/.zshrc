@@ -1,11 +1,29 @@
 #!/bin/bash
 # shellcheck disable=SC2034
 
+# FUNCTIONS ------------------------------------------------------------------ #
+#
+# add resource to path (once and only once)
+add_path_to_global_path() {
+  local TO_ADD="$1"
+
+  # if in $PATH, remove
+  # replace all occurrences - ${parameter//pattern/string}
+  [[ ":$PATH:" == *":${TO_ADD}:"* ]] && PATH="${PATH//$TO_ADD:/}"
+  # add to PATH
+  PATH="${TO_ADD}:$PATH"
+  printf "✅  added to global path:\\t%s\\n" "${1/$HOME/~}"
+}
+
 # Will source the provided resource if the resource exists
 source_if_exists() {
   if [ -f "$1" ]; then
+    printf "✅  Sourcing \\t%s\\r" "${1/$HOME/~}"
     # shellcheck disable=SC1090
     . "$1"
+  else
+    printf "🚨  Unable to source \\t%s\\r" "${1/$HOME/~}"
+    sleep 1
   fi
 }
 
@@ -14,17 +32,38 @@ quiet_which() {
   which "$1" &>/dev/null
 }
 
+# EXPORTS -------------------------------------------------------------------- #
+
 # If you come from bash you might have to change your $PATH.
 export PATH=$HOME/bin:$HOME/.local/bin:/usr/local/bin:$PATH
 
 # Path to your oh-my-zsh installation.
 export ZSH="$HOME/.oh-my-zsh"
 
+# Language
+export LC_ALL=en_US.UTF-8
+export LANG=en_US.UTF-8
+export LANGUAGE=en_US.UTF-8
+
+# SSH
+export SSH_KEY_PATH="$HOME/.ssh/rsa_id"
+
+# Preferred editor for local and remote sessions
+if [[ -n $SSH_CONNECTION ]]; then
+  export EDITOR='vim'
+else
+  export EDITOR='vim'
+fi
+
+bindkey -e # use emacs bindings even with vim as EDITOR
+
+# ZSH CONFIGURATION ---------------------------------------------------------- #
+
 # Set name of the theme to load --- if set to "random", it will
 # load a random theme each time oh-my-zsh is loaded, in which case,
 # to know which specific one was loaded, run: echo $RANDOM_THEME
 # See https://github.com/ohmyzsh/ohmyzsh/wiki/Themes
-ZSH_THEME="sorin"
+ZSH_THEME="robbyrussell"
 
 # Set list of themes to pick from when loading at random
 # Setting this variable when ZSH_THEME=random will cause zsh to load
@@ -79,12 +118,7 @@ HIST_STAMPS="dd/mm/yyyy"
 # Would you like to use another custom folder than $ZSH/custom?
 # ZSH_CUSTOM=/path/to/new-custom-folder
 
-# source asdf completions prior to oh-my-zsh running it's own compinit
-# shellcheck disable=SC2206
-fpath=($HOME/.asdf/completions $fpath)
-
-# activate asdf before oh-my-zsh so we can use `asdf which` to get gcloud's path
-source_if_exists "$HOME/.asdf/asdf.sh"
+# OH-MY-ZSH ------------------------------------------------------------------ #
 
 # Which plugins would you like to load?
 # Standard plugins can be found in ~/.oh-my-zsh/plugins/*
@@ -92,62 +126,24 @@ source_if_exists "$HOME/.asdf/asdf.sh"
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
 plugins=(
+  docker
+  fzf
+  tmux
   git
-  python
-  pip
   zsh-syntax-highlighting
+  fancy-ctrl-z
 )
 
-# User configuration
-
-# export MANPATH="/usr/local/man:$MANPATH"
-
-# You may need to manually set your language environment
-# export LANG=en_US.UTF-8
-
-# Preferred editor for local and remote sessions
-if [[ -n $SSH_CONNECTION ]]; then
-  export EDITOR='nano'
-else
-  export EDITOR='nano'
-fi
-
-bindkey -e # use emacs bindings even with vim as EDITOR
-
-# Compilation flags
-# export ARCHFLAGS="-arch x86_64"
-
-# Set personal aliases, overriding those provided by oh-my-zsh libs,
-# plugins, and themes. Aliases can be placed here, though oh-my-zsh
-# users are encouraged to define aliases within the ZSH_CUSTOM folder.
-# For a full list of active aliases, run `alias`.
-#
-# Example aliases
-# alias zshconfig="mate ~/.zshrc"
-# alias ohmyzsh="mate ~/.oh-my-zsh"
-
-######### Custom Configuration #########
-
-### language
-export LC_ALL=en_US.UTF-8
-export LANG=en_US.UTF-8
-export LANGUAGE=en_US.UTF-8
-
-### history
-# Keep 1000 lines of history within the shell and save it to ~/.zsh_history:
-HISTSIZE=1000
-SAVEHIST=1000
-HISTFILE=~/.zsh_history
+# USER CONFIGURATION --------------------------------------------------------- #
 
 ### oh-my-zsh
 source_if_exists "$ZSH/oh-my-zsh.sh"
 
-### asdf plugins
-#### JAVA_HOME
-# source_if_exists "$HOME/.asdf/plugins/java/set-java-home.sh"
+### z
+source_if_exists "$HOME/z.sh"
 
 ### aliases
 source_if_exists "$HOME/.aliases"
 
-# printf "\\n🏞  Environment Variables: \\n\\n"
-# printenv
+### Shell setup complete
+printf "\\r🕒  %s (%s)                      \\n" "$(date +"%A %d %B, %Y")" "$(date +"%r")"

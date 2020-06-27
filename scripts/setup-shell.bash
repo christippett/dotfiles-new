@@ -9,14 +9,13 @@ source "$(dirname "$0")/utils.bash"
 log_info "Installing dependencies"
 if [ "$(whoami)" == "root" ]; then
 (
-		sudo apt update -y
-		sudo apt install git curl fontconfig -y
-		sudo apt install \
+		apt update
+		apt install git curl fontconfig
+		apt install \
 			automake autoconf libreadline-dev \
 			libncurses-dev libssl-dev libyaml-dev \
 			libxslt-dev libffi-dev libtool unixodbc-dev \
-			gfortran \
-			unzip -y
+			unzip
 		log_success "Successfully installed dependencies"
 	) || log_failure "Unable to install dependencies"
 fi
@@ -59,6 +58,15 @@ else
 fi
 
 ############ END: ZSH
+
+# install fzf
+if [ -d "${HOME}/.fzf" ]; then
+	log_success "fzf already installed"
+else
+	log_info "Installing fzf"
+	git clone --depth 1 https://github.com/junegunn/fzf.git "${HOME}/.fzf"
+	~/.fzf/install --key-bindings --completion --no-update-rc --no-bash --no-zsh
+fi
 
 # dynamically symlink all config/dotfiles to home directory
 # shellcheck source=./symlink-dotfiles.bash

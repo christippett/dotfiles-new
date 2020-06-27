@@ -3,14 +3,16 @@
 # get machine type - https://stackoverflow.com/a/3466183
 osType="$(uname -s)"
 
-# identify where environment is running as windows subsystem for linux - https://stackoverflow.com/a/38859331
+### function to identify WSL environments
+#
+# https://stackoverflow.com/a/38859331
 function is_wsl() {
-	grep -E -q -m 1 microsoft /proc/version 2>/dev/null || false
+	egrep -q -m 1 microsoft /proc/version 2>/dev/null || false
 }
 
 ### enable aliases to be sudo’ed
 #
-#   http://askubuntu.com/questions/22037/aliases-not-available-when-using-sudo
+# http://askubuntu.com/questions/22037/aliases-not-available-when-using-sudo
 alias sudo="sudo "
 alias please="sudo"
 alias pls="sudo"
@@ -35,7 +37,7 @@ alias top="htop"
 # replace du with ncdu - https://dev.yorhel.nl/ncdu
 alias du="ncdu --color dark -rr -x --exclude .git --exclude node_modules"
 
-### clipboard
+### copy stdout to clipboard
 #
 if [[ $osType == *"Darwin"* ]]; then
 	alias copy="pbcopy"
@@ -111,39 +113,6 @@ function tfapply() {
 	terraform apply -compact-warnings -parallelism=25 "${opts[@]}"
 }
 alias tfplan="terraform plan -compact-warnings -parallelism=25"
-
-### colors
-#
-function colorgrid() {
-	iter=16
-	while [ $iter -lt 52 ]; do
-		second=$((iter + 36))
-		third=$((second + 36))
-		four=$((third + 36))
-		five=$((four + 36))
-		six=$((five + 36))
-		seven=$((six + 36))
-		if [ $seven -gt 250 ]; then seven=$((seven - 251)); fi
-
-		echo -en "\033[38;5;${iter}m██████ "
-		printf "%03d" $iter
-		echo -en "   \033[38;5;${second}m██████ "
-		printf "%03d" $second
-		echo -en "   \033[38;5;${third}m██████ "
-		printf "%03d" $third
-		echo -en "   \033[38;5;${four}m██████ "
-		printf "%03d" $four
-		echo -en "   \033[38;5;${five}m██████ "
-		printf "%03d" $five
-		echo -en "   \033[38;5;${six}m██████ "
-		printf "%03d" $six
-		echo -en "   \033[38;5;${seven}m██████ "
-		printf "%03d" $seven
-
-		iter=$((iter + 1))
-		printf '\r\n'
-	done
-}
 
 ### PATH
 #

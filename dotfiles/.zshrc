@@ -63,7 +63,7 @@ bindkey -e # use emacs bindings even with vim as EDITOR
 # load a random theme each time oh-my-zsh is loaded, in which case,
 # to know which specific one was loaded, run: echo $RANDOM_THEME
 # See https://github.com/ohmyzsh/ohmyzsh/wiki/Themes
-ZSH_THEME="robbyrussell"
+ZSH_THEME="geoffgarside"
 
 # Set list of themes to pick from when loading at random
 # Setting this variable when ZSH_THEME=random will cause zsh to load
@@ -138,9 +138,6 @@ plugins=(
 
 ### oh-my-zsh
 source_if_exists "$ZSH/oh-my-zsh.sh"
-
-### z
-source_if_exists "$HOME/z.sh"
 
 ### aliases
 source_if_exists "$HOME/.aliases"

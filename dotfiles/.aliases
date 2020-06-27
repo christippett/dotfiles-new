@@ -7,7 +7,7 @@ osType="$(uname -s)"
 #
 # https://stackoverflow.com/a/38859331
 function is_wsl() {
-	egrep -q -m 1 microsoft /proc/version 2>/dev/null || false
+	grep -E -q -m 1 microsoft /proc/version 2>/dev/null || false
 }
 
 ### enable aliases to be sudo’ed

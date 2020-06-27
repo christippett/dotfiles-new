@@ -30,7 +30,7 @@ fi
 log_success "Successfully installed dependencies"
 
 ############ BEGIN: ZSH
-if [[ ! "$SHELL" == *"zsh"* ]]; then
+if [[ ! "$(which zsh)" ]]; then
 	if [ -n "$LINUX" ]; then
 		log_info "Installing ZSH"
 		sudo apt install zsh
@@ -55,9 +55,7 @@ else
 fi
 
 # add fonts for powerline
-# TODO: fix premature script exit if grep returns 1
-installed_fonts=$(fc-list : file family | grep -iqs powerline)
-if [ -n "$installed_fonts" ]; then
+if [ -n "$(fc-list : file family | grep -iqs powerline || true)" ]; then
 	log_success "Powerline fonts already installed"
 else
 	log_info "Installing powerline fonts"
@@ -100,21 +98,6 @@ else
 	git clone --depth 1 https://github.com/junegunn/fzf.git "${HOME}/.fzf"
 	~/.fzf/install --key-bindings --completion --no-update-rc --no-bash --no-zsh
 fi
-
-# install less (recent versions support mouse scrolling 🐁)
-less_version=551
-if [ -f "/usr/local/bin/less" && (less -V | grep -qs 551 || true) ]; then
-    log_success "less is already installed and up-to-date"
-else
-    log_info "Installing less (${less_version})"
-    wget -P /tmp "http://www.greenwoodsoftware.com/less/less-${less_version}.tar.gz"
-    tar -xzf "/tmp/less-${less_version}.tar.gz"
-    "/tmp/less-${less_version}/configure.sh"
-    make && sudo make install
-    rm -rf "/tmp/less-${less_version}*"
-fi
-
-# navi - https://github.com/denisidoro/navi
 
 # dynamically symlink all config/dotfiles to home directory
 # shellcheck source=./symlink-dotfiles.bash

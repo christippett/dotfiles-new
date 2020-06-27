@@ -136,6 +136,8 @@ source_if_exists "$HOME/.asdf/asdf.sh"
 # shellcheck disable=SC2155
 export CLOUDSDK_HOME="$(dirname "$(dirname "$(asdf which gcloud)")")"
 
+# OH-MY-ZSH ------------------------------------------------------------------ #
+
 # Which plugins would you like to load?
 # Standard plugins can be found in ~/.oh-my-zsh/plugins/*
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/

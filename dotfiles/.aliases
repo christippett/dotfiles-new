@@ -3,9 +3,16 @@
 # get machine type - https://stackoverflow.com/a/3466183
 osType="$(uname -s)"
 
+### function to identify WSL environments
+#
+# https://stackoverflow.com/a/38859331
+function is_wsl() {
+	grep -E -q -m 1 microsoft /proc/version 2>/dev/null || false
+}
+
 ### enable aliases to be sudo’ed
 #
-#   http://askubuntu.com/questions/22037/aliases-not-available-when-using-sudo
+# http://askubuntu.com/questions/22037/aliases-not-available-when-using-sudo
 alias sudo="sudo "
 alias please="sudo"
 alias pls="sudo"
@@ -30,9 +37,13 @@ alias top="htop"
 # replace du with ncdu - https://dev.yorhel.nl/ncdu
 alias du="ncdu --color dark -rr -x --exclude .git --exclude node_modules"
 
-### clipboard
+### copy stdout to clipboard
 #
-alias copy="pbcopy"
+if [[ $osType == *"Darwin"* ]]; then
+	alias copy="pbcopy"
+elif is_wsl; then
+	alias copy="clip.exe"
+fi
 
 ### ubuntu update & upgrade
 #
@@ -69,6 +80,39 @@ alias q="cd ~ && clear"
 alias ll="ls -alF"
 alias la="ls -A"
 alias l="ls -CF"
+
+### gcloud
+function gssh() {
+	readonly local name="$1"
+	local filter result instance_name zone
+	printf "🖥️   Connecting to instance: %s\\n\\n" "$name"
+	filter="(name:${1} AND status:RUNNING)"
+	result="$(gcloud compute instances list --sort-by=-createTime --format="value(name,zone)" --filter="$filter")"
+	instance_name="$(echo "$result" | awk 'NR==1 {print $1}')"
+	zone="$(echo "$result" | awk 'NR==1 {print $2}')"
+	if [ -n "$instance_name" ]; then
+		gcloud beta compute ssh "$name" --zone "$(basename "$zone")"
+	else
+		printf "❌  Instance not found\\n"
+	fi
+}
+
+### terraform
+#
+function tfapply() {
+	opts=()
+	if [[ $1 =~ -[a-z]*a ]]; then
+		opts+=("-auto-approve")
+	fi
+	if [[ $1 =~ -[a-z]*q ]]; then
+		opts+=("-refresh=false")
+	fi
+	if [[ -f "./terraform.tfvars" ]]; then
+		opts+=("-var-file=terraform.tfvars")
+	fi
+	terraform apply -compact-warnings -parallelism=25 "${opts[@]}"
+}
+alias tfplan="terraform plan -compact-warnings -parallelism=25"
 
 ### PATH
 #

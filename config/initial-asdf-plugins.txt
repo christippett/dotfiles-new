@@ -1,9 +1,0 @@
-firebase latest
-hadolint latest
-nodejs 12.80.0
-ruby latest
-python latest
-shellcheck latest
-terraform latest
-gcloud latest
-deno latest

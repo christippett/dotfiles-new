@@ -1,28 +1,11 @@
 #!/bin/bash
 # shellcheck disable=SC2034
 
-#QUIET_LOG=1
-
-# add resource to path (once and only once)
-add_path_to_global_path() {
-  local TO_ADD="$1"
-
-  # if in $PATH, remove
-  # replace all occurrences - ${parameter//pattern/string}
-  [[ ":$PATH:" == *":${TO_ADD}:"* ]] && PATH="${PATH//$TO_ADD:/}"
-  # add to PATH
-  PATH="${TO_ADD}:$PATH"
-  printf "✅  added to global path:\\t%s\\n" "$1"
-}
-
 # Will source the provided resource if the resource exists
 source_if_exists() {
   if [ -f "$1" ]; then
     # shellcheck disable=SC1090
     . "$1"
-    [ -z "$QUIET_LOG" ] && printf "✅  Sourced:\\t%s\\n" "$1"
-  else
-    printf "🚨  Failed to source: %s\\n" "$1"
   fi
 }
 
@@ -41,7 +24,7 @@ export ZSH="$HOME/.oh-my-zsh"
 # load a random theme each time oh-my-zsh is loaded, in which case,
 # to know which specific one was loaded, run: echo $RANDOM_THEME
 # See https://github.com/ohmyzsh/ohmyzsh/wiki/Themes
-ZSH_THEME="robbyrussell"
+ZSH_THEME="sorin"
 
 # Set list of themes to pick from when loading at random
 # Setting this variable when ZSH_THEME=random will cause zsh to load
@@ -103,31 +86,16 @@ fpath=($HOME/.asdf/completions $fpath)
 # activate asdf before oh-my-zsh so we can use `asdf which` to get gcloud's path
 source_if_exists "$HOME/.asdf/asdf.sh"
 
-# shellcheck disable=SC2155
-export CLOUDSDK_HOME="$(dirname "$(dirname "$(asdf which gcloud)")")"
-
 # Which plugins would you like to load?
 # Standard plugins can be found in ~/.oh-my-zsh/plugins/*
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
 plugins=(
-  asdf
-  docker
-  fzf
-  # aws
-  gcloud
   git
-  golang
-  node
-  npm
-  # npx
   python
   pip
-  poetry
   zsh-syntax-highlighting
-  fancy-ctrl-z
-  kubectl
 )
 
 # User configuration
@@ -139,9 +107,9 @@ plugins=(
 
 # Preferred editor for local and remote sessions
 if [[ -n $SSH_CONNECTION ]]; then
-  export EDITOR='vim'
+  export EDITOR='nano'
 else
-  export EDITOR='vim'
+  export EDITOR='nano'
 fi
 
 bindkey -e # use emacs bindings even with vim as EDITOR
@@ -174,47 +142,12 @@ HISTFILE=~/.zsh_history
 ### oh-my-zsh
 source_if_exists "$ZSH/oh-my-zsh.sh"
 
-### ssh
-export SSH_KEY_PATH="$HOME/.ssh/rsa_id"
-
-### z
-source_if_exists "$HOME/z.sh"
-
 ### asdf plugins
 #### JAVA_HOME
 # source_if_exists "$HOME/.asdf/plugins/java/set-java-home.sh"
 
 ### aliases
 source_if_exists "$HOME/.aliases"
-
-### custom zsh profile
-source_if_exists "$HOME/.zprofile"
-
-### VSCode
-# WIP. See here for now - https://code.visualstudio.com/docs/setup/mac#_launching-from-the-command-line
-# add_path_to_global_path "/Applications/Visual Studio Code.app/Contents/Resources/app/bin"
-
-### Go
-# Add Go bin to PATH
-quiet_which go && PATH="$(go env GOPATH)/bin:$PATH"
-
-### Python
-# Add packages installed with pipx to PATH
-if (quiet_which pipx); then
-  PATH="$HOME/.local/bin:$PATH"
-  VIRTUALENVWRAPPER_PYTHON="$HOME/.local/pipx/venvs/virtualenvwrapper/bin/python"
-  unalias ipython >/dev/null 2>&1 # remove oh-my-zsh's alias for ipython
-fi
-
-# virtualenvwrapper
-PIP_REQUIRE_VIRTUALENV=true
-PROJECT_HOME="$HOME/projects"
-WORKON_HOME="$HOME/.virtualenvs"
-source_if_exists "$HOME/.local/bin/virtualenvwrapper.sh"
-
-### https://starship.rs
-[ -z "$QUIET_LOG" ] && printf "\\n🚀  Load Starship shell prompt\\n"
-eval "$(starship init zsh)"
 
 # printf "\\n🏞  Environment Variables: \\n\\n"
 # printenv

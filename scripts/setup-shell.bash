@@ -11,19 +11,20 @@ if [ -n "$LINUX" ]; then
   sudo apt update -y
   sudo apt install git curl shellcheck fontconfig -y
   sudo apt install \
-    automake autoconf libreadline-dev \
+    make automake autoconf libreadline-dev \
     libncurses-dev libssl-dev libyaml-dev \
     libxslt-dev libffi-dev libtool unixodbc-dev \
-    unzip -y
+    zlib1g-dev unzip bat -y
 elif [ -n "$MACOS" ]; then
-  /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
-  xcode-select --install
-  brew install curl
-  brew install shellcheck
-  brew install \
-    coreutils automake autoconf openssl \
-    libyaml readline libxslt libtool unixodbc \
-    unzip curl
+  if [[ ! "$(which brew)" ]]; then
+    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
+    xcode-select --install
+    brew install git bat curl shellcheck fontconfig
+    brew install \
+      coreutils automake autoconf openssl \
+      libyaml readline libxslt libtool unixodbc \
+      unzip bat
+  fi
 else
   log_failure_and_exit "🚨  Script only supports macOS and Ubuntu"
 fi
@@ -87,7 +88,7 @@ if [ -f "${HOME}/z.sh" ]; then
   log_success "z.sh already installed"
 else
   log_info "Installing z"
-  wget -P "${HOME}" https://raw.githubusercontent.com/rupa/z/master/z.sh
+  curl -L -O https://raw.githubusercontent.com/rupa/z/master/z.sh
 fi
 
 # install fzf
@@ -97,6 +98,16 @@ else
   log_info "Installing fzf"
   git clone --depth 1 https://github.com/junegunn/fzf.git "${HOME}/.fzf"
   ~/.fzf/install --key-bindings --completion --no-update-rc --no-bash --no-zsh
+fi
+
+# install prettyping
+if [ -f "/usr/local/bin/prettyping" ]; then
+  log_success "prettyping already installed"
+else
+  log_info "Installing prettyping"
+  curl -L -S https://raw.githubusercontent.com/denilsonsa/prettyping/master/prettyping
+  chmod +x prettyping
+  mv prettyping /usr/local/bin/
 fi
 
 # dynamically symlink all config/dotfiles to home directory

@@ -2,6 +2,7 @@
 desktop.ini
 .DS_Store
 *.icloud
+*:Zone.Identifier
 
 # Ignore compiler output files.
 config.log
@@ -14,6 +15,7 @@ config.tests/
 *.xcodeproj/xcuserdata/
 .vscode
 .idea
+*.code-workspace
 
 # Ignore temporary generated files.
 *.rej
@@ -28,3 +30,14 @@ config.tests/
 # Files
 *.zip
 *.tar.*
+
+# Secrets
+*.env
+*.json
+*.pem
+
+# Logs
+*.log
+
+# Packages
+node_modules/

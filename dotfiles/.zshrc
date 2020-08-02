@@ -120,12 +120,6 @@ HIST_STAMPS="dd/mm/yyyy"
 
 # ASDF CONFIGURATION + PLUGINS ----------------------------------------------- #
 
-# activate asdf before oh-my-zsh so we can use `asdf which` to get gcloud's path
-source_if_exists "$HOME/.asdf/asdf.sh"
-
-# shellcheck disable=SC2155
-CLOUDSDK_HOME="$(dirname "$(dirname "$(asdf which gcloud)")")"
-
 # source asdf completions prior to oh-my-zsh running it's own compinit
 # shellcheck disable=SC2206
 fpath=($HOME/.asdf/completions $fpath)
@@ -135,6 +129,8 @@ source_if_exists "$HOME/.asdf/asdf.sh"
 
 # shellcheck disable=SC2155
 export CLOUDSDK_HOME="$(dirname "$(dirname "$(asdf which gcloud)")")"
+
+export GOPATH="$HOME/.local/go"
 
 # OH-MY-ZSH ------------------------------------------------------------------ #
 
@@ -178,6 +174,7 @@ source_if_exists "$HOME/.zprofile"
 
 ### Go
 # Add Go bin to PATH
+
 quiet_which go && PATH="$(go env GOPATH)/bin:$PATH"
 
 ### Python
@@ -193,6 +190,9 @@ PIP_REQUIRE_VIRTUALENV=true
 PROJECT_HOME="$HOME/projects"
 WORKON_HOME="$HOME/.virtualenvs"
 source_if_exists "$HOME/.local/bin/virtualenvwrapper.sh"
+
+### Terraform
+TF_PLUGIN_CACHE_DIR="$HOME/.terraform.d/plugin-cache"
 
 ### https://starship.rs
 eval "$(starship init zsh)"

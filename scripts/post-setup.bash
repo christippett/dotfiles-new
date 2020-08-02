@@ -15,9 +15,8 @@ if [ -n "$LINUX" ]; then
 
   # install bat: a cat clone with wings (https://github.com/sharkdp/bat)
   # note: package available in apt repository from 19.10
-  if ! is_installed bat; then
-    wget -q -O /tmp/bat.deb https://github.com/sharkdp/bat/releases/download/v0.13.0/bat_0.13.0_amd64.deb
-    sudo dpkg -i /tmp/bat.deb && rm -f /tmp/bat.deb
+  if ! is_installed bat || ! is_installed batcat; then
+    sudo apt install bat
   fi
 
   # install prettyping: wrapper around ping (http://denilson.sa.nom.br/prettyping/)
@@ -100,7 +99,7 @@ function get_document() {
 }
 
 # configure / sign into 1password
-if [ -n "$OP_SESSION_my" ]; then
+if [ -z "$OP_SESSION_my" ]; then
   read -p "Enter your 1Password email address: " email_address
   eval $(op signin my "$email_address")
 fi

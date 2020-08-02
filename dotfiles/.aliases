@@ -97,6 +97,14 @@ function gssh() {
 	fi
 }
 
+bq-schema() {
+bq --format=json ls "$1." \
+    | jq -c -r '.[].tableReference.tableId' \
+    | xargs -I {} bash -c "bq show --format=json $1.{} \
+        | jq -r '.schema.fields|=sort_by(.name)|del(.schema.fields[].description)|{sourceFormat,createDisposition,writeDisposition,schemaUpdateOptions,timePartitioning,clustering,schema}' \
+        | yq r - --prettyPrint"
+}
+
 ### terraform
 #
 function tfapply() {
@@ -112,7 +120,7 @@ function tfapply() {
 	fi
 	terraform apply -compact-warnings -parallelism=25 "${opts[@]}"
 }
-alias tfplan="terraform plan -compact-warnings -parallelism=25"
+alias tg="terragrunt"
 
 ### PATH
 #

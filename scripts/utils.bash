@@ -41,7 +41,7 @@ function backup_file() {
     rm -fv "$file" # file is symlink, safely remove
   elif [[ -f $file ]]; then
     backup_file="$file.$(date +'%Y%m%d').bak"
-    mv -fv --backup=t "$file" "$backup_file" # backup existing file
-    rm -fv "$file"                           # remove existing file
+    mv -fv "$file" "$backup_file" # backup existing file
+    rm -fv "$file"                # remove existing file
   fi
 }

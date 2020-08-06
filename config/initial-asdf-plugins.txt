@@ -1,9 +1,7 @@
 firebase latest
 hadolint latest
 nodejs latest
-ruby latest
 python latest
 shellcheck latest
 terraform latest
 gcloud latest
-deno latest

@@ -88,6 +88,7 @@ fpath=($HOME/.asdf/completions $fpath)
 
 # activate asdf before oh-my-zsh so we can use `asdf which` to get gcloud's path
 source_if_exists "$HOME/.asdf/asdf.sh"
+source_if_exists $HOME/.poetry/env
 
 # shellcheck disable=SC2155
 export CLOUDSDK_HOME="$(dirname "$(dirname "$(asdf which gcloud)")")"

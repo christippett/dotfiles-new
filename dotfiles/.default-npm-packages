@@ -1,14 +1,7 @@
-dialogflow
-@google-cloud/bigquery-storage
-@google-cloud/compute
-@google-cloud/cloudbuild
-@google-cloud/monitoring
-@google-cloud/pubsub
-@google-cloud/scheduler
-@google-cloud/spanner
-@google-cloud/storage
 now
+prettier
 eslint
+typings
 tldr
 standard-version
 

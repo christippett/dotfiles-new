@@ -9,21 +9,21 @@ source "$(dirname "$0")/utils.bash"
 log_info "Installing dependencies"
 if [ -n "$LINUX" ]; then
   sudo apt update -y
-  sudo apt install git curl shellcheck fontconfig -y
+  sudo apt install git curl fontconfig -y
   sudo apt install \
     make automake autoconf libreadline-dev \
     libncurses-dev libssl-dev libyaml-dev \
     libxslt-dev libffi-dev libtool unixodbc-dev \
-    zlib1g-dev unzip bat -y
+    zlib1g-dev unzip -y
 elif [ -n "$MACOS" ]; then
   if [[ ! "$(which brew)" ]]; then
-    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
+    sh -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
     xcode-select --install
-    brew install git bat curl shellcheck fontconfig
+    brew install git curl fontconfig
     brew install \
       coreutils automake autoconf openssl \
       libyaml readline libxslt libtool unixodbc \
-      unzip bat
+      unzip
   fi
 else
   log_failure_and_exit "🚨  Script only supports macOS and Ubuntu"
@@ -56,7 +56,7 @@ else
 fi
 
 # add fonts for powerline
-if [ -n "$(fc-list : file family | grep -iqs powerline || true)" ]; then
+if fc-list : file family | grep -iq powerline; then
   log_success "Powerline fonts already installed"
 else
   log_info "Installing powerline fonts"
@@ -98,16 +98,6 @@ else
   log_info "Installing fzf"
   git clone --depth 1 https://github.com/junegunn/fzf.git "${HOME}/.fzf"
   ~/.fzf/install --key-bindings --completion --no-update-rc --no-bash --no-zsh
-fi
-
-# install prettyping
-if [ -f "/usr/local/bin/prettyping" ]; then
-  log_success "prettyping already installed"
-else
-  log_info "Installing prettyping"
-  curl -L -S https://raw.githubusercontent.com/denilsonsa/prettyping/master/prettyping
-  chmod +x prettyping
-  mv prettyping /usr/local/bin/
 fi
 
 # dynamically symlink all config/dotfiles to home directory

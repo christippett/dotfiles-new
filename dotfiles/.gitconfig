@@ -101,5 +101,3 @@ verbose = true
 [credential "https://source.developers.google.com"]
 helper = gcloud
 
-[init]
-templatedir = ~/.git-templates

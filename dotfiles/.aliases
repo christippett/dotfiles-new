@@ -36,6 +36,7 @@ alias ping="prettyping"
 alias top="htop"
 # replace du with ncdu - https://dev.yorhel.nl/ncdu
 alias du="ncdu --color dark -rr -x --exclude .git --exclude node_modules"
+alias gpip="PIP_REQUIRE_VIRTUALENV=false pip"
 
 ### copy stdout to clipboard
 #

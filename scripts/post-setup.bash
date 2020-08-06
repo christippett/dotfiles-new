@@ -46,7 +46,7 @@ fi
 if [ -n "$MACOS" ]; then
   # note: in most cases macos packages/applications should be specified and installed from Brewfile
   log_info "Installing MacOS utilities"
-  is_installed op || brew cask install 1password # install op: 1password
+  is_installed op || brew cask install 1password-cli # install op: 1password
 fi
 
 if [ -n "$WSL" ]; then
@@ -64,7 +64,8 @@ if is_installed pipx; then
 
   # install poetry: python package manager
   if ! is_installed poetry; then
-    pipx install poetry
+    curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python
+    poetry config virtualenvs.path "$HOME/.virtualenvs"
     mkdir -p $ZSH/custom/plugins/poetry && poetry completions zsh >$ZSH/custom/plugins/poetry/_poetry
   fi
 

@@ -87,13 +87,6 @@ if [ -f "$initial_asdf_plugin_list" ]; then
   done <"$initial_asdf_plugin_list"
 fi
 
-# Golang
-log_info "ℹ️  Installing Go"
-asdf plugin-add golang https://github.com/kennyp/asdf-golang.git
-asdf install golang 1.14.6
-asdf global golang 1.14.6
-log_success "Successfully installed Go"
-
 # Extras
 log_info "Installing Extras"
 if [ -n "$LINUX" ]; then

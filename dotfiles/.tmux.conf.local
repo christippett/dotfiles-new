@@ -179,17 +179,18 @@ tmux_conf_theme_right_separator_sub='⋯'
 #     - #{username}
 #     - #{username_ssh}
 tmux_conf_theme_status_left=' 📺 #S '
-tmux_conf_theme_status_right='#{prefix}#{pairing}#{synchronized} #{?battery_status, #{battery_status},}#{?battery_bar, #{battery_bar},}#{?battery_percentage, #{battery_percentage},}🕑 %R , 📅 %d %B %Y | ⌛#{?uptime_y, #{uptime_y}y,}#{?uptime_d, #{uptime_d}d,}#{?uptime_h, #{uptime_h}h,}#{?uptime_m, #{uptime_m}m,} | 👨 #{username}#{root} | 🤖 #{hostname} '
+tmux_conf_theme_status_right='#{prefix}#{pairing}#{synchronized} 🕑 %R , 📅 %d %B %Y | ⌛#{?uptime_y, #{uptime_y}y,}#{?uptime_d, #{uptime_d}d,}#{?uptime_h, #{uptime_h}h,}#{?uptime_m, #{uptime_m}m,} | 👨 #{username}#{root} | 🤖 #{hostname} #{?battery_bar,#{battery_bar},}'
+# tmux_conf_theme_status_right='#{prefix}#{pairing}#{synchronized} #{?battery_status, #{battery_status},}#{?battery_bar, #{battery_bar},}#{?battery_percentage, #{battery_percentage},} | 🕑 %R , 📅 %d %B %Y | ⌛#{?uptime_y, #{uptime_y}y,}#{?uptime_d, #{uptime_d}d,}#{?uptime_h, #{uptime_h}h,}#{?uptime_m, #{uptime_m}m,} | 👨 #{username}#{root} | 🤖 #{hostname} '
 
 # status left style
 tmux_conf_theme_status_left_fg='#1b1b1b,#1b1b1b,#1b1b1b'
 tmux_conf_theme_status_left_bg='#ac92d8,#d892ac,#778de4'
-tmux_conf_theme_status_left_attr='bold,none,none'
+tmux_conf_theme_status_left_attr='none,none,none'
 
 # status right style
-tmux_conf_theme_status_right_fg='#1b1b1b,#1b1b1b,#1b1b1b,#1b1b1b'
-tmux_conf_theme_status_right_bg='#ac92d8,#8ccfbe,#778de4,#cf8c8c'
-tmux_conf_theme_status_right_attr='none,none,bold,bold'
+tmux_conf_theme_status_right_fg='#1b1b1b,#1b1b1b,#1b1b1b,#1b1b1b,#1b1b1b'
+tmux_conf_theme_status_right_bg='#ac92d8,#8ccfbe,#778de4,#cf8c8c,#da834e'
+tmux_conf_theme_status_right_attr='none,none,none,none,none'
 
 # pairing indicator
 tmux_conf_theme_pairing='👓 '          # U+1F453
@@ -216,21 +217,21 @@ tmux_conf_theme_synchronized_bg='none'
 tmux_conf_theme_synchronized_attr='none'
 
 # battery bar symbols
-tmux_conf_battery_bar_symbol_full='🔋'
 tmux_conf_battery_bar_symbol_empty='☠️'
-#tmux_conf_battery_bar_symbol_full='♥'
+tmux_conf_battery_bar_symbol_full='█'
+#tmux_conf_battery_bar_symbol_full='▃'
 #tmux_conf_battery_bar_symbol_empty='·'
 
 # battery bar length (in number of symbols), possible values are:
 #   - auto
 #   - a number, e.g. 5
-tmux_conf_battery_bar_length='auto'
+tmux_conf_battery_bar_length='10'
 
 # battery bar palette, possible values are:
 #   - gradient (default)
 #   - heat
 #   - 'colour_full_fg,colour_empty_fg,colour_bg'
-tmux_conf_battery_bar_palette='gradient'
+tmux_conf_battery_bar_palette='heat'
 #tmux_conf_battery_bar_palette='#d70000,#e4e4e4,#000000'
 
 # battery hbar palette, possible values are:

@@ -5,11 +5,6 @@ set -eo pipefail
 # shellcheck source=./utils.bash
 source "$(dirname "$0")/utils.bash"
 
-# configure bash shell options
-shopt -s globstar # '**' can be used to recursively search directories
-shopt -s nullglob # do nothing if no files matched
-shopt -s dotglob  # match hidden files
-
 # get absolute path of dotfiles directory
 dotfiles_root="$(dirname "$(dirname "$0")")/dotfiles"
 if [[ -n "$MACOS" ]]; then
@@ -19,7 +14,7 @@ else
 fi
 
 # loop through every file in dotfiles/ and create symlinks in home directory
-for file in "$dotfiles_root"/**/*; do
+while IFS= read -r -d '' file; do
   file_absolute_path="$file"
   file_relative_path="${file_absolute_path#$dotfiles_root/}"
   home_path="$HOME/$file_relative_path"
@@ -36,4 +31,4 @@ for file in "$dotfiles_root"/**/*; do
     fi
     ln -sv "$file_absolute_path" "$home_path"
   fi
-done
+done < <(find "$dotfiles_root" -path '**/*' -type f -print0)

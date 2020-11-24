@@ -3,5 +3,8 @@ prettier
 eslint
 typings
 tldr
+standard
 standard-version
+degit
+rollup
 

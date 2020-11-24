@@ -65,3 +65,6 @@ typings/
 # Exclude potentially sensitive user config
 dotfiles/.ssh/config-user
 dotfiles/.gitconfig-user
+
+# WIP
+homeassistant

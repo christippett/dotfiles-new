@@ -135,6 +135,9 @@ source_if_exists "$HOME/.aliases"
 ### custom zsh profile
 source_if_exists "$HOME/.zprofile"
 
+### enable iTerm2 integration
+source_if_exists "${HOME}/.iterm2_shell_integration.zsh"
+
 ### Go
 # Add Go bin to PATH
 
@@ -162,3 +165,5 @@ eval "$(starship init zsh)"
 
 ### Shell setup complete
 printf "\\r🕒  %s (%s)                      \\n" "$(date +"%A %d %B, %Y")" "$(date +"%r")"
+
+

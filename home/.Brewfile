@@ -1,7 +1,6 @@
 # Formulas ------------------------------------------------------------------- #
 
 brew "ack"
-brew "asdf"
 brew "autoconf"
 brew "automake"
 brew "bat"
@@ -15,8 +14,7 @@ brew "fontconfig"
 brew "fzf"
 brew "gh"
 brew "git"
-brew "gpg"
-brew "grc"
+brew "gnupg"
 brew "htop"
 brew "jq"
 brew "jsonlint"
@@ -34,19 +32,11 @@ brew "sqlite3"
 brew "ticker"
 brew "tldr"
 brew "tmux"
-brew "trash-cli"
 brew "tree"
-brew "unixodbc"
 brew "unzip"
 brew "wget"
 brew "xz"
 brew "zlib"
-
-brew "go"
-brew "goenv"
-brew "pyenv"
-brew "rust"
-brew "terraform"
 
 # Casks ---------------------------------------------------------------------- #
 

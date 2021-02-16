@@ -22,7 +22,7 @@ alias cp="cp -irv"
 alias grep="grep --color=auto"
 alias make="nice make"
 # replace cat with bat - https://github.com/sharkdp/bat
-alias cat="bat"
+alias cat="bat --theme=gruvbox --tabs=2"
 # replace ping with prettyping - https://github.com/denilsonsa/prettyping
 alias ping="prettyping"
 # replace top with htop - http://hisham.hm/htop/
@@ -70,9 +70,9 @@ alias q="cd ~ && clear"
 
 ### folders
 #
-alias ll="grc ls -alF"
-alias la="grc ls -lA"
-alias l="grc ls -CF"
+alias ll="ls -lF"
+alias la="ls -lFA"
+alias l="ls -CF"
 
 ### gcloud
 function gssh() {

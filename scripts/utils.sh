@@ -1,7 +1,6 @@
 #!/usr/bin/env bash
 
-set -e
-script_dir="$(dirname "$0")"
+DOTFILES_ROOT="$HOME/.dotfiles"
 
 # Environment ---------------------------------------------------------------- #
 
@@ -53,7 +52,7 @@ function source_if_exists() {
   if [ -f "$1" ]; then
     . "$1"
   else
-    printf "⚠️  Unable to source %s\\n" "${1/$HOME/~}"
+    printf "⚠️ Unable to source %s\\n" "${1/$HOME/~}"
   fi
 }
 
@@ -70,18 +69,18 @@ function add_to_path() {
 
 function link_dotfiles() {
   # get absolute path of dotfiles directory
-  dotfiles_root="$(dirname $script_dir)/home"
+  dotfiles_path="$DOTFILES_ROOT/home"
 
   if [[ -n "$MACOS" ]]; then
-    dotfiles_root="$(greadlink -f "$dotfiles_root")" # requires coreutils
+    dotfiles_path="$(greadlink -f "$dotfiles_path")" # requires coreutils
   else
-    dotfiles_root="$(readlink -f "$dotfiles_root")"
+    dotfiles_path="$(readlink -f "$dotfiles_path")"
   fi
 
   # loop through and create symlinks for all dotfiles
   while IFS= read -r -d '' file; do
     file_absolute_path="$file"
-    file_relative_path="${file_absolute_path#$dotfiles_root/}"
+    file_relative_path="${file_absolute_path#$DOTFILES_ROOT/}"
     home_path="$HOME/$file_relative_path"
 
     if [[ ! -d $file ]]; then
@@ -98,7 +97,7 @@ function link_dotfiles() {
       log_info "ℹ️  Creating symlink: ~/$file_relative_path"
       ln -sv "$file_absolute_path" "$home_path"
     fi
-  done < <(find "$dotfiles_root" -path '**/*' -type f -print0)
+  done < <(find "$dotfiles_path" -path '**/*' -type f -print0)
 }
 
 # Backup file if exists

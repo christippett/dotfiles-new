@@ -33,6 +33,7 @@ attributesfile = ~/.gitattributes
 # Don't prompt for commit messages for merge commits.
 mergeoptions = --no-edit
 commitGraph = true
+pager = diff-so-fancy | less --tabs=4 -RFX
 
 [help]
 # Autocorrect mistyped commands.
@@ -85,7 +86,7 @@ pushInsteadOf = git://github.com/
 [url "git@github.com:"]
 # Use SSH for GitHub instead of https://
 # Enable this in networks where https:// has issues.
-#insteadOf = https://github.com/
+insteadOf = https://github.com/
 
 [credential]
 # Use macOS Keychain to store HTTP passwords.
@@ -101,3 +102,6 @@ verbose = true
 [credential "https://source.developers.google.com"]
 helper = gcloud
 
+[user]
+name = Chris Tippett
+email = git@christippett.dev

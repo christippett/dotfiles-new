@@ -44,4 +44,4 @@ set bs=2
 set clipboard=unnamed
 
 " set theme
-colorscheme Tomorrow-Night
+colorscheme jellybeans

@@ -1,0 +1,110 @@
+[hostname]
+style = "bold red"
+
+[directory]
+format = "[$path]($style)[$read_only]($read_only_style) "
+style = "bold green"
+
+[python]
+python_binary = "python"
+symbol = " "
+
+[gcloud]
+format = 'on [$symbol$active (\($region\))]($style) '
+symbol = " "
+[gcloud.region_aliases]
+us-central1 = "us-c1"
+us-east1 = "us-e1"
+us-east4 = "us-e4"
+us-west1 = "us-w1"
+us-west2 = "us-w2"
+us-west3 = "us-w3"
+us-west4 = "us-w4"
+asia-northeast1 = "as-n1"
+europe-west1 = "eu-w1"
+europe-west2 = "eu-w2"
+europe-west3 = "eu-w3"
+europe-west4 = "eu-w4"
+europe-west6 = "eu-w6"
+australia-southeast1 = "au-se1"
+
+[git_branch]
+only_attached = true
+symbol = " "
+
+[git_status]
+format = '([\[$all_status$ahead_behind\]]($style)) '
+
+[nodejs]
+symbol = " "
+disabled = true
+
+[package]
+symbol = " "
+disabled = true
+
+[aws]
+symbol = " "
+
+[battery]
+full_symbol = ""
+charging_symbol = ""
+discharging_symbol = ""
+
+[conda]
+symbol = " "
+
+[dart]
+symbol = " "
+
+[docker]
+only_with_files = "true"
+symbol = " "
+
+[elixir]
+symbol = " "
+
+[elm]
+symbol = " "
+
+[golang]
+symbol = " "
+
+[haskell]
+symbol = " "
+
+[hg_branch]
+symbol = " "
+
+[java]
+symbol = " "
+
+[julia]
+symbol = " "
+
+[memory_usage]
+symbol = " "
+
+[nim]
+symbol = " "
+
+[nix_shell]
+symbol = " "
+
+[perl]
+symbol = " "
+
+[php]
+symbol = " "
+
+[ruby]
+symbol = " "
+
+[rust]
+symbol = " "
+
+[swift]
+symbol = "ﯣ "
+
+[terraform]
+symbol = " "

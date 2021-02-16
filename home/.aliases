@@ -10,16 +10,9 @@ function is_wsl() {
 	grep -E -q -m 1 microsoft /proc/version 2>/dev/null || false
 }
 
-### enable aliases to be sudo’ed
-#
+# allow aliases to be sudo’ed
 # http://askubuntu.com/questions/22037/aliases-not-available-when-using-sudo
 alias sudo="sudo "
-alias please="sudo"
-alias pls="sudo"
-alias plz="sudo"
-
-### cli tool overrides
-#
 alias rake='noglob rake' # allow use of unescaped *[] in terminal
 alias mkdir="mkdir -vp"
 alias df="df -H"
@@ -28,7 +21,7 @@ alias mv="mv -iv"
 alias cp="cp -irv"
 alias grep="grep --color=auto"
 alias make="nice make"
-# replace cat with the bat - https://github.com/sharkdp/bat
+# replace cat with bat - https://github.com/sharkdp/bat
 alias cat="bat"
 # replace ping with prettyping - https://github.com/denilsonsa/prettyping
 alias ping="prettyping"
@@ -73,14 +66,13 @@ alias gcurl='curl --header "Authorization: Bearer $(gcloud auth print-identity-t
 # go to the /home/$USER (~) directory and clears window of your terminal
 alias q="cd ~ && clear"
 #
-[ -d ~/Pictures ] && alias pic="cd ~/Pictures"
-[ -d ~/projects ] && alias pj="cd ~/projects"
+[ -d ~/projects ] && alias cdp="cd ~/projects; ls -la"
 
 ### folders
 #
-alias ll="ls -alF"
-alias la="ls -A"
-alias l="ls -CF"
+alias ll="grc ls -alF"
+alias la="grc ls -lA"
+alias l="grc ls -CF"
 
 ### gcloud
 function gssh() {

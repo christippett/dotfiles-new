@@ -17,9 +17,9 @@ set hlsearch
 set incsearch
 
 " indentation
-set tabstop=4
-set softtabstop=4
-set shiftwidth=4
+set tabstop=2
+set softtabstop=2
+set shiftwidth=2
 set expandtab
 set autoindent
 if has("autocmd")
@@ -45,3 +45,13 @@ set clipboard=unnamed
 
 " set theme
 colorscheme jellybeans
+
+" syntax highlighting
+augroup filetypedetect
+    au BufRead,BufNewFile config_* setfiletype dosini
+    au BufRead,BufNewFile *.conf setfiletype config
+    au BufRead,BufNewFile *.toml setfiletype dosini
+augroup END
+
+" key shortcuts
+nnoremap <F9> :!%:p<Enter><Enter>

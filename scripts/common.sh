@@ -31,20 +31,24 @@ if ! is_installed starship; then
   curl -fsSL https://starship.rs/install.sh | bash
 fi
 
+# Install asdf --------------------------------------------------------------- #
+
+ASDF_DATA_DIR="$HOME/.asdf"
+if ! is_installed asdf; then
+  log_info "Installing asdf-vm"
+  git clone https://github.com/asdf-vm/asdf.git "$ASDF_DATA_DIR" --branch v0.8.0
+
+  # import the Node.js release team's OpenPGP keys to main keyring
+  eval "$($ASDF_DATA_DIR/plugins/nodejs/bin/import-release-team-keyring)"
+fi
+
+# Symlink dotfiles ----------------------------------------------------------- #
+
+link_dotfiles ""
+
 # Update shell --------------------------------------------------------------- #
 
 if [[ "$SHELL" != *"zsh"* ]]; then
   log_info "Setting default shell to ZSH"
   chsh -s "$(command -v zsh)" "$(whoami)"
 fi
-
-# Install asdf --------------------------------------------------------------- #
-
-if ! is_installed asdf; then
-  log_info "Installing asdf-vm"
-  git clone https://github.com/asdf-vm/asdf.git "${HOME}/.asdf" --branch v0.8.0
-fi
-
-# Symlink dotfiles ----------------------------------------------------------- #
-
-link_dotfiles ""

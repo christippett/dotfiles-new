@@ -1,42 +1,58 @@
+format = """
+$username$hostname$shlvl$kubernetes$directory$git_branch$git_commit$git_state$hg_branch$docker_context$package$cmake$dart$dotnet$elixir$elm$erlang$golang$helm$java$julia$kotlin$nim$nodejs$ocaml$perl$php$purescript$ruby$rust$swift$terraform$vagrant$zig$nix_shell$conda$memory_usage$aws$gcloud$openstack$env_var$crystal$custom$cmd_duration$line_break$lua$jobs$battery$time$status$character """
+
+[character]
+success_symbol = "[](bold green)"
+error_symbol = "[](bold red)"
+
+[line_break]
+disabled = false
+
+[cmd_duration]
+style = "red"
+
+[username]
+format = "[$user]($style)[/](white)"
+style_user = "purple"
+
 [hostname]
-style = "bold red"
+format = "[$hostname]($style) in "
+style = "green bold dimmed"
 
 [directory]
-format = "[$path]($style)[$read_only]($read_only_style) "
-style = "bold green"
+format = "[$path]($style)[$read_only]($read_only_style) [·](white) "
+style = "bold white"
+read_only = " "
+# home_symbol = ""
+read_only_style = "bold red"
+truncate_to_repo = true
 
 [python]
 python_binary = "python"
-symbol = " "
+symbol = " "
+
+[terraform]
+format = "[](black)[$symbol$version$workspace]($style)[](black) "
+version_format = "$raw"
+style = "purple bg:black"
+symbol = "ﯟ "
 
 [gcloud]
-format = 'on [$symbol$active (\($region\))]($style) '
+format = '[](black)[$symbol$active]($style bold)[(/$region)]($style dimmed)[](black) '
+style = "#0F9D58 bg:black"
 symbol = " "
-[gcloud.region_aliases]
-us-central1 = "us-c1"
-us-east1 = "us-e1"
-us-east4 = "us-e4"
-us-west1 = "us-w1"
-us-west2 = "us-w2"
-us-west3 = "us-w3"
-us-west4 = "us-w4"
-asia-northeast1 = "as-n1"
-europe-west1 = "eu-w1"
-europe-west2 = "eu-w2"
-europe-west3 = "eu-w3"
-europe-west4 = "eu-w4"
-europe-west6 = "eu-w6"
-australia-southeast1 = "au-se1"
 
 [git_branch]
-only_attached = true
+format = "[](black)[$symbol$branch]($style)[](black) "
+style = "yellow bg:black"
 symbol = " "
+only_attached = true
 
 [git_status]
-format = '([\[$all_status$ahead_behind\]]($style)) '
+format = '([\[$all_status$ahead_behind\]]($style))'
 
 [nodejs]
-symbol = " "
+symbol = " "
 disabled = true
 
 [package]
@@ -44,52 +60,34 @@ symbol = " "
 disabled = true
 
 [aws]
-symbol = " "
+symbol = " "
 
 [battery]
 full_symbol = ""
 charging_symbol = ""
 discharging_symbol = ""
 
-[conda]
-symbol = " "
-
 [dart]
 symbol = " "
 
-[docker]
+[docker_context]
 only_with_files = "true"
 symbol = " "
 
 [elixir]
 symbol = " "
 
-[elm]
-symbol = " "
-
 [golang]
 symbol = " "
 
-[haskell]
-symbol = " "
-
 [hg_branch]
-symbol = " "
+symbol = ""
 
 [java]
 symbol = " "
 
-[julia]
-symbol = " "
-
 [memory_usage]
 symbol = " "
-
-[nim]
-symbol = " "
-
-[nix_shell]
-symbol = " "
 
 [perl]
 symbol = " "
@@ -101,10 +99,25 @@ symbol = " "
 symbol = " "
 
 [rust]
+format = "[](black)[$symbol($version)]($style)[](black) "
+style = "bold red bg:black"
 symbol = " "
 
 [swift]
 symbol = "ﯣ "
 
-[terraform]
-symbol = " "
+[gcloud.region_aliases]
+australia-southeast1 = "au"
+asia-northeast1 = "asia-ne1"
+us-central1 = "u-c1"
+us-east1 = "us-e1"
+us-east4 = "us-e4"
+us-west1 = "us-w1"
+us-west2 = "us-w2"
+us-west3 = "us-w3"
+us-west4 = "us-w4"
+europe-west1 = "eu-w1"
+europe-west2 = "eu-w2"
+europe-west3 = "eu-w3"
+europe-west4 = "eu-w4"
+europe-west6 = "eu-w6"

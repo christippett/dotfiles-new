@@ -299,4 +299,4 @@ set -g status-position bottom
 
 set -g @tpm_plugins "tpm_plugins/tpm tmux_plugins/tmux-sidebar"
 
-run '~/.tmux/plugins/tpm/tpm'
+run '~/.oh-my-tmux/plugins/tpm/tpm'

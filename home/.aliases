@@ -1,129 +1,156 @@
 #!/usr/bin/env bash
 
-# get machine type - https://stackoverflow.com/a/3466183
-osType="$(uname -s)"
+# General ⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁ #
 
-### function to identify WSL environments
-#
-# https://stackoverflow.com/a/38859331
-function is_wsl() {
-	grep -E -q -m 1 microsoft /proc/version 2>/dev/null || false
-}
+alias mkdir='mkdir -vp'
+alias df='df -H'
+alias rm='rm -iv'
+alias mv='mv -iv'
+alias cp='cp -irv'
+alias grep='grep --color=auto'
+alias make='nice make'
+alias vim='nvim'
+
+# allow use of unescaped *[] in terminal
+alias gcloud='noglob gcloud'
+alias rg='noglob rg'
 
 # allow aliases to be sudo’ed
 # http://askubuntu.com/questions/22037/aliases-not-available-when-using-sudo
-alias sudo="sudo "
-alias rake='noglob rake' # allow use of unescaped *[] in terminal
-alias mkdir="mkdir -vp"
-alias df="df -H"
-alias rm="rm -iv"
-alias mv="mv -iv"
-alias cp="cp -irv"
-alias grep="grep --color=auto"
-alias make="nice make"
+alias sudo='sudo '
+
 # replace cat with bat - https://github.com/sharkdp/bat
-alias cat="bat --theme=gruvbox --tabs=2"
+alias cat='bat -f --italic-text always --tabs 2'
+
 # replace ping with prettyping - https://github.com/denilsonsa/prettyping
-alias ping="prettyping"
+alias ping='prettyping'
+
 # replace top with htop - http://hisham.hm/htop/
-alias top="htop"
+alias top='sudo btm -C ~/.config/btm/config.toml'
+
 # replace du with ncdu - https://dev.yorhel.nl/ncdu
-alias du="ncdu --color dark -rr -x --exclude .git --exclude node_modules"
-alias gpip="PIP_REQUIRE_VIRTUALENV=false pip"
+alias du='ncdu --color dark -rr -x --exclude .git --exclude node_modules'
+alias ncdu='ncdu --color dark -x --exclude .git --exclude node_modules --exclude /System/Volumes/Data'
 
-### copy stdout to clipboard
-#
-if [[ $osType == *"Darwin"* ]]; then
-	alias copy="pbcopy"
-elif is_wsl; then
-	alias copy="clip.exe"
-fi
+# install pip packages globally
+alias gpip='PIP_REQUIRE_VIRTUALENV=false pip'
+alias q='cd ~ && clear'
 
-### ubuntu update & upgrade
-#
-alias uu="sudo apt-get update && sudo apt-get upgrade -y"
-alias uua="sudo apt-get update && sudo apt-get upgrade -y && sudo apt-get autoremove -y"
+# directory listing
+alias ll='ls -l --no-time --no-user --git-ignore --sort name'
+alias la='ls -la --time-style long-iso --no-icons'
+alias ls='exa -F -L 2 --git --icons --group-directories-first'
 
-### safety
-#
-# Avoid stupidity with trash-cli: using https://github.com/sindresorhus/trash-cli
-# or use default rm -i if trash is not installed
-if type trash &>/dev/null; then
-	alias rm="trash"
-else
-	alias rm="rm -i"
-fi
-
-### git
-#
-alias lg="git log --all --decorate --oneline --graph"
-
-# gcloud
-alias gcurl='curl --header "Authorization: Bearer $(gcloud auth print-identity-token)"'
-
-### navigation
-#
-# go to the /home/$USER (~) directory and clears window of your terminal
-alias q="cd ~ && clear"
-#
-[ -d ~/projects ] && alias cdp="cd ~/projects; ls -la"
-
-### folders
-#
-alias ll="ls -lF"
-alias la="ls -lFA"
-alias l="ls -CF"
-
-### gcloud
-function gssh() {
-	readonly local name="$1"
-	local filter result instance_name zone
-	printf "🖥️   Connecting to instance: %s\\n\\n" "$name"
-	filter="(name:${1} AND status:RUNNING)"
-	result="$(gcloud compute instances list --sort-by=-createTime --format="value(name,zone)" --filter="$filter")"
-	instance_name="$(echo "$result" | awk 'NR==1 {print $1}')"
-	zone="$(echo "$result" | awk 'NR==1 {print $2}')"
-	if [ -n "$instance_name" ]; then
-		gcloud beta compute ssh "$name" --zone "$(basename "$zone")"
-	else
-		printf "❌  Instance not found\\n"
-	fi
-}
-
-bq-schema() {
-bq --format=json ls "$1." \
-    | jq -c -r '.[].tableReference.tableId' \
-    | xargs -I {} bash -c "bq show --format=json $1.{} \
-        | jq -r '.schema.fields|=sort_by(.name)|del(.schema.fields[].description)|{sourceFormat,createDisposition,writeDisposition,schemaUpdateOptions,timePartitioning,clustering,schema}' \
-        | yq r - --prettyPrint"
-}
-
-### terraform
-#
-function tfapply() {
-	opts=()
-	if [[ $1 =~ -[a-z]*a ]]; then
-		opts+=("-auto-approve")
-	fi
-	if [[ $1 =~ -[a-z]*q ]]; then
-		opts+=("-refresh=false")
-	fi
-	if [[ -f "./terraform.tfvars" ]]; then
-		opts+=("-var-file=terraform.tfvars")
-	fi
-	terraform apply -compact-warnings -parallelism=25 "${opts[@]}"
-}
-alias tg="terragrunt"
-
-### PATH
-#
 # pretty print $PATH
 alias path='print -l $path'
 alias fpath='print -l $fpath'
 
-### download
-#
 # web page with all assets
-alias getpage="wget --no-clobber --page-requisites --html-extension --convert-links --no-host-directories"
+alias getpage='wget --no-clobber --page-requisites --html-extension --convert-links --no-host-directories'
+
 # file with original filename
-alias get="curl -O -L"
+alias get='curl -O -L'
+
+# run command under rosetta
+alias intel='arch -x86_64'
+
+# search emojis with preview
+alias emoj=$'emoji-fzf preview | fzf --preview \'emoji-fzf get {1}\' | cut -d " " -f 1 | emoji-fzf get | copy'
+
+# replace rm with trash-cli or use default rm -i if trash is not installed
+# https://github.com/sindresorhus/trash-cli
+if type trash &>/dev/null; then
+	alias rm='trash'
+else
+	alias rm='rm -i'
+fi
+
+# Google Cloud ⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁ #
+
+# authenticate request with access token from gcloud
+alias gcurl='curl --header "Authorization: Bearer $(gcloud auth print-access-token)"'
+
+# refresh access token before running terraform
+alias gtf='GOOGLE_OAUTH_ACCESS_TOKEN="$(gcloud auth print-access-token)" terraform'
+
+alias gssh='_gssh'
+alias bqschema='_bqschema'
+
+# find and ssh into a Compute Engine instance
+function _gssh() {
+	local name="$1"
+	local filter result instance_name zone
+	printf ' Connecting to instance %s\n\n' "$name"
+
+	filter="(name:${1}* AND status:RUNNING)"
+	result="$(gcloud compute instances list --sort-by=-createTime --format="value(name,zone)" --filter="$filter")"
+	instance_name="$(echo "$result" | awk 'NR==1 {print $1}')"
+	zone="$(echo "$result" | awk 'NR==1 {print $2}')"
+
+	if [ -n "$instance_name" ]; then
+		gcloud beta compute ssh "$instance_name" --zone "$(basename "$zone")"
+	else
+		printf '  Instance not found\n'
+	fi
+}
+
+# export bigquery table schema
+function _bqschema() {
+	bq --format=json ls "$1." |
+		jq -c -r '.[].tableReference.tableId' |
+		xargs -I {} bash -c "bq show --format=json $1.{} \
+        | jq -r '.schema.fields|=sort_by(.name)|del(.schema.fields[].description)|{sourceFormat,createDisposition,writeDisposition,schemaUpdateOptions,timePartitioning,clustering,schema}' \
+        | yq r - --prettyPrint"
+}
+
+# Terraform ⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁ #
+
+alias tf='_tf'
+alias tg='terragrunt'
+
+# augment terraform command with abbrebiated flags + other shortcuts
+function _tf() {
+	local opts=()
+	local tflog
+	local access_token
+
+	# allow abbreviated flags
+	for i in "${@}"; do
+		case "$i" in
+		'-t')
+			opts+=('-target')
+			;;
+		'-aa')
+			opts+=('-auto-approve')
+			;;
+		'-r')
+			opts+=('-refresh=false')
+			;;
+		'-trace')
+			tflog='trace'
+			;;
+		'-debug')
+			tflog='debug'
+			;;
+		*)
+			opts+=("$i")
+			;;
+		esac
+	done
+
+	# default flags
+	if [[ -f "./terraform.tfvars" ]]; then
+		opts+=('-var-file=terraform.tfvars')
+	fi
+
+	opts+=('-compact-warnings')
+	opts+=('-parallelism=5')
+
+	# refresh google cloud credentials
+	if [[ $(rg -l --pre-glob '*.tf' 'provider "google"') ]]; then
+		access_token="$(gcloud auth print-access-token)"
+	fi
+
+	GOOGLE_OAUTH_ACCESS_TOKEN="$access_token" TF_LOG="$tflog" \
+		noglob terraform "${opts[@]}"
+}

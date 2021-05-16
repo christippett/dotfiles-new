@@ -21,9 +21,11 @@ apt_packages=(
   batcat
   build-essential
   curl
+  dirmngr
   fontconfig
   fzf
   git
+  gpg
   libbz2-dev
   libffi-dev
   liblzma-dev
@@ -34,10 +36,9 @@ apt_packages=(
   libtool
   libxml2-dev
   libxmlsec1-dev
-  dirmngr
-  gpg
   llvm
   make
+  ripgrep
   tk-dev
   wget
   xz-utils

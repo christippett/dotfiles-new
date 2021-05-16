@@ -69,35 +69,35 @@ function add_to_path() {
 
 function link_dotfiles() {
   # get absolute path of dotfiles directory
-  dotfiles_path="$DOTFILES_ROOT/home"
+  dotfiles_home="$DOTFILES_ROOT/home"
 
   if [[ -n "$MACOS" ]]; then
-    dotfiles_path="$(greadlink -f "$dotfiles_path")" # requires coreutils
+    dotfiles_home="$(greadlink -f "$dotfiles_home")" # requires coreutils
   else
-    dotfiles_path="$(readlink -f "$dotfiles_path")"
+    dotfiles_home="$(readlink -f "$dotfiles_home")"
   fi
 
   # loop through and create symlinks for all dotfiles
   while IFS= read -r -d '' file; do
     file_absolute_path="$file"
-    file_relative_path="${file_absolute_path#$DOTFILES_ROOT/}"
-    home_path="$HOME/$file_relative_path"
+    file_relative_path="${file_absolute_path#$dotfiles_home/}"
+    dotfile="$HOME/$file_relative_path"
 
     if [[ ! -d $file ]]; then
-      if [[ -L $home_path ]]; then
+      if [[ -L $dotfile ]]; then
         # remove existing symlink
-        rm -f "$home_path"
-      elif [[ -f $home_path ]]; then
+        rm -f "$dotfile"
+      elif [[ -f $dotfile ]]; then
         # rename existing file if present
-        backup_file "$home_path"
+        backup_file "$dotfile"
       else
         # ensure nested path exists
         mkdir -p "$HOME/$(dirname "$file_relative_path")"
       fi
       log_info "ℹ️  Creating symlink: ~/$file_relative_path"
-      ln -sv "$file_absolute_path" "$home_path"
+      ln -sv "$file_absolute_path" "$dotfile"
     fi
-  done < <(find "$dotfiles_path" -path '**/*' -type f -print0)
+  done < <(find "$dotfiles_home" -path '**/*' -type f -print0)
 }
 
 # Backup file if exists

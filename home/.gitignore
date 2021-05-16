@@ -15,6 +15,7 @@ config.tests/
 *.xcodeproj/xcuserdata/
 .vscode
 .idea
+.nova
 *.code-workspace
 
 # Ignore temporary generated files.
@@ -25,6 +26,7 @@ config.tests/
 # Terraform
 *.tfstate*
 *.tfvars
+*.terraform*
 *.terraform/
 
 # Files
@@ -33,7 +35,6 @@ config.tests/
 
 # Secrets
 *.env
-*.json
 *.pem
 
 # Logs
@@ -41,3 +42,5 @@ config.tests/
 
 # Packages
 node_modules/
+vendor/
+dist/

@@ -1,6 +1,6 @@
 #!/bin/bash
 
-set -ex
+set -e
 
 export DOTFILES_VAULT="Dotfiles"
 
@@ -63,7 +63,7 @@ function upload_document() {
   log_success "Uploaded ${path} to ${uuid}"
 }
 
-function sync_files() {
+function sync_1password() {
   # configure / sign into 1password
   if [ -z "$OP_SESSION_my" ]; then
     read -rp "Enter your 1Password email address: " email_address
@@ -85,5 +85,3 @@ function sync_files() {
       fi
     done
 }
-
-sync_files

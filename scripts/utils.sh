@@ -13,31 +13,68 @@ grep -q -i "microsoft" /proc/version 2>/dev/null && export WSL=1
 
 # Logging functions ---------------------------------------------------------- #
 
-function log_pretty() {
+function _fmt() {
   local msg="$1"
-  local style="$2"
-  printf $'\033['"$style"'m%s\033[0m\n' "$msg"
+  case "${2}" in
+  black)
+    printf $'\033[1;30m%s\033[0m' "$msg"
+    ;;
+  red)
+    printf $'\033[1;31m%s\033[0m' "$msg"
+    ;;
+  green)
+    printf $'\033[1;32m%s\033[0m' "$msg"
+    ;;
+  yellow)
+    printf $'\033[1;33m%s\033[0m' "$msg"
+    ;;
+  blue)
+    printf $'\033[1;34m%s\033[0m' "$msg"
+    ;;
+  purple)
+    printf $'\033[1;35m%s\033[0m' "$msg"
+    ;;
+  cyan)
+    printf $'\033[1;36m%s\033[0m' "$msg"
+    ;;
+  white)
+    printf $'\033[1;37m%s\033[0m' "$msg"
+    ;;
+  *)
+    printf '%s' "$msg"
+    ;;
+  esac
+  printf $'\033[0m'
+}
+
+function _log() {
+  printf '  %s\n' "$(_fmt "${@:1}" white)"
 }
 
 function log_failure_and_exit() {
-  printf " %s\\n" "${@}"
+  _fmt  red
+  _log "${@}"
   exit 1
 }
 
 function log_failure() {
-  printf " %s\\n" "${@}"
+  _fmt  red
+  _log "${@}"
 }
 
 function log_info() {
-  printf " %s\\n" "${@}"
+  _fmt  blue
+  _log "${@}"
 }
 
 function log_success() {
-  printf " %s\\n" "${@}"
+  _fmt  green
+  _log "${@}"
 }
 
 function log_warning() {
-  printf " %s\\n" "${@}"
+  _fmt  yellow
+  _log "${@}"
 }
 
 # Utility functions ---------------------------------------------------------- #
@@ -45,7 +82,7 @@ function log_warning() {
 # Identify if running in WSL
 # https://stackoverflow.com/a/38859331
 function is_wsl() {
-	grep -E -q -m 1 microsoft /proc/version 2>/dev/null || false
+  grep -E -q -m 1 microsoft /proc/version 2>/dev/null || false
 }
 
 # Check if command is available

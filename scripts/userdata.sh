@@ -62,12 +62,14 @@ function upload_document() {
 }
 
 function sync_1password() {
-  log $'Syncing files with 1Password...\n'  cyan
+  log $'Syncing files with 1Password...'  white italic
 
   # configure / sign into 1password
   if [ -z "$OP_SESSION_my" ]; then
     read -rp "Enter your 1Password email address: " email_address
     eval "$(op signin my "$email_address")"
+  else
+    eval "$(op signin my --session "$OP_SESSION_my")"
   fi
 
   # loop through each 1password document and save it to the location specified by the document's `path` label
@@ -85,5 +87,3 @@ function sync_1password() {
       fi
     done
 }
-
-sync_1password

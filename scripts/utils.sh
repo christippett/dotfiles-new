@@ -15,70 +15,93 @@ grep -q -i "microsoft" /proc/version 2>/dev/null && export WSL=1
 
 function _fmt() {
   local msg="$1"
-  case "${2}" in
-  black)
-    printf $'\033[1;30m%s\033[0m' "$msg"
-    ;;
-  red)
-    printf $'\033[1;31m%s\033[0m' "$msg"
-    ;;
-  green)
-    printf $'\033[1;32m%s\033[0m' "$msg"
-    ;;
-  yellow)
-    printf $'\033[1;33m%s\033[0m' "$msg"
-    ;;
-  blue)
-    printf $'\033[1;34m%s\033[0m' "$msg"
-    ;;
-  purple)
-    printf $'\033[1;35m%s\033[0m' "$msg"
-    ;;
-  cyan)
-    printf $'\033[1;36m%s\033[0m' "$msg"
-    ;;
-  white)
-    printf $'\033[1;37m%s\033[0m' "$msg"
-    ;;
-  *)
-    printf '%s' "$msg"
-    ;;
-  esac
-  printf $'\033[0m'
+  for style in "${@:2}"; do
+    case "${style}" in
+    black)
+      msg="$(printf $'\033[30m%s\033[0m' "$msg")"
+      ;;
+    red)
+      msg="$(printf $'\033[31m%s\033[0m' "$msg")"
+      ;;
+    green)
+      msg="$(printf $'\033[32m%s\033[0m' "$msg")"
+      ;;
+    yellow)
+      msg="$(printf $'\033[33m%s\033[0m' "$msg")"
+      ;;
+    blue)
+      msg="$(printf $'\033[34m%s\033[0m' "$msg")"
+      ;;
+    purple)
+      msg="$(printf $'\033[35m%s\033[0m' "$msg")"
+      ;;
+    cyan)
+      msg="$(printf $'\033[36m%s\033[0m' "$msg")"
+      ;;
+    white)
+      msg="$(printf $'\033[37m%s\033[0m' "$msg")"
+      ;;
+    bold)
+      msg="$(printf $'\033[1m%s\033[0m' "$msg")"
+      ;;
+    italic)
+      msg="$(printf $'\033[3m%s\033[0m' "$msg")"
+      ;;
+    underline)
+      msg="$(printf $'\033[4m%s\033[0m' "$msg")"
+      ;;
+    esac
+  done
+  printf $'%s\033[0m' "$msg"
 }
 
 function log() {
   local msg="$1"
   local icon="$2"
-  local color="$3"
+  local icon_style="$3"
+  local styles=("${@:4}")
 
+  # format + print icon if provided
   if [[ -n ${2+x} ]]; then
-    _fmt "$icon  " "$color"
-  else
-    _fmt '  ' cyan
+    _fmt "$icon  " "$icon_style"
   fi
-  printf '%s\n' "$(_fmt "$msg" white)"
+
+  # set default style if none provided (excluding icon style)
+  # if [[ "${#@}" -le 3 ]]; then
+  #   styles=(white)
+  # fi
+
+  printf '%s\n' "$(_fmt "$msg" "${styles[@]}")"
 }
 
 function log_failure_and_exit() {
-  log "$1"  red
+  log "$1" ' ' red
   exit 1
 }
 
 function log_failure() {
-  log "$1"  red
+  log "$1" ' ' red
 }
 
 function log_info() {
-  log "$1"  blue
+  log "$1" ' ' blue
 }
 
 function log_success() {
-  log "$1"  green
+  log "$1" ' ' green
 }
 
 function log_warning() {
-  log "$1"  yellow
+  log "$1" ' ' yellow
+}
+
+function log_header() {
+  local style
+  printf '\n'
+  if [ -n "$1" ]; then
+    log "$@" "$3" bold italic
+  fi
+  _fmt $'\n\n'
 }
 
 # Utility functions ---------------------------------------------------------- #
@@ -115,6 +138,7 @@ function add_to_path() {
 }
 
 function link_dotfiles() {
+  log $'Symlinking dotfiles...'  white italic
   # get absolute path of dotfiles directory
   dotfiles_home="$DOTFILES_ROOT/home"
 

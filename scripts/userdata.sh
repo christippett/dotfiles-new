@@ -7,9 +7,6 @@ export DOTFILES_VAULT="Dotfiles"
 # shellcheck source=./utils.sh
 source "$(dirname "$0")/utils.sh"
 
-### 1Password secrets
-log_info "Getting user-data from 1Password"
-
 function get_document_label() {
   local uuid label
   uuid="$1"
@@ -34,15 +31,16 @@ function get_document() {
 
 function download_document() {
   local uuid="$1"
+  local title="$2"
   local path="${2//'~'/$HOME}"
 
   mkdir -p "$(dirname "$path")"
-  backup_file "$path"
+  backup_file "$path" >/dev/null 2>&1
   op get document "$uuid" >"$path" # download and save document
 
   # chmod "$(get_document_label "$uuid" 'chmod' || '0644')" "$path"
 
-  log_success "Downloaded ${path} from ${uuid}"
+  log "${title}"  green
 }
 
 function upload_document() {
@@ -60,10 +58,12 @@ function upload_document() {
   # chmod="$(get_chmod "$path" || '0644')" # get file's numerical chmod value
   # op edit item "$uuid" "chmod=${chmod}" --vault "$DOTFILES_VAULT"
 
-  log_success "Uploaded ${path} to ${uuid}"
+  log "${title}"  red
 }
 
 function sync_1password() {
+  log $'Syncing files with 1Password...\n'  cyan
+
   # configure / sign into 1password
   if [ -z "$OP_SESSION_my" ]; then
     read -rp "Enter your 1Password email address: " email_address
@@ -85,3 +85,5 @@ function sync_1password() {
       fi
     done
 }
+
+sync_1password

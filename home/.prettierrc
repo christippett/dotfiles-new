@@ -1,0 +1,21 @@
+{
+  "trailingComma": "all",
+  "tabWidth": 2,
+  "semi": false,
+  "singleQuote": false,
+  "svelteAllowShorthand": true,
+  "svelteBracketNewLine": true,
+  "svelteSortOrder": "scripts-styles-markup",
+  "svelteStrictMode": true,
+  "useTabs": false,
+  "bracketSpacing": true,
+  "printWidth": 80,
+  "overrides": [
+    {
+      "files": ".prettierrc",
+      "options": {
+        "parser": "json"
+      }
+    }
+  ]
+}

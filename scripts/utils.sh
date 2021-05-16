@@ -47,34 +47,38 @@ function _fmt() {
   printf $'\033[0m'
 }
 
-function _log() {
-  printf '  %s\n' "$(_fmt "${@:1}" white)"
+function log() {
+  local msg="$1"
+  local icon="$2"
+  local color="$3"
+
+  if [[ -n ${2+x} ]]; then
+    _fmt "$icon  " "$color"
+  else
+    _fmt '  ' cyan
+  fi
+  printf '%s\n' "$(_fmt "$msg" white)"
 }
 
 function log_failure_and_exit() {
-  _fmt  red
-  _log "${@}"
+  log "$1"  red
   exit 1
 }
 
 function log_failure() {
-  _fmt  red
-  _log "${@}"
+  log "$1"  red
 }
 
 function log_info() {
-  _fmt  blue
-  _log "${@}"
+  log "$1"  blue
 }
 
 function log_success() {
-  _fmt  green
-  _log "${@}"
+  log "$1"  green
 }
 
 function log_warning() {
-  _fmt  yellow
-  _log "${@}"
+  log "$1"  yellow
 }
 
 # Utility functions ---------------------------------------------------------- #

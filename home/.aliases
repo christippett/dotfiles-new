@@ -80,7 +80,7 @@ alias bqschema='_bqschema'
 function _gssh() {
 	local name="$1"
 	local filter result instance_name zone
-	printf ' Connecting to instance %s\n\n' "$name"
+	log "Connecting to instance ${name}..."  red
 
 	filter="(name:${1}* AND status:RUNNING)"
 	result="$(gcloud compute instances list --sort-by=-createTime --format="value(name,zone)" --filter="$filter")"
@@ -90,17 +90,35 @@ function _gssh() {
 	if [ -n "$instance_name" ]; then
 		gcloud beta compute ssh "$instance_name" --zone "$(basename "$zone")"
 	else
-		printf '  Instance not found\n'
+		log_warning 'Instance not found'
 	fi
 }
 
 # export bigquery table schema
 function _bqschema() {
+	log "Getting BigQuery schema ..." ﬥ purple
 	bq --format=json ls "$1." |
 		jq -c -r '.[].tableReference.tableId' |
 		xargs -I {} bash -c "bq show --format=json $1.{} \
         | jq -r '.schema.fields|=sort_by(.name)|del(.schema.fields[].description)|{sourceFormat,createDisposition,writeDisposition,schemaUpdateOptions,timePartitioning,clustering,schema}' \
         | yq r - --prettyPrint"
+}
+
+# revive instance if shutdown/preempted
+function _revive_gce() {
+	local name="$1"
+	local filter result instance_name zone status
+	log "Reviving instance ${name}..."  yellow
+
+	filter="(name:${1}* AND status:TERMINATED)"
+	result="$(gcloud compute instances list --sort-by=-createTime --format="value(name,zone,status)" --filter="$filter")"
+	instance_name="$(echo "$result" | awk 'NR==1 {print $1}')"
+	zone="$(echo "$result" | awk 'NR==1 {print $2}')"
+	status="$(echo "$result" | awk 'NR==1 {print $3}')"
+
+	if [ "$status" = "TERMINATED" ]; then
+		gcloud compute instances start "--zone=$zone" "$instance_name"
+	fi
 }
 
 # Terraform ⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁ #

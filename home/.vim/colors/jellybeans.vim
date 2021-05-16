@@ -73,7 +73,7 @@ let colors_name = "jellybeans"
 if has("gui_running") || (has('termguicolors') && &termguicolors)
   let s:true_color = 1
 else
-  let s:true_color = 0
+let s:true_color = 0
 endif
 
 if s:true_color || &t_Co >= 88
@@ -466,7 +466,7 @@ call s:X("Todo","c7c7c7","","bold","White",s:termBlack)
 
 call s:X("StatusLine","000000","dddddd","italic","","White")
 call s:X("StatusLineNC","ffffff","403c41","italic","White","Black")
-call s:X("VertSplit","777777","403c41","",s:termBlack,s:termBlack)
+call s:X("VertSplit",s:matchParenGuiFg,s:background_color,"",s:termBlack,s:termBlack)
 call s:X("WildMenu","f0a0c0","302028","","Magenta","")
 
 call s:X("Folded","a0a8b0","384048","italic",s:termBlack,"")

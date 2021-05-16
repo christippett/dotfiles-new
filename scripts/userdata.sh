@@ -34,7 +34,7 @@ function get_document() {
 
 function download_document() {
   local uuid="$1"
-  local path="$2"
+  local path="${2//'~'/$HOME}"
 
   mkdir -p "$(dirname "$path")"
   backup_file "$path"
@@ -47,13 +47,14 @@ function download_document() {
 
 function upload_document() {
   local uuid="$1"
-  local path="${2}"
+  local title="$2"
+  local path="${2//'~'/$HOME}"
 
-  op edit document "$uuid" "${path//'~'/$HOME}" \
+  op edit document "$uuid" "$path" \
     --vault "$DOTFILES_VAULT" ||
-    op create document "${path//'~'/$HOME}" \
+    op create document "$path" \
       --filename "$(basename "$path")" \
-      --title "$path" \
+      --title "$title" \
       --vault "$DOTFILES_VAULT" -- # upload document
 
   # chmod="$(get_chmod "$path" || '0644')" # get file's numerical chmod value
@@ -75,7 +76,7 @@ function sync_files() {
       if [[ "$title" != '~'/* ]]; then
         continue
       fi
-      file_dt="$(gdate -ur "$title" '+%s' || 0)"
+      file_dt="$(gdate -ur "${title//'~'/$HOME}" '+%s' || echo 0)"
       doc_dt="$(get_document "$title" | jq -rc '.updatedAt' | xargs gdate -u '+%s' -d)"
       if [ "$doc_dt" -ge "$file_dt" ]; then
         download_document "$uuid" "$title" </dev/null

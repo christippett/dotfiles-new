@@ -13,25 +13,31 @@ grep -q -i "microsoft" /proc/version 2>/dev/null && export WSL=1
 
 # Logging functions ---------------------------------------------------------- #
 
+function log_pretty() {
+  local msg="$1"
+  local style="$2"
+  printf $'\033['"$style"'m%s\033[0m\n' "$msg"
+}
+
 function log_failure_and_exit() {
-  printf "💀  %s\\n" "${@}"
+  printf " %s\\n" "${@}"
   exit 1
 }
 
 function log_failure() {
-  printf "🚨  %s\\n" "${@}"
+  printf " %s\\n" "${@}"
 }
 
 function log_info() {
-  printf "ℹ️  %s\\n" "${@}"
+  printf " %s\\n" "${@}"
 }
 
 function log_success() {
-  printf "✅  %s\\n" "${@}"
+  printf " %s\\n" "${@}"
 }
 
 function log_warning() {
-  printf "⚠️  %s\\n" "${@}"
+  printf " %s\\n" "${@}"
 }
 
 # Utility functions ---------------------------------------------------------- #
@@ -52,7 +58,7 @@ function source_if_exists() {
   if [ -f "$1" ]; then
     . "$1"
   else
-    printf "⚠️ Unable to source %s\\n" "${1/$HOME/~}"
+    log_warning "Unable to source ${1/$HOME/'~'}"
   fi
 }
 
@@ -64,7 +70,7 @@ function add_to_path() {
   [[ ":$PATH:" == *":${TO_ADD}:"* ]] && PATH="${PATH//$TO_ADD:/}"
   PATH="${TO_ADD}:$PATH"
 
-  printf "⚙️ Appending \$PATH: %s\\n" "${1/$HOME/~}"
+  log_info "Appending to path: ${1/$HOME/~}"
 }
 
 function link_dotfiles() {
@@ -94,8 +100,8 @@ function link_dotfiles() {
         # ensure nested path exists
         mkdir -p "$HOME/$(dirname "$file_relative_path")"
       fi
-      log_info "ℹ️  Creating symlink: ~/$file_relative_path"
-      ln -sv "$file_absolute_path" "$dotfile"
+      log_info "Creating symlink: ~/$file_relative_path"
+      ln -s "$file_absolute_path" "$dotfile"
     fi
   done < <(find "$dotfiles_home" -path '**/*' -type f -print0)
 }

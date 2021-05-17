@@ -68,6 +68,7 @@
 [alias]
   unstage = reset HEAD --
   staged = diff --cached
+  current-branch = !git rev-parse --abbrev-ref HEAD
   upstream-remote = !git config --get branch.$(git current-branch).remote || echo origin
   master-rebase = !git fetch --all && git rebase $(git upstream)/master
   push-branch = !git push --set-upstream origin $(git current-branch)

@@ -32,19 +32,19 @@ python_binary = "python"
 symbol = " "
 
 [terraform]
-format = "[](black)[$symbol$version$workspace]($style)[](black) "
+format = "[](#191E27)[$symbol$version$workspace]($style)[](#191E27) "
 version_format = "$raw"
-style = "purple bg:black"
+style = "purple bg:#191E27"
 symbol = "ﯟ "
 
 [gcloud]
-format = '[](black)[$symbol$active]($style bold)[(/$region)]($style dimmed)[](black) '
-style = "#0F9D58 bg:black"
+format = '[](#191E27)[$symbol$active]($style bold)[(/$region)]($style dimmed)[](#191E27) '
+style = "#0F9D58 bg:#191E27"
 symbol = " "
 
 [git_branch]
-format = "[](black)[$symbol$branch]($style)[](black) "
-style = "yellow bg:black"
+format = "[](#191E27)[$symbol$branch]($style)[](#191E27) "
+style = "yellow bg:#191E27"
 symbol = " "
 only_attached = true
 
@@ -99,8 +99,8 @@ symbol = " "
 symbol = " "
 
 [rust]
-format = "[](black)[$symbol($version)]($style)[](black) "
-style = "bold red bg:black"
+format = "[](#191E27)[$symbol($version)]($style)[](#191E27) "
+style = "bold red bg:#191E27"
 symbol = " "
 
 [swift]

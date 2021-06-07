@@ -25,7 +25,7 @@ alias rg='noglob rg'
 alias sudo='sudo '
 
 # replace cat with bat - https://github.com/sharkdp/bat
-alias cat='bat -f --italic-text always --tabs 2'
+alias cat='bat --tabs 2'
 
 # replace ping with prettyping - https://github.com/denilsonsa/prettyping
 alias ping='prettyping'

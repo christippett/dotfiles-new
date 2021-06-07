@@ -1,123 +1,142 @@
-format = """
-$username$hostname$shlvl$kubernetes$directory$git_branch$git_commit$git_state$hg_branch$docker_context$package$cmake$dart$dotnet$elixir$elm$erlang$golang$helm$java$julia$kotlin$nim$nodejs$ocaml$perl$php$purescript$ruby$rust$swift$terraform$vagrant$zig$nix_shell$conda$memory_usage$aws$gcloud$openstack$env_var$crystal$custom$cmd_duration$line_break$lua$jobs$battery$time$status$character """
+format = '$username$hostname$shlvl$kubernetes$directory$git_branch$git_commit$git_state$hg_branch$docker_context$package$cmake$dart$dotnet$elixir$elm$erlang$golang$helm$java$julia$kotlin$nim$nodejs$ocaml$perl$php$purescript$python$ruby$rust$swift$terraform$vagrant$zig$nix_shell$conda$memory_usage$aws$gcloud$openstack$env_var$crystal$custom$cmd_duration$line_break$lua$jobs$battery$time$status$character '
+
+command_timeout="900"
 
 [character]
-success_symbol = "[](bold green)"
-error_symbol = "[](bold red)"
+success_symbol = '[](bold green)'
+error_symbol = '[](bold red)'
 
 [line_break]
 disabled = false
 
 [cmd_duration]
-style = "red"
+format = '[](#191E27)[( $duration)]($style bold)[](#191E27) '
+style = 'red bg:#191E27'
 
 [username]
-format = "[$user]($style)[/](white)"
-style_user = "purple"
+format = '[$user]($style)[/](white)'
+style_user = 'purple'
 
 [hostname]
-format = "[$hostname]($style) in "
-style = "green bold dimmed"
+format = '[$hostname]($style) in '
+style = 'green bold dimmed'
 
 [directory]
-format = "[$path]($style)[$read_only]($read_only_style) [·](white) "
-style = "bold white"
-read_only = " "
-# home_symbol = ""
-read_only_style = "bold red"
+format = '[$path]($style)[$read_only]($read_only_style) '
+style = 'white bold'
+read_only = ' '
+read_only_style = 'bold red'
+truncation_length = 2
 truncate_to_repo = true
+disabled = false
+
+[directory.substitutions]
+'~/Projects/third-party' = ' third-party'
+'~/Projects/work' = '華work'
+'~/Projects/personal' = ' personal'
+'~/Projects/aeroster' = ' aeroster'
+'~/Projects' = 'ﮛ Projects'
+'/Volumes/T7' = 'T7'
 
 [python]
-python_binary = "python"
-symbol = " "
+format = '[](#191E27)[$symbol$pyenv_prefix$version]($style bold)[(/$virtualenv)]($style dimmed)[](#191E27) '
+style = 'yellow bg:#191E27'
+python_binary = 'python'
+symbol = ' '
+disabled = false
 
 [terraform]
-format = "[](#191E27)[$symbol$version$workspace]($style)[](#191E27) "
-version_format = "$raw"
-style = "purple bg:#191E27"
-symbol = "ﯟ "
+format = '[](#191E27)[$symbol$version$workspace]($style)[](#191E27) '
+version_format = '$raw'
+style = 'purple bg:#191E27'
+symbol = 'ﯟ '
+disabled = false
 
 [gcloud]
 format = '[](#191E27)[$symbol$active]($style bold)[(/$region)]($style dimmed)[](#191E27) '
-style = "#0F9D58 bg:#191E27"
-symbol = " "
+style = '#0F9D58 bg:#191E27'
+symbol = ' '
+disabled = false
+
+[gcloud.region_aliases]
+australia-southeast1 = 'au'
+asia-northeast1 = 'asia-ne1'
+us-central1 = 'u-c1'
+us-east1 = 'us-e1'
+us-east4 = 'us-e4'
+us-west1 = 'us-w1'
+us-west2 = 'us-w2'
+us-west3 = 'us-w3'
+us-west4 = 'us-w4'
+europe-west1 = 'eu-w1'
+europe-west2 = 'eu-w2'
+europe-west3 = 'eu-w3'
+europe-west4 = 'eu-w4'
+europe-west6 = 'eu-w6'
 
 [git_branch]
-format = "[](#191E27)[$symbol$branch]($style)[](#191E27) "
-style = "yellow bg:#191E27"
-symbol = " "
+format = '[](#191E27)[$symbol$branch]($style)[](#191E27) '
+style = 'yellow bg:#191E27'
+symbol = ' '
 only_attached = true
+disabled = false
 
 [git_status]
 format = '([\[$all_status$ahead_behind\]]($style))'
+disabled = false
 
 [nodejs]
-symbol = " "
+symbol = ' '
 disabled = true
 
 [package]
-symbol = " "
+symbol = ' '
 disabled = true
 
 [aws]
-symbol = " "
+symbol = ' '
+disabled = false
 
 [battery]
-full_symbol = ""
-charging_symbol = ""
-discharging_symbol = ""
+full_symbol = ''
+charging_symbol = ''
+discharging_symbol = ''
 
 [dart]
-symbol = " "
+symbol = ' '
 
 [docker_context]
-only_with_files = "true"
-symbol = " "
+only_with_files = 'true'
+symbol = ' '
 
 [elixir]
-symbol = " "
+symbol = ' '
 
 [golang]
-symbol = " "
+symbol = ' '
 
 [hg_branch]
-symbol = ""
+symbol = ''
 
 [java]
-symbol = " "
+symbol = ' '
 
 [memory_usage]
-symbol = " "
+symbol = ' '
 
 [perl]
-symbol = " "
+symbol = ' '
 
 [php]
-symbol = " "
+symbol = ' '
 
 [ruby]
-symbol = " "
+symbol = ' '
 
 [rust]
-format = "[](#191E27)[$symbol($version)]($style)[](#191E27) "
-style = "bold red bg:#191E27"
-symbol = " "
+format = '[](#191E27)[$symbol($version)]($style)[](#191E27) '
+style = 'bold red bg:#191E27'
+symbol = ' '
 
 [swift]
-symbol = "ﯣ "
-
-[gcloud.region_aliases]
-australia-southeast1 = "au"
-asia-northeast1 = "asia-ne1"
-us-central1 = "u-c1"
-us-east1 = "us-e1"
-us-east4 = "us-e4"
-us-west1 = "us-w1"
-us-west2 = "us-w2"
-us-west3 = "us-w3"
-us-west4 = "us-w4"
-europe-west1 = "eu-w1"
-europe-west2 = "eu-w2"
-europe-west3 = "eu-w3"
-europe-west4 = "eu-w4"
-europe-west6 = "eu-w6"
+symbol = 'ﯣ '

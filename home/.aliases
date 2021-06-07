@@ -2,6 +2,11 @@
 
 # General ⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁ #
 
+# iterm2_print_user_vars() {
+# 	iterm2_set_user_var terraform "$(starship module terraform)"
+# 	iterm2_set_user_var gcloud "$(starship module gcloud)"
+# }
+
 alias mkdir='mkdir -vp'
 alias df='df -H'
 alias rm='rm -iv'
@@ -60,9 +65,9 @@ alias emoj=$'emoji-fzf preview | fzf --preview \'emoji-fzf get {1}\' | cut -d " 
 # replace rm with trash-cli or use default rm -i if trash is not installed
 # https://github.com/sindresorhus/trash-cli
 if type trash &>/dev/null; then
-	alias rm='trash'
+  alias rm='trash'
 else
-	alias rm='rm -i'
+  alias rm='rm -i'
 fi
 
 # Google Cloud ⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁ #
@@ -77,48 +82,51 @@ alias gssh='_gssh'
 alias bqschema='_bqschema'
 
 # find and ssh into a Compute Engine instance
-function _gssh() {
-	local name="$1"
-	local filter result instance_name zone
-	log "Connecting to instance ${name}..."  red
+_gssh() {
+  name="$1"
+  log "Connecting to instance ${name}..."  yellow bold
 
-	filter="(name:${1}* AND status:RUNNING)"
-	result="$(gcloud compute instances list --sort-by=-createTime --format="value(name,zone)" --filter="$filter")"
-	instance_name="$(echo "$result" | awk 'NR==1 {print $1}')"
-	zone="$(echo "$result" | awk 'NR==1 {print $2}')"
+  filter="(name:${1}* AND status:RUNNING)"
+  result="$(gcloud compute instances list --sort-by=-createTime --format="value(name,zone)" --filter="$filter")"
+  instance_name="$(echo "$result" | awk 'NR==1 {print $1}')"
+  zone="$(echo "$result" | awk 'NR==1 {print $2}')"
 
-	if [ -n "$instance_name" ]; then
-		gcloud beta compute ssh "$instance_name" --zone "$(basename "$zone")"
-	else
-		log_warning 'Instance not found'
-	fi
+  if [ -n "$instance_name" ]; then
+    gcloud beta compute ssh "$instance_name" \
+      --zone "$(basename "$zone")" \
+      --strict-host-key-checking=no
+  else
+    log_warning 'Instance not found'
+  fi
 }
 
 # export bigquery table schema
-function _bqschema() {
-	log "Getting BigQuery schema ..." ﬥ purple
-	bq --format=json ls "$1." |
-		jq -c -r '.[].tableReference.tableId' |
-		xargs -I {} bash -c "bq show --format=json $1.{} \
-        | jq -r '.schema.fields|=sort_by(.name)|del(.schema.fields[].description)|{sourceFormat,createDisposition,writeDisposition,schemaUpdateOptions,timePartitioning,clustering,schema}' \
-        | yq r - --prettyPrint"
+_bqschema() {
+  log "Getting BigQuery schema ..." ﬥ purple
+  bq --format=json ls "$1" | jq -cr '.[].tableReference.tableId' |
+    while read -r table || [ -n "$table" ]; do
+      tableref="${1}.${table}"
+      printf '\n'
+      log "${tableref}:"  red bold white
+      bq show --format=json "${tableref}" |
+        jq -r '.schema.fields|=sort_by(.name)|del(.schema.fields[].description)|{sourceFormat,createDisposition,writeDisposition,schemaUpdateOptions,timePartitioning,clustering,schema}' | yq -P eval
+    done
 }
 
 # revive instance if shutdown/preempted
-function _revive_gce() {
-	local name="$1"
-	local filter result instance_name zone status
-	log "Reviving instance ${name}..."  yellow
+_revive_gce() {
+  name="$1"
+  log "Reviving instance ${name}..."  yellow
 
-	filter="(name:${1}* AND status:TERMINATED)"
-	result="$(gcloud compute instances list --sort-by=-createTime --format="value(name,zone,status)" --filter="$filter")"
-	instance_name="$(echo "$result" | awk 'NR==1 {print $1}')"
-	zone="$(echo "$result" | awk 'NR==1 {print $2}')"
-	status="$(echo "$result" | awk 'NR==1 {print $3}')"
+  filter="(name:${1}* AND status:TERMINATED)"
+  result="$(gcloud compute instances list --sort-by=-createTime --format="value(name,zone,status)" --filter="$filter")"
+  instance_name="$(echo "$result" | awk 'NR==1 {print $1}')"
+  zone="$(echo "$result" | awk 'NR==1 {print $2}')"
+  status="$(echo "$result" | awk 'NR==1 {print $3}')"
 
-	if [ "$status" = "TERMINATED" ]; then
-		gcloud compute instances start "--zone=$zone" "$instance_name"
-	fi
+  if [ "$status" = "TERMINATED" ]; then
+    gcloud compute instances start "--zone=$zone" "$instance_name"
+  fi
 }
 
 # Terraform ⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁ #
@@ -127,48 +135,48 @@ alias tf='_tf'
 alias tg='terragrunt'
 
 # augment terraform command with abbrebiated flags + other shortcuts
-function _tf() {
-	local opts=()
-	local tflog
-	local access_token
+_tf() {
+  opts=()
 
-	# allow abbreviated flags
-	for i in "${@}"; do
-		case "$i" in
-		'-t')
-			opts+=('-target')
-			;;
-		'-aa')
-			opts+=('-auto-approve')
-			;;
-		'-r')
-			opts+=('-refresh=false')
-			;;
-		'-trace')
-			tflog='trace'
-			;;
-		'-debug')
-			tflog='debug'
-			;;
-		*)
-			opts+=("$i")
-			;;
-		esac
-	done
+  # allow abbreviated flags
+  for i in "${@}"; do
+    case "$i" in
+    '-t')
+      opts+=('-target')
+      ;;
+    '-aa')
+      opts+=('-auto-approve')
+      ;;
+    '-r')
+      opts+=('-refresh=false')
+      ;;
+    '-trace')
+      tflog='trace'
+      ;;
+    '-debug')
+      tflog='debug'
+      ;;
+    *)
+      opts+=("$i")
+      ;;
+    esac
+  done
 
-	# default flags
-	if [[ -f "./terraform.tfvars" ]]; then
-		opts+=('-var-file=terraform.tfvars')
-	fi
+  # default flags
+  if [[ -f "./terraform.tfvars" ]] && [[ "$1" == "apply" || "$1" == "plan" ]]; then
+    opts+=('-var-file=terraform.tfvars')
+  fi
 
-	opts+=('-compact-warnings')
-	opts+=('-parallelism=5')
+  if [[ "$1" == "apply" ]]; then
+    opts+=('-compact-warnings')
+    opts+=('-parallelism=5')
+  fi
 
-	# refresh google cloud credentials
-	if [[ $(rg -l --pre-glob '*.tf' 'provider "google"') ]]; then
-		access_token="$(gcloud auth print-access-token)"
-	fi
+  # refresh google cloud credentials
+  if [[ $(rg -l --pre-glob '*.tf' 'provider "google"') ]]; then
+    access_token="$(gcloud auth print-access-token)"
+  fi
 
-	GOOGLE_OAUTH_ACCESS_TOKEN="$access_token" TF_LOG="$tflog" \
-		noglob terraform "${opts[@]}"
+  GOOGLE_OAUTH_ACCESS_TOKEN="$access_token" TF_LOG="$tflog" \
+    noglob terraform "${opts[@]}"
 }

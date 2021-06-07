@@ -44,3 +44,4 @@ config.tests/
 node_modules/
 vendor/
 dist/
+.github/

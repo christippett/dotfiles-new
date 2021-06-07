@@ -15,7 +15,7 @@ Plugin 'junegunn/fzf'
 Plugin 'junegunn/fzf.vim'
 Plugin 'mg979/vim-visual-multi', {'branch': 'master'}
 
-call vundle#end() 
+call vundle#end()
 
 " ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 " NERDTree
@@ -51,10 +51,10 @@ set hlsearch
 set incsearch
 
 " indentation
+"set expandtab
 set tabstop=2
 set softtabstop=2
 set shiftwidth=2
-set expandtab
 set autoindent
 if has("autocmd")
   filetype on
@@ -90,6 +90,7 @@ let ayucolor="mirage"
 colorscheme ayu
 
 hi NERDTreeFlags ctermfg=13 guifg=#ffcb65
+hi Normal guibg=000000
 
 " syntax highlighting
 augroup filetypedetect

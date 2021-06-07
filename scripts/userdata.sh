@@ -1,6 +1,7 @@
 #!/bin/bash
 
-set -e
+#set -e
+#set -x
 
 export DOTFILES_VAULT="Dotfiles"
 
@@ -32,7 +33,7 @@ function get_document() {
 function download_document() {
   local uuid="$1"
   local title="$2"
-  local path="${2//'~'/$HOME}"
+  local path="${2//\~/$HOME}"
 
   mkdir -p "$(dirname "$path")"
   backup_file "$path" >/dev/null 2>&1
@@ -46,8 +47,8 @@ function download_document() {
 function upload_document() {
   local uuid="$1"
   local title="$2"
-  local path="${2//'~'/$HOME}"
-
+  local path="${2//\~/$HOME}"
+  
   op edit document "$uuid" "$path" \
     --vault "$DOTFILES_VAULT" ||
     op create document "$path" \
@@ -67,6 +68,7 @@ function sync_1password() {
   # configure / sign into 1password
   if [ -z "$OP_SESSION_my" ]; then
     read -rp "Enter your 1Password email address: " email_address
+
     eval "$(op signin my "$email_address")"
   else
     eval "$(op signin my --session "$OP_SESSION_my")"
@@ -87,3 +89,7 @@ function sync_1password() {
       fi
     done
 }
+
+sync_1password
+
+set +x

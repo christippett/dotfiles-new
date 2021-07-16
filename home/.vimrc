@@ -11,7 +11,7 @@ Plugin 'preservim/nerdtree'
 Plugin 'ryanoasis/vim-devicons'
 Plugin 'ayu-theme/ayu-vim'
 Plugin 'Yggdroot/indentLine'
-Plugin 'junegunn/fzf'
+Plugin 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plugin 'junegunn/fzf.vim'
 Plugin 'mg979/vim-visual-multi', {'branch': 'master'}
 
@@ -102,12 +102,13 @@ augroup END
 " key shortcuts
 nnoremap <F9> :!%:p<Enter><Enter>
 nnoremap <leader>n :NERDTreeFocus<CR>
-nnoremap <C-n> :NERDTree<CR>
-nnoremap <C-t> :NERDTreeToggle<CR>
+nnoremap <C-n> :NERDTreeToggle<CR>
 nnoremap <C-f> :NERDTreeFind<CR>
+nnoremap <C-t> :GFiles<Enter>
 nnoremap <C-z> :undo<CR>
 nnoremap <leader>q :wq<Enter>
 nnoremap <leader>t :tabnew<Enter>
+nnoremap <leader>w :tabclose<Enter>
 nnoremap <leader>f :Files<Enter>
 nnoremap <leader>s :BLines<Enter>
 

@@ -1,10 +1,11 @@
 format = '$username$hostname$shlvl$kubernetes$directory$git_branch$git_commit$git_state$hg_branch$docker_context$package$cmake$dart$dotnet$elixir$elm$erlang$golang$helm$java$julia$kotlin$nim$nodejs$ocaml$perl$php$purescript$python$ruby$rust$swift$terraform$vagrant$zig$nix_shell$conda$memory_usage$aws$gcloud$openstack$env_var$crystal$custom$cmd_duration$line_break$lua$jobs$battery$time$status$character '
 
 command_timeout="900"
+add_newline = true
 
 [character]
-success_symbol = '[](bold green)'
-error_symbol = '[](bold red)'
+success_symbol = '[❯](bold green)'
+error_symbol = '[❯](bold red)'
 
 [line_break]
 disabled = false
@@ -14,12 +15,12 @@ format = '[](#191E27)[( $duration)]($style bold)[](#191E27) '
 style = 'red bg:#191E27'
 
 [username]
-format = '[$user]($style)[/](white)'
-style_user = 'purple'
+format = '[$user]($style)[@]($style dimmed)'
+style_user = 'cyan bold'
 
 [hostname]
 format = '[$hostname]($style) in '
-style = 'green bold dimmed'
+style = 'cyan'
 
 [directory]
 format = '[$path]($style)[$read_only]($read_only_style) '
@@ -46,7 +47,7 @@ symbol = ' '
 disabled = false
 
 [terraform]
-format = '[](#191E27)[$symbol$version$workspace]($style)[](#191E27) '
+format = '[](#191E27)[$symbol$version]($style)[](#191E27) '
 version_format = '$raw'
 style = 'purple bg:#191E27'
 symbol = 'ﯟ '
@@ -94,6 +95,8 @@ symbol = ' '
 disabled = true
 
 [aws]
+format = '[](#191E27)[$symbol$profile]($style bold)[(/$region)]($style dimmed)[](#191E27) '
+style = 'red bg:#191E27'
 symbol = ' '
 disabled = false
 

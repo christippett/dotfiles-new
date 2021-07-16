@@ -161,6 +161,11 @@ zinit wait"4" lucid as"completion" for \
 	OMZP::docker/_docker \
 	OMZP::pip/_pip
 
+# poetry
+zinit wait"4" lucid as="completion" for \
+	id-as"pipx" atload='autoload -Uz bashcompinit && bashcompinit && eval "$(register-python-argcomplete pipx)"' zdharma/null \
+	id-as"poetry" atclone="poetry completions zsh > _poetry" zdharma/null
+
 # yq
 zinit ice wait"4" lucid id-as"yq" from"gh-r" as"program" \
 	mv"yq* -> yq" pick"yq" \
@@ -214,6 +219,9 @@ zinit load starship/starship
 # delete google cloud credentials older than 3 hours
 find "$HOME/.config/gcloud" -type f -name "application_default_credentials.json" \
   -mmin +180 -exec rm -f {} \;
+
+# add aws completions
+zinit snippet "https://github.com/aws/aws-cli/blob/master/bin/aws_zsh_completer.sh"
 
 # zinit ice wait notify nocompletions; zinit snippet "$HOME/.iterm2_shell_integration.zsh"
 zinit snippet "$HOME/.dotfiles/scripts/utils.sh"

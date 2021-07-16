@@ -20,14 +20,15 @@ export LANGUAGE=en_US.UTF-8
 
 export WORDCHARS=''
 export LESS="-RFi"
-export PAGER="less -RFis"
-export MANPAGER="sh -c $'col -bx | bat -f --italic-text --tabs 1 -l man'"
+export PAGER="less ${LESS} -s"
+#export MANPAGER="sh -c $'col -bx | bat --tabs 2 --paging always -l man'"
+export SYSTEMD_LESS="$LESS -SM"
 
-export BAT_PAGER="$LESS"
+#export BAT_PAGER="$PAGER"
 export BAT_THEME="Coldark-Dark"
 
 if [[ -n $SSH_CONNECTION ]]; then
-  export EDITOR="nvim"
+  export EDITOR="vim"
 else
   export EDITOR="nvim"
   export LESSEDIT="$EDITOR"

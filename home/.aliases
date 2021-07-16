@@ -109,7 +109,7 @@ _bqschema() {
       printf '\n'
       log "${tableref}:"  red bold white
       bq show --format=json "${tableref}" |
-        jq -r '.schema.fields|=sort_by(.name)|del(.schema.fields[].description)|{sourceFormat,createDisposition,writeDisposition,schemaUpdateOptions,timePartitioning,clustering,schema}' | yq -P eval
+        jq -r 'del(.schema.fields[].description)|{sourceFormat,schemaUpdateOptions,timePartitioning,clustering,schema}' | yq -P eval
     done
 }
 

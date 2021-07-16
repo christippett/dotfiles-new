@@ -17,6 +17,7 @@ config.tests/
 .idea
 .nova
 *.code-workspace
+.tool-versions
 
 # Ignore temporary generated files.
 *.rej

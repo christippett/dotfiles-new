@@ -43,7 +43,7 @@ alias q='cd ~ && clear'
 
 # directory listing
 alias ll='ls -l --no-time --no-user --git-ignore --sort name'
-alias la='ls -la --time-style long-iso --no-icons'
+alias la='ls -lag --time-style long-iso'
 alias ls='exa -F -L 2 --git --icons --group-directories-first'
 
 # pretty print $PATH
@@ -65,9 +65,9 @@ alias emoj=$'emoji-fzf preview | fzf --preview \'emoji-fzf get {1}\' | cut -d " 
 # replace rm with trash-cli or use default rm -i if trash is not installed
 # https://github.com/sindresorhus/trash-cli
 if type trash &>/dev/null; then
-  alias rm='trash'
+	alias rm='trash'
 else
-  alias rm='rm -i'
+	alias rm='rm -i'
 fi
 
 # Google Cloud ⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁ #
@@ -80,53 +80,60 @@ alias gtf='GOOGLE_OAUTH_ACCESS_TOKEN="$(gcloud auth print-access-token)" terrafo
 
 alias gssh='_gssh'
 alias bqschema='_bqschema'
+alias rmadc='_rmadc'
+
+# delete google cloud credentials older than 3 hours
+_rmadc() {
+	find "$HOME/.config/gcloud" -type f -name "application_default_credentials.json" \
+		-mmin +180 -exec rm -f {} \;
+}
 
 # find and ssh into a Compute Engine instance
 _gssh() {
-  name="$1"
-  log "Connecting to instance ${name}..."  yellow bold
+	name="$1"
+	log "Connecting to instance ${name}..."  yellow bold
 
-  filter="(name:${1}* AND status:RUNNING)"
-  result="$(gcloud compute instances list --sort-by=-createTime --format="value(name,zone)" --filter="$filter")"
-  instance_name="$(echo "$result" | awk 'NR==1 {print $1}')"
-  zone="$(echo "$result" | awk 'NR==1 {print $2}')"
+	filter="(name:${1}* AND status:RUNNING)"
+	result="$(gcloud compute instances list --sort-by=-createTime --format="value(name,zone)" --filter="$filter")"
+	instance_name="$(echo "$result" | awk 'NR==1 {print $1}')"
+	zone="$(echo "$result" | awk 'NR==1 {print $2}')"
 
-  if [ -n "$instance_name" ]; then
-    gcloud beta compute ssh "$instance_name" \
-      --zone "$(basename "$zone")" \
-      --strict-host-key-checking=no
-  else
-    log_warning 'Instance not found'
-  fi
+	if [ -n "$instance_name" ]; then
+		gcloud beta compute ssh "$instance_name" \
+			--zone "$(basename "$zone")" \
+			--strict-host-key-checking=no
+	else
+		log_warning 'Instance not found'
+	fi
 }
 
 # export bigquery table schema
 _bqschema() {
-  log "Getting BigQuery schema ..." ﬥ purple
-  bq --format=json ls "$1" | jq -cr '.[].tableReference.tableId' |
-    while read -r table || [ -n "$table" ]; do
-      tableref="${1}.${table}"
-      printf '\n'
-      log "${tableref}:"  red bold white
-      bq show --format=json "${tableref}" |
-        jq -r 'del(.schema.fields[].description)|{sourceFormat,schemaUpdateOptions,timePartitioning,clustering,schema}' | yq -P eval
-    done
+	log "Getting BigQuery schema ..." ﬥ purple
+	bq --format=json ls "$1" | jq -cr '.[].tableReference.tableId' |
+		while read -r table || [ -n "$table" ]; do
+			tableref="${1}.${table}"
+			printf '\n'
+			log "${tableref}:"  red bold white
+			bq show --format=json "${tableref}" |
+				jq -r 'del(.schema.fields[].description)|{sourceFormat,schemaUpdateOptions,timePartitioning,clustering,schema}' | yq -P eval
+		done
 }
 
 # revive instance if shutdown/preempted
 _revive_gce() {
-  name="$1"
-  log "Reviving instance ${name}..."  yellow
+	name="$1"
+	log "Reviving instance ${name}..."  yellow
 
-  filter="(name:${1}* AND status:TERMINATED)"
-  result="$(gcloud compute instances list --sort-by=-createTime --format="value(name,zone,status)" --filter="$filter")"
-  instance_name="$(echo "$result" | awk 'NR==1 {print $1}')"
-  zone="$(echo "$result" | awk 'NR==1 {print $2}')"
-  status="$(echo "$result" | awk 'NR==1 {print $3}')"
+	filter="(name:${1}* AND status:TERMINATED)"
+	result="$(gcloud compute instances list --sort-by=-createTime --format="value(name,zone,status)" --filter="$filter")"
+	instance_name="$(echo "$result" | awk 'NR==1 {print $1}')"
+	zone="$(echo "$result" | awk 'NR==1 {print $2}')"
+	status="$(echo "$result" | awk 'NR==1 {print $3}')"
 
-  if [ "$status" = "TERMINATED" ]; then
-    gcloud compute instances start "--zone=$zone" "$instance_name"
-  fi
+	if [ "$status" = "TERMINATED" ]; then
+		gcloud compute instances start "--zone=$zone" "$instance_name"
+	fi
 }
 
 # Terraform ⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁ #
@@ -136,47 +143,47 @@ alias tg='terragrunt'
 
 # augment terraform command with abbrebiated flags + other shortcuts
 _tf() {
-  opts=()
+	opts=()
 
-  # allow abbreviated flags
-  for i in "${@}"; do
-    case "$i" in
-    '-t')
-      opts+=('-target')
-      ;;
-    '-aa')
-      opts+=('-auto-approve')
-      ;;
-    '-r')
-      opts+=('-refresh=false')
-      ;;
-    '-trace')
-      tflog='trace'
-      ;;
-    '-debug')
-      tflog='debug'
-      ;;
-    *)
-      opts+=("$i")
-      ;;
-    esac
-  done
+	# allow abbreviated flags
+	for i in "${@}"; do
+		case "$i" in
+		'-t')
+			opts+=('-target')
+			;;
+		'-aa')
+			opts+=('-auto-approve')
+			;;
+		'-r')
+			opts+=('-refresh=false')
+			;;
+		'-trace')
+			tflog='trace'
+			;;
+		'-debug')
+			tflog='debug'
+			;;
+		*)
+			opts+=("$i")
+			;;
+		esac
+	done
 
-  # default flags
-  if [[ -f "./terraform.tfvars" ]] && [[ "$1" == "apply" || "$1" == "plan" ]]; then
-    opts+=('-var-file=terraform.tfvars')
-  fi
+	# default flags
+	if [[ -f "./terraform.tfvars" ]] && [[ "$1" == "apply" || "$1" == "plan" ]]; then
+		opts+=('-var-file=terraform.tfvars')
+	fi
 
-  if [[ "$1" == "apply" ]]; then
-    opts+=('-compact-warnings')
-    opts+=('-parallelism=5')
-  fi
+	if [[ "$1" == "apply" ]]; then
+		opts+=('-compact-warnings')
+		opts+=('-parallelism=5')
+	fi
 
-  # refresh google cloud credentials
-  if [[ $(rg -l --pre-glob '*.tf' 'provider "google"') ]]; then
-    access_token="$(gcloud auth print-access-token)"
-  fi
+	# refresh google cloud credentials
+	if [[ $(rg -l --pre-glob '*.tf' 'provider "google"') ]]; then
+		access_token="$(gcloud auth print-access-token)"
+	fi
 
-  GOOGLE_OAUTH_ACCESS_TOKEN="$access_token" TF_LOG="$tflog" \
-    noglob terraform "${opts[@]}"
+	GOOGLE_OAUTH_ACCESS_TOKEN="$access_token" TF_LOG="$tflog" \
+		noglob terraform "${opts[@]}"
 }

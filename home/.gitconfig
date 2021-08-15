@@ -27,10 +27,11 @@
 [color "diff"]
   meta = yellow
   frag = magenta bold
-  commit = yellow bold
+	commit = 3 normal
   old = red bold
   new = green bold
-  whitespace = red reverse
+	whitespace = normal
+	func = 10 normal
 
 [apply]
   whitespace = fix
@@ -72,3 +73,41 @@
   upstream-remote = !git config --get branch.$(git current-branch).remote || echo origin
   master-rebase = !git fetch --all && git rebase $(git upstream)/master
   push-branch = !git push --set-upstream origin $(git current-branch)
+[color "decorate"]
+	HEAD = 14 normal italic
+	remotebranch = 13 normal
+	grafted = 1 normal italic
+	tag = 3 normal
+	stash = 8 normal
+	branch = 14 normal
+[color "grep"]
+	filename = 7 normal
+	function = 10 normal
+	column = 8 normal
+	linenumber = 8 normal
+[color "interactive"]
+	header = normal
+	help = 8 normal
+	error = 1 normal italic
+[color "status"]
+	changed = 11 normal
+	unmerged = 9 normal
+	nobranch = 1 normal italic
+	updated = 10 normal
+	localbranch = 14 normal
+	added = 10 normal
+	untracked = normal dim
+	header = normal
+	remotebranch = 13 normal
+	branch = 14 normal
+[color "branch"]
+	remote = 13 normal
+	upstream = 13 normal
+	plain = 14 normal
+	current = 14 normal reverse
+	local = 14 normal
+[color "remote"]
+	success = 2 normal
+	error = 1 normal
+	hint = normal dim
+	warning = 3 normal

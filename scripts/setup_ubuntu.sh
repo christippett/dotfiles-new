@@ -18,12 +18,10 @@ log_info "Installing packages from apt..."
 apt_packages=(
   autoconf
   automake
-  batcat
   build-essential
   curl
   dirmngr
   fontconfig
-  fzf
   git
   gpg
   libbz2-dev
@@ -38,7 +36,6 @@ apt_packages=(
   libxmlsec1-dev
   llvm
   make
-  ripgrep
   tk-dev
   wget
   xz-utils
@@ -53,7 +50,7 @@ log_success "Package installation complete"
 # Install other dependencies ------------------------------------------------- #
 
 # shellcheck source=./common.sh
-source "$(dirname "$0")/common.sh"
+#source "$(dirname "$0")/common.sh"
 
 # Done ----------------------------------------------------------------------- #
 

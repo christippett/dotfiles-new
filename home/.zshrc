@@ -21,10 +21,52 @@ export LANG=en_US.UTF-8
 export LANGUAGE=en_US.UTF-8
 
 export WORDCHARS=''
-export LESS="-RFi"
+export LESS="-RFSi -j.3"
 export PAGER="less ${LESS} -s"
 export SYSTEMD_LESS="$LESS -SM"
+export PAGER="less $LESS"
+export BAT_PAGER="$LESS"
+export MANPAGER="sh -c 'col -bx | bat --pager \"\$PAGER\" -f --italic-text --style=plain --tabs=1 -l=man'"
 
+#export BAT_THEME="Coldark-Dark"
+
+if [[ -n $SSH_CONNECTION ]]; then
+  export EDITOR="nvim"
+else
+  export EDITOR="nvim"
+  export LESSEDIT="$EDITOR"
+  export GIT_EDITOR="$EDITOR"
+fi
+
+bindkey -e # use emacs bindings even with vim as EDITOR
+
+# PATH ----------------------------------------------------------------------- #
+
+# homebrew
+[ -d "/opt/homebrew" ] && PATH="/opt/homebrew/bin:$PATH"
+
+# common install path used by package managers (ie. pipx)
+PATH="$HOME/.local/bin:$PATH"
+
+# EXA ------------------------------------------------------------------------ #
+# https://the.exa.website/docs/colour-themes
+
+read -r -d '' EXA_COLORS <<- "EOT"
+	:sn=1;37:sb=37:
+	:da=37:
+	:un=33:uu=1;3;31:
+	:gn=33:gu=31:
+	:ur=35:uw=35:ux=35:ue=35:
+	:gr=32:gw=32:gx=32:
+	:tr=31:tw=31:tx=31:
+	:su=37:sf=37:xa=0;2;37:
+	:xx=0;2;37:
+	:lp=2;35:
+EOT
+export EXA_COLORS
+export EXA_ICON_SPACING="1"
+
+# FZF ------------------------------------------------------------------------ #
 
 read -r -d '' FZF_DEFAULT_OPTS <<- "EOT"
 --height 90%
@@ -56,27 +98,27 @@ export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
 export FZF_ALT_C_COMMAND="$FZF_DEFAULT_COMMAND --type d --max-depth 3"
 export FZF_ALT_C_OPTS="--preview 'exa -la --no-permissions --no-user --no-filesize --icons --no-time {}' --color=border:-1"
 
-
-# set 1password session environment variable
-#eval "$(op signin my)"
-
 source ~/.aliases
-source "$HOMEBREW_PREFIX/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/path.zsh.inc"
+
+test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
 
 # start znap
 source "$HOME/.local/share/zsh-snap/znap.zsh"
 
 # start starship prompt
-znap eval starship 'starship init zsh --print-full-init'; znap prompt
+znap eval starship 'starship init zsh --print-full-init'
+znap prompt
+
+test -n "${{SSH_CONNECTION}}" && neofetch
 
 
 # add repos to $path/$fpath using ~[dynamically-named dirs]
 fpath+=(
-  "$HOMEBREW_PREFIX/share/zsh/site-functions"
   ~[asdf-vm/asdf]/completions
   ~[asdf-community/asdf-direnv]/completions
   ~[zsh-users/zsh-completions]/src
 )
+test -n "${{HOMEBREW_PREFIX}}" && fpath+=( "$HOMEBREW_PREFIX/share/zsh/site-functions" )
 
 zstyle ':completion:*' menu select
 zstyle ':completion:*:(cd|mv|cp):*' ignore-parents parent pwd # ignore parent directory when cd ../<TAB>
@@ -120,3 +162,4 @@ znap eval fancy-ctrl-z "curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohm
 #   - script installation of brew formulas/casks
 #   - script installation of asdf plugins
 #   - script installation of pipx packages
+

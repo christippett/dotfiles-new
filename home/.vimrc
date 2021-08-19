@@ -15,18 +15,28 @@ Plugin 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plugin 'junegunn/fzf.vim'
 Plugin 'mg979/vim-visual-multi', {'branch': 'master'}
 
+" python plugins
+"Plugin 'psf/black'
+"autocmd BufWritePre *.py execute ':Black'
+
 call vundle#end()
 
 " ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 " NERDTree
 " show hidden files (toggle with shift+I)
 let NERDTreeShowHidden=1
+let NERDTreeShowLineNumbers=0
+autocmd FileType nerdtree set nonumber
+autocmd FileType nerdtree set nolist
 
 " character used for vertical divider
-set fillchars+=vert:\▏
+"set fillchars+=vert:\▏
+set fillchars+=vert:▏,stl:─,stlnc:─
 
 " start NERDTree and leave the cursor in it.
-"autocmd VimEnter * NERDTree
+autocmd VimEnter * NERDTree
+" jump to the main window.
+autocmd VimEnter * wincmd p
 
 " close vim (incl. nerd tree) if no documents remain open
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
@@ -52,9 +62,9 @@ set incsearch
 
 " indentation
 "set expandtab
-set tabstop=2
-set softtabstop=2
-set shiftwidth=2
+set tabstop=4
+set softtabstop=4
+set shiftwidth=4
 set autoindent
 if has("autocmd")
   filetype on
@@ -79,17 +89,20 @@ set clipboard=unnamed
 
 " set theme
 set termguicolors " enable true colors support
-let g:indentLine_char = ''
-let g:indentLine_first_char = ''
+let g:indentLine_char = ''
+let g:indentLine_first_char = ''
 let g:indentLine_showFirstIndentLevel = 1
-let g:indentLine_setColors = 0
+let g:indentLine_setColors = 1
 
 "let ayucolor="light"
 "let ayucolor="dark"
 let ayucolor="mirage"
 colorscheme ayu
 
-hi NERDTreeFlags ctermfg=13 guifg=#ffcb65
+hi NERDTreeFlags ctermfg=10 guifg=white
+hi StatusLineNC ctermbg=10 guibg=darkgray guifg=white
+hi StatusLine ctermbg=10 guibg=darkgray guifg=white
+hi VertSplit guibg=default guifg=Gray ctermbg=6 ctermfg=0
 hi Normal guibg=000000
 
 " syntax highlighting
@@ -102,13 +115,26 @@ augroup END
 " key shortcuts
 nnoremap <F9> :!%:p<Enter><Enter>
 nnoremap <leader>n :NERDTreeFocus<CR>
-nnoremap <C-n> :NERDTreeToggle<CR>
+nnoremap <C-t> :NERDTreeToggle<CR>
 nnoremap <C-f> :NERDTreeFind<CR>
-nnoremap <C-t> :GFiles<Enter>
-nnoremap <C-z> :undo<CR>
-nnoremap <leader>q :wq<Enter>
+nnoremap <C-q> :q!<Enter>
+nnoremap <leader>z :undo<CR>
 nnoremap <leader>t :tabnew<Enter>
 nnoremap <leader>w :tabclose<Enter>
 nnoremap <leader>f :Files<Enter>
-nnoremap <leader>s :BLines<Enter>
+noremap <leader>s :BLines<Enter>
 
+nnoremap <leader>- :sp<Enter>
+nnoremap <leader>_ :vsp<Enter>
+
+" Go to tab by number
+noremap <leader>1 1gt
+noremap <leader>2 2gt
+noremap <leader>3 3gt
+noremap <leader>4 4gt
+noremap <leader>5 5gt
+noremap <leader>6 6gt
+noremap <leader>7 7gt
+noremap <leader>8 8gt
+noremap <leader>9 9gt
+noremap <leader>0 :tablast<cr>

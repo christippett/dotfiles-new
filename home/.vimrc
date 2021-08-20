@@ -34,9 +34,9 @@ autocmd FileType nerdtree set nolist
 set fillchars+=vert:▏,stl:─,stlnc:─
 
 " start NERDTree and leave the cursor in it.
-autocmd VimEnter * NERDTree
+"autocmd VimEnter * NERDTree
 " jump to the main window.
-autocmd VimEnter * wincmd p
+"autocmd VimEnter * wincmd p
 
 " close vim (incl. nerd tree) if no documents remain open
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif

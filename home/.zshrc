@@ -42,11 +42,9 @@ bindkey -e # use emacs bindings even with vim as EDITOR
 
 # PATH ----------------------------------------------------------------------- #
 
-# homebrew
-[ -d "/opt/homebrew" ] && PATH="/opt/homebrew/bin:$PATH"
-
 # common install path used by package managers (ie. pipx)
 PATH="$HOME/.local/bin:$PATH"
+test -d "/opt/homebrew" && PATH="/opt/homebrew/bin:$PATH"
 
 # EXA ------------------------------------------------------------------------ #
 # https://the.exa.website/docs/colour-themes
@@ -98,68 +96,91 @@ export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
 export FZF_ALT_C_COMMAND="$FZF_DEFAULT_COMMAND --type d --max-depth 3"
 export FZF_ALT_C_OPTS="--preview 'exa -la --no-permissions --no-user --no-filesize --icons --no-time {}' --color=border:-1"
 
-source ~/.aliases
 
-test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
+
+# 🚀 zsh-snap ---------------------------------------------------------------- #
 
 # start znap
 source "$HOME/.local/share/zsh-snap/znap.zsh"
 
 # start starship prompt
 znap eval starship 'starship init zsh --print-full-init'
-znap prompt
+#znap prompt
 
-test -n "${{SSH_CONNECTION}}" && neofetch
+# 🤠 user config-------------------------------------------------------------- #
 
+# user scripts
+source ~/.aliases
+test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
 
-# add repos to $path/$fpath using ~[dynamically-named dirs]
-fpath+=(
-  ~[asdf-vm/asdf]/completions
-  ~[asdf-community/asdf-direnv]/completions
-  ~[zsh-users/zsh-completions]/src
-)
-test -n "${{HOMEBREW_PREFIX}}" && fpath+=( "$HOMEBREW_PREFIX/share/zsh/site-functions" )
-
+# zsh config
 zstyle ':completion:*' menu select
 zstyle ':completion:*:(cd|mv|cp):*' ignore-parents parent pwd # ignore parent directory when cd ../<TAB>
 zstyle ':completion:*:*:vim:*' file-patterns '^*.(aux|log|pdf):source-files' '*:all-files'
 
-# zsh-autocomplete
 zstyle ':autocomplete:*' fzf-completion yes
 zstyle ':autocomplete:*' min-input 3
 
+# 🐢 shell utilities---------------------------------------------------------- #
 
-# zsh plugins
+#if command -v brew; then
+#	znap eval brew_bundle 'brew bundle install ~/.Brewfile'
+#else
+#	sudo sh -c i
+#	znap eval apt_install <<EOT
+#apt-key adv --keyserver keyserver.ubuntu.com --recv-keys CC86BB64;
+#add-apt-repository ppa:rmescandon/yq;
+#apt update && apt install yq -y
+#EOT
+#fi
+
+znap install so-fancy/diff-so-fancy
+znap install junegunn/fzf
+znap source mbhynes/fzf-gcloud fzf-gcloud.plugin.zsh
+znap source rupa/z z.sh
+znap eval fzf-bindings "curl -fsSL https://raw.githubusercontent.com/junegunn/fzf/master/shell/key-bindings.zsh"
+znap eval fancy-ctrl-z "curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/plugins/fancy-ctrl-z/fancy-ctrl-z.plugin.zsh"
+
+#znap source marlonrichert/zcolors
+#znap eval zcolors "zcolors ${(q)LS_COLORS}"
+
+# 🪠  zsh plugins ------------------------------------------------------------- #
+
+# znap source marlonrichert/zsh-edit
+znap source junegunn/fzf shell/completion.zsh shell/key-bindings.zsh
 znap source zsh-users/zsh-autosuggestions
 znap source zsh-users/zsh-syntax-highlighting
+znap source marlonrichert/zsh-autocomplete
+bindkey $key[Down] down-line-or-select
+bindkey $key[Up] up-line-or-search
 
 # znap source zsh-users/zsh-history-substring-search
 # bindkey "^[[A" history-substring-search-up
 # bindkey "^[[B" history-substring-search-down
 
-znap source marlonrichert/zsh-autocomplete
-bindkey $key[Down] down-line-or-select
-bindkey $key[Up] up-line-or-search
+# 📋 zsh completions --------------------------------------------------------- #
 
-# znap source marlonrichert/zsh-edit
-znap source marlonrichert/zcolors
-znap eval zcolors "zcolors ${(q)LS_COLORS}"
-
-# zsh completions
 znap compdef _poetry 'poetry completions zsh'
 znap eval yq-completions 'yq shell-completion zsh'
 znap eval pip-completion 'pip completion --zsh'
 znap eval pipx-completion 'register-python-argcomplete pipx'
 znap source aws/aws-cli bin/aws_zsh_completer.sh
 
-# general plugins
-znap source asdf-vm/asdf asdf.sh
-znap source skywind3000/z.lua
-znap source mbhynes/fzf-gcloud fzf-gcloud.plugin.zsh
-znap eval fzf-bindings "curl -fsSL https://raw.githubusercontent.com/junegunn/fzf/master/shell/key-bindings.zsh"
-znap eval fancy-ctrl-z "curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/plugins/fancy-ctrl-z/fancy-ctrl-z.plugin.zsh"
-# TODO:
+fpath+=(
+  ~[asdf-vm/asdf]/completions
+  ~[asdf-community/asdf-direnv]/completions
+  ~[zsh-users/zsh-completions]/src
+  ~[sharkdp/fd]/contrib/completion
+)
+
+test -n "${HOMEBREW_PREFIX}" && fpath+=( "$HOMEBREW_PREFIX/share/zsh/site-functions" )
+
+# 🚧 TODO -------------------------------------------------------------------- #
+#
 #   - script installation of brew formulas/casks
 #   - script installation of asdf plugins
 #   - script installation of pipx packages
+
+# show neofetch when everything's done 🧮
+neofetch --source ~/.dotfiles/home/.config/neofetch/tennis.txt --ascii_colors 1 2 3 4 5 6
 

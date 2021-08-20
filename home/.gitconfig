@@ -27,11 +27,11 @@
 [color "diff"]
   meta = yellow
   frag = magenta bold
-	commit = 3 normal
+  commit = 3 normal
   old = red bold
   new = green bold
-	whitespace = normal
-	func = 10 normal
+  whitespace = normal
+#  func = 10 normal
 
 [apply]
   whitespace = fix
@@ -111,3 +111,5 @@
 	error = 1 normal
 	hint = normal dim
 	warning = 3 normal
+[submodule]
+	recurse = false

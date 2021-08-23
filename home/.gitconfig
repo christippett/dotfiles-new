@@ -62,9 +62,9 @@
 [credential "https://source.developers.google.com"]
   helper = gcloud
 
-[url "git@github.com:"]
-  pushInsteadOf = git://github.com/
-  insteadOf = https://github.com/ # use ssh for instead of https
+#[url "git@github.com:"]
+#  pushInsteadOf = git://github.com/
+#  insteadOf = https://github.com/ # use ssh for instead of https
 
 [alias]
   unstage = reset HEAD --

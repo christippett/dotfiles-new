@@ -111,7 +111,7 @@ znap eval starship 'starship init zsh --print-full-init'
 
 # user scripts
 source ~/.aliases
-test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
+#test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
 
 # zsh config
 zstyle ':completion:*' menu select
@@ -140,6 +140,7 @@ znap source mbhynes/fzf-gcloud fzf-gcloud.plugin.zsh
 znap source rupa/z z.sh
 znap eval fzf-bindings "curl -fsSL https://raw.githubusercontent.com/junegunn/fzf/master/shell/key-bindings.zsh"
 znap eval fancy-ctrl-z "curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/plugins/fancy-ctrl-z/fancy-ctrl-z.plugin.zsh"
+znap eval iterm2 'curl -fsSL https://iterm2.com/shell_integration/zsh'
 
 #znap source marlonrichert/zcolors
 #znap eval zcolors "zcolors ${(q)LS_COLORS}"
@@ -151,6 +152,7 @@ znap source junegunn/fzf shell/completion.zsh shell/key-bindings.zsh
 znap source zsh-users/zsh-autosuggestions
 znap source zsh-users/zsh-syntax-highlighting
 znap source marlonrichert/zsh-autocomplete
+
 bindkey $key[Down] down-line-or-select
 bindkey $key[Up] up-line-or-search
 
@@ -160,17 +162,18 @@ bindkey $key[Up] up-line-or-search
 
 # 📋 zsh completions --------------------------------------------------------- #
 
+znap compdef _cloud_sql_proxy 'curl -Ls https://raw.githubusercontent.com/zchee/zsh-completions/main/src/zsh/_cloud_sql_proxy'
 znap compdef _poetry 'poetry completions zsh'
-znap eval yq-completions 'yq shell-completion zsh'
+znap fpath _yq 'yq shell-completion zsh'
 znap eval pip-completion 'pip completion --zsh'
 znap eval pipx-completion 'register-python-argcomplete pipx'
 znap source aws/aws-cli bin/aws_zsh_completer.sh
 
 fpath+=(
+  ~[sharkdp/fd]/contrib/completion
   ~[asdf-vm/asdf]/completions
   ~[asdf-community/asdf-direnv]/completions
   ~[zsh-users/zsh-completions]/src
-  ~[sharkdp/fd]/contrib/completion
 )
 
 test -n "${HOMEBREW_PREFIX}" && fpath+=( "$HOMEBREW_PREFIX/share/zsh/site-functions" )
@@ -182,5 +185,5 @@ test -n "${HOMEBREW_PREFIX}" && fpath+=( "$HOMEBREW_PREFIX/share/zsh/site-functi
 #   - script installation of pipx packages
 
 # show neofetch when everything's done 🧮
-neofetch --source ~/.dotfiles/home/.config/neofetch/tennis.txt --ascii_colors 1 2 3 4 5 6
+neofetch --source "~/.dotfiles/home/.config/neofetch/$(hostname -s).txt" --ascii_colors 1 2 3 4 5 6
 

@@ -113,6 +113,7 @@ symbol = ''
 symbol = ''
 
 [golang]
+format = ' [$symbol$version]($style)'
 symbol = ''
 
 [hg_branch]
@@ -134,8 +135,8 @@ symbol = ''
 symbol = ''
 
 [rust]
-format = ' [$symbol($version)]($style)'
-style = 'bold red bg:#191E27'
+format = ' [$symbol$version]($style)'
+style = 'bold red'
 symbol = ''
 
 [swift]

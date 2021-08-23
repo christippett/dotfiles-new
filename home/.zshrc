@@ -100,8 +100,11 @@ export FZF_ALT_C_OPTS="--preview 'exa -la --no-permissions --no-user --no-filesi
 
 # 🚀 zsh-snap ---------------------------------------------------------------- #
 
-# start znap
-source "$HOME/.local/share/zsh-snap/znap.zsh"
+# start znap, install if necessary
+ZNAP_DIR="$HOME/.local/share/zsh-snap"
+
+[[ -f "$ZNAP_DIR/znap.zsh" ]] || git clone https://github.com/marlonrichert/zsh-snap.git "$ZNAP_DIR"
+source "$ZNAP_DIR/znap.zsh"
 
 # start starship prompt
 znap eval starship 'starship init zsh --print-full-init'

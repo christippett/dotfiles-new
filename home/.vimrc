@@ -9,6 +9,7 @@ call vundle#begin()
 Plugin 'VundleVim/Vundle.vim'
 Plugin 'preservim/nerdtree'
 Plugin 'ryanoasis/vim-devicons'
+Plugin 'hashivim/vim-terraform'
 Plugin 'ayu-theme/ayu-vim'
 Plugin 'Yggdroot/indentLine'
 Plugin 'junegunn/fzf', { 'do': { -> fzf#install() } }

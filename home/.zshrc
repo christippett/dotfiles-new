@@ -188,5 +188,5 @@ test -n "${HOMEBREW_PREFIX}" && fpath+=( "$HOMEBREW_PREFIX/share/zsh/site-functi
 #   - script installation of pipx packages
 
 # show neofetch when everything's done 🧮
-neofetch --source "~/.dotfiles/home/.config/neofetch/$(hostname -s).txt" --ascii_colors 1 2 3 4 5 6
+neofetch --source "$HOME/.dotfiles/home/.config/neofetch/$(hostname -s).txt" --ascii_colors 1 2 3 4 5 6
 

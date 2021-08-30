@@ -21,8 +21,9 @@ export LANG=en_US.UTF-8
 export LANGUAGE=en_US.UTF-8
 
 export WORDCHARS=''
-#FRSXMK
 export LESS="-FRSKi -j.3"
+export PAGER="less ${LESS} -s"
+export SYSTEMD_LESS="$LESS -SM"
 export PAGER="less $LESS"
 export MANPAGER="sh -c 'col -bx | bat --pager \"\$PAGER\" -f --italic-text --style=plain --tabs=1 -l=man'"
 export BAT_PAGER="$LESS"
@@ -222,4 +223,4 @@ test -n "${HOMEBREW_PREFIX}" && fpath+=( "$HOMEBREW_PREFIX/share/zsh/site-functi
 #   - script installation of pipx packages
 
 source ~/.aliases
-
+source ~/.dotfiles/scripts/utils.sh

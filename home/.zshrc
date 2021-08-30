@@ -25,10 +25,11 @@ export LESS="-RFSi -j.3"
 export PAGER="less ${LESS} -s"
 export SYSTEMD_LESS="$LESS -SM"
 export PAGER="less $LESS"
-export BAT_PAGER="$LESS"
 export MANPAGER="sh -c 'col -bx | bat --pager \"\$PAGER\" -f --italic-text --style=plain --tabs=1 -l=man'"
-
+export BAT_PAGER="$LESS"
 #export BAT_THEME="Coldark-Dark"
+
+export SSH_AUTH_SOCK="$HOME/Library/Containers/org.hejki.osx.sshce.agent/Data/socket.ssh"
 
 if [[ -n $SSH_CONNECTION ]]; then
   export EDITOR="nvim"
@@ -63,7 +64,7 @@ export EXA_ICON_SPACING="1"
 read -r -d '' FZF_DEFAULT_OPTS <<- "EOT"
 --height 90%
 --margin=0,3%,0,0
---padding=1,0
+--padding=0,0
 --layout=reverse
 --info=inline
 --prompt='  '
@@ -87,7 +88,10 @@ EOT
 export FZF_DEFAULT_OPTS
 export FZF_DEFAULT_COMMAND="fd -H -E .git -E node_modules -E .Trash"
 export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
-export FZF_ALT_C_COMMAND="$FZF_DEFAULT_COMMAND --type d --max-depth 3"
+
+# search only git directories
+# export FZF_ALT_C_COMMAND="$FZF_DEFAULT_COMMAND --type d --max-depth 3"
+export FZF_ALT_C_COMMAND="fd --type d -H '^\.git$' --exec dirname"
 export FZF_ALT_C_OPTS="--preview 'exa -la --no-permissions --no-user --no-filesize --icons --no-time {}' --color=border:-1"
 
 # PATH ----------------------------------------------------------------------- #
@@ -109,30 +113,43 @@ else
 	source $CLOUDSDK_HOME/path.zsh.inc
 fi
 
+# 🛸 zsh-snap ---------------------------------------------------------------- #
 
 # start znap, install if necessary
 ZNAP_DIR="$HOME/.local/share/zsh-snap"
 
-[[ -f "$ZNAP_DIR/znap.zsh" ]] || git clone https://github.com/marlonrichert/zsh-snap.git "$ZNAP_DIR"
-source "$ZNAP_DIR/znap.zsh"
+if [[ ! -f "$ZNAP_DIR/znap.zsh" ]]; then
+	git clone https://github.com/marlonrichert/zsh-snap.git "$ZNAP_DIR"
+else
+	source "$ZNAP_DIR/znap.zsh"
+fi
+
+# 🚀 prompt ------------------------------------------------------------------ #
+
+# run neofetch prior to initial prompt
+neofetch --source "$HOME/.dotfiles/home/.config/neofetch/$(hostname -s).txt" --ascii_colors 1 2 3 4 5 6
 
 # start starship prompt
 znap eval starship 'starship init zsh --print-full-init'
-#znap prompt
+#znap prompt # BUG: causes issue with starship and $pipestatus
 
 # 🤠 user config-------------------------------------------------------------- #
-
-# user scripts
-source ~/.aliases
-#test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
 
 # zsh config
 zstyle ':completion:*' menu select
 zstyle ':completion:*:(cd|mv|cp):*' ignore-parents parent pwd # ignore parent directory when cd ../<TAB>
+zstyle ':completion:*:git-checkout:*' sort false
 zstyle ':completion:*:*:vim:*' file-patterns '^*.(aux|log|pdf):source-files' '*:all-files'
+zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
 
-zstyle ':autocomplete:*' fzf-completion yes
-zstyle ':autocomplete:*' min-input 3
+zstyle ':fzf-tab:complete:(cd|mv|cp|ls):*' fzf-preview 'exa -1 --color=always $realpath'
+zstyle ':fzf-tab:complete:docker-*:*' fzf-preview '(docker inspect $word | jq -C)'
+zstyle ':fzf-tab:complete:docker-logs:*' fzf-preview '(docker logs $word | less)'
+zstyle ':fzf-tab:complete:gcloud:*' fzf-preview '((gcloud $word --help 2>/dev/null || gcloud help) | sed "s/  / /g")'
+zstyle ':fzf-tab:complete:systemctl-*:*' fzf-preview 'SYSTEMD_COLORS=1 systemctl status $word'
+
+zstyle ':fzf-tab:*' switch-group ',' '.'
+zstyle ':fzf-tab:*' fzf-command ftb-tmux-popup
 
 # 🐢 shell utilities---------------------------------------------------------- #
 
@@ -149,8 +166,10 @@ zstyle ':autocomplete:*' min-input 3
 
 znap install so-fancy/diff-so-fancy
 znap install junegunn/fzf
-znap source mbhynes/fzf-gcloud fzf-gcloud.plugin.zsh
+znap source asdf-vm/asdf asdf.sh
+# znap source mbhynes/fzf-gcloud fzf-gcloud.plugin.zsh
 znap source rupa/z z.sh
+znap eval trapd00r/LS_COLORS "$( whence -a dircolors gdircolors ) -b LS_COLORS"
 znap eval fzf-bindings "curl -fsSL https://raw.githubusercontent.com/junegunn/fzf/master/shell/key-bindings.zsh"
 znap eval fancy-ctrl-z "curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/plugins/fancy-ctrl-z/fancy-ctrl-z.plugin.zsh"
 znap eval iterm2 'curl -fsSL https://iterm2.com/shell_integration/zsh'
@@ -160,18 +179,20 @@ znap eval iterm2 'curl -fsSL https://iterm2.com/shell_integration/zsh'
 
 # 🪠  zsh plugins ------------------------------------------------------------- #
 
-# znap source marlonrichert/zsh-edit
 znap source junegunn/fzf shell/completion.zsh shell/key-bindings.zsh
-znap source zsh-users/zsh-autosuggestions
+
+znap source Aloxaf/fzf-tab fzf-tab.plugin.zsh
+
+ZSH_HIGHLIGHT_HIGHLIGHTERS=( main brackets )
 znap source zsh-users/zsh-syntax-highlighting
-znap source marlonrichert/zsh-autocomplete
 
-bindkey $key[Down] down-line-or-select
-bindkey $key[Up] up-line-or-search
+ZSH_AUTOSUGGEST_STRATEGY=( history )
+znap source zsh-users/zsh-autosuggestions
 
-# znap source zsh-users/zsh-history-substring-search
-# bindkey "^[[A" history-substring-search-up
-# bindkey "^[[B" history-substring-search-down
+znap source zsh-users/zsh-history-substring-search
+bindkey "^[[A" history-substring-search-up
+bindkey "^[[B" history-substring-search-down
+
 
 # 📋 zsh completions --------------------------------------------------------- #
 
@@ -200,6 +221,5 @@ test -n "${HOMEBREW_PREFIX}" && fpath+=( "$HOMEBREW_PREFIX/share/zsh/site-functi
 #   - script installation of asdf plugins
 #   - script installation of pipx packages
 
-# show neofetch when everything's done 🧮
-neofetch --source "$HOME/.dotfiles/home/.config/neofetch/$(hostname -s).txt" --ascii_colors 1 2 3 4 5 6
+source eval aliases 'source ~/.aliases'
 

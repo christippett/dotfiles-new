@@ -42,9 +42,10 @@ alias gpip='PIP_REQUIRE_VIRTUALENV=false pip'
 alias q='cd ~ && clear'
 
 # directory listing
-alias ll='ls -l --no-time --no-user --git-ignore --sort name'
-alias la='ls -lag --time-style long-iso'
-alias ls='exa -F -L 2 --git --icons --group-directories-first'
+alias _ls='exa -Fgm -I "*.zwc" -I ".DS_Store" --git --icons --group-directories-first'
+alias ll='_ls -l --no-time --no-filesize --git-ignore --sort name'
+alias la='_ls -lag'
+alias ls='_ls -1'
 
 # pretty print $PATH
 alias path='print -l $path'
@@ -69,6 +70,13 @@ if type trash &>/dev/null; then
 else
 	alias rm='rm -i'
 fi
+
+# configure macos dock
+configdock() {
+	defaults write com.apple.dock autohide-delay -int 0
+	defaults write com.apple.dock autohide-time-modifier -float 0.25
+	killall Dock
+}
 
 # Google Cloud ⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁⌁ #
 

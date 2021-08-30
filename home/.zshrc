@@ -21,9 +21,8 @@ export LANG=en_US.UTF-8
 export LANGUAGE=en_US.UTF-8
 
 export WORDCHARS=''
-export LESS="-RFSi -j.3"
-export PAGER="less ${LESS} -s"
-export SYSTEMD_LESS="$LESS -SM"
+#FRSXMK
+export LESS="-FRSKi -j.3"
 export PAGER="less $LESS"
 export MANPAGER="sh -c 'col -bx | bat --pager \"\$PAGER\" -f --italic-text --style=plain --tabs=1 -l=man'"
 export BAT_PAGER="$LESS"
@@ -103,14 +102,14 @@ test -d "/opt/homebrew" && PATH="/opt/homebrew/bin:$PATH"
 # GCLOUD --------------------------------------------------------------------- #
 
 export CLOUDSDK_HOME="$HOME/.local/google-cloud-sdk"
-if [[ -d CLOUDSDK_HOME ]]; then
-	CLOUDSDK_INSTALL_DIR="$(dirname $CLOUDSDK_HOME)"
-	CLOUDSDK_CORE_DISABLE_PROMPTS=1
-	mkdir -p $CLOUDSDK_HOME
+if [ ! -d "$CLOUDSDK_HOME" ]; then
+	export CLOUDSDK_INSTALL_DIR="$(dirname $CLOUDSDK_HOME)"
+	export CLOUDSDK_CORE_DISABLE_PROMPTS=1
+	mkdir -p $CLOUDSDK_INSTALL_DIR
 	curl -fsSL https://sdk.cloud.google.com | bash
 else
-	source $CLOUDSDK_HOME/completion.zsh.inc
-	source $CLOUDSDK_HOME/path.zsh.inc
+	source "$CLOUDSDK_HOME/completion.zsh.inc"
+	source "$CLOUDSDK_HOME/path.zsh.inc"
 fi
 
 # 🛸 zsh-snap ---------------------------------------------------------------- #
@@ -204,6 +203,7 @@ znap compdef _cargo 'rustup completions zsh cargo'
 znap fpath _yq 'yq shell-completion zsh'
 znap eval pip-completion 'pip completion --zsh'
 znap eval pipx-completion 'register-python-argcomplete pipx'
+znap eval gcloud-completion 'register-python-argcomplete gcloud'
 znap source aws/aws-cli bin/aws_zsh_completer.sh
 
 fpath+=(
@@ -221,5 +221,5 @@ test -n "${HOMEBREW_PREFIX}" && fpath+=( "$HOMEBREW_PREFIX/share/zsh/site-functi
 #   - script installation of asdf plugins
 #   - script installation of pipx packages
 
-source eval aliases 'source ~/.aliases'
+source ~/.aliases
 

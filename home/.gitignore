@@ -9,6 +9,7 @@ config.log
 config.tests/
 *.o
 *.pyc
+*.zwc
 
 # Ignore text editor local configuration..
 *.xcodeproj/project.xcworkspace/

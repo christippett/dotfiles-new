@@ -114,6 +114,7 @@ augroup filetypedetect
 augroup END
 
 " key shortcuts
+let mapleader = ','
 nnoremap <F9> :!%:p<Enter><Enter>
 nnoremap <leader>n :NERDTreeFocus<CR>
 nnoremap <C-t> :NERDTreeToggle<CR>

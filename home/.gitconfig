@@ -1,115 +1,117 @@
-
 [include]
-  path = ~/.gitconfig-user
+path = ~/.gitconfig-user
 
 [init]
-  defaultBranch = main
+defaultBranch = main
 
 [core]
-  excludesfile = ~/.gitignore
-  attributesfile = ~/.gitattributes
-  mergeoptions = --no-edit # don't prompt for commit messages on merge commits
-  commitGraph = true
-  pager = diff-so-fancy | less --tabs=4 -RFX
-
-[help]
-  autocorrect = 1 # autocorrect mistyped commands.
-
-[color]
-  ui = true
-
-[color "diff-highlight"]
-  oldNormal = red bold
-  oldHighlight = red bold 52
-  newNormal = green bold
-  newHighlight = green bold 22
-
-[color "diff"]
-  meta = yellow
-  frag = magenta bold
-  commit = 3 normal
-  old = red bold
-  new = green bold
-  whitespace = normal
-#  func = 10 normal
-
-[apply]
-  whitespace = fix
-
-[push]
-  default = simple # push to the upstream branch being tracked
-
-[pull]
-  rebase = true
-
-[rebase]
-  autoStash = true
-  autoSquash = true
-
-[fetch]
-  prune = 1
-
-[commit]
-  verbose = true
-  gpgsign = true
-
-[gist]
-  browse = true # open GitHub gist in browser after submission
-
-[credential]
-  helper = osxkeychain
-
-[credential "https://source.developers.google.com"]
-  helper = gcloud
-
-[url "git@github.com:"]
-  pushInsteadOf = git://github.com/
-  insteadOf = https://github.com/ # use ssh for instead of https
+excludesfile = ~/.gitignore
+attributesfile = ~/.gitattributes
+mergeoptions = --no-edit # don't prompt for commit messages on merge commits
+commitGraph = true
+pager = diff-so-fancy | less --tabs=4 -RFX
 
 [alias]
-  unstage = reset HEAD --
-  staged = diff --cached
-  current-branch = !git rev-parse --abbrev-ref HEAD
-  upstream-remote = !git config --get branch.$(git current-branch).remote || echo origin
-  master-rebase = !git fetch --all && git rebase $(git upstream)/master
-  push-branch = !git push --set-upstream origin $(git current-branch)
+unstage = reset HEAD --
+staged = diff --cached
+current-branch = !git rev-parse --abbrev-ref HEAD
+upstream-remote = !git config --get branch.$(git current-branch).remote || echo origin
+main-rebase = !git fetch --all && git rebase $(git upstream)/main
+push-branch = !git push --set-upstream origin $(git current-branch)
+
+[credential]
+helper = osxkeychain
+
+[credential "https://source.developers.google.com"]
+helper = gcloud
+
+[url "ssh://git@github.com/"]
+pushInsteadOf = https://github.com/
+
+[help]
+autocorrect = 1 # autocorrect mistyped commands.
+
+[apply]
+whitespace = fix
+
+[push]
+default = simple # push to the upstream branch being tracked
+
+[pull]
+rebase = true
+
+[rebase]
+autoStash = true
+autoSquash = true
+
+[fetch]
+prune = 1
+
+[commit]
+verbose = true
+gpgsign = true
+
+[gist]
+browse = true # open GitHub gist in browser after submission
+
+[color]
+ui = true
+
+[color "diff-highlight"]
+oldNormal = red bold
+oldHighlight = red bold 52
+newNormal = green bold
+newHighlight = green bold 22
+
+[color "diff"]
+meta = yellow
+frag = magenta bold
+commit = 3 normal
+old = red bold
+new = green bold
+whitespace = normal
+#  func = 10 normal
+
 [color "decorate"]
-	HEAD = 14 normal italic
-	remotebranch = 13 normal
-	grafted = 1 normal italic
-	tag = 3 normal
-	stash = 8 normal
-	branch = 14 normal
+HEAD = 14 normal italic
+remotebranch = 13 normal
+grafted = 1 normal italic
+tag = 3 normal
+stash = 8 normal
+branch = 14 normal
+
 [color "grep"]
-	filename = 7 normal
-	function = 10 normal
-	column = 8 normal
-	linenumber = 8 normal
+filename = 7 normal
+function = 10 normal
+column = 8 normal
+linenumber = 8 normal
+
 [color "interactive"]
-	header = normal
-	help = 8 normal
-	error = 1 normal italic
+header = normal
+help = 8 normal
+error = 1 normal italic
+
 [color "status"]
-	changed = 11 normal
-	unmerged = 9 normal
-	nobranch = 1 normal italic
-	updated = 10 normal
-	localbranch = 14 normal
-	added = 10 normal
-	untracked = normal dim
-	header = normal
-	remotebranch = 13 normal
-	branch = 14 normal
+changed = 11 normal
+unmerged = 9 normal
+nobranch = 1 normal italic
+updated = 10 normal
+localbranch = 14 normal
+added = 10 normal
+untracked = normal dim
+header = normal
+remotebranch = 13 normal
+branch = 14 normal
+
 [color "branch"]
-	remote = 13 normal
-	upstream = 13 normal
-	plain = 14 normal
-	current = 14 normal reverse
-	local = 14 normal
+remote = 13 normal
+upstream = 13 normal
+plain = 14 normal
+current = 14 normal reverse
+local = 14 normal
+
 [color "remote"]
-	success = 2 normal
-	error = 1 normal
-	hint = normal dim
-	warning = 3 normal
-[submodule]
-	recurse = false
+success = 2 normal
+error = 1 normal
+hint = normal dim
+warning = 3 normal

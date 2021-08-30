@@ -40,12 +40,6 @@ fi
 
 bindkey -e # use emacs bindings even with vim as EDITOR
 
-# PATH ----------------------------------------------------------------------- #
-
-# common install path used by package managers (ie. pipx)
-PATH="$HOME/.local/bin:$PATH"
-test -d "/opt/homebrew" && PATH="/opt/homebrew/bin:$PATH"
-
 # EXA ------------------------------------------------------------------------ #
 # https://the.exa.website/docs/colour-themes
 
@@ -96,9 +90,25 @@ export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
 export FZF_ALT_C_COMMAND="$FZF_DEFAULT_COMMAND --type d --max-depth 3"
 export FZF_ALT_C_OPTS="--preview 'exa -la --no-permissions --no-user --no-filesize --icons --no-time {}' --color=border:-1"
 
+# PATH ----------------------------------------------------------------------- #
 
+# common install path used by package managers (ie. pipx)
+PATH="$HOME/.local/bin:$PATH"
+test -d "/opt/homebrew" && PATH="/opt/homebrew/bin:$PATH"
 
-# 🚀 zsh-snap ---------------------------------------------------------------- #
+# GCLOUD --------------------------------------------------------------------- #
+
+export CLOUDSDK_HOME="$HOME/.local/google-cloud-sdk"
+if [[ -d CLOUDSDK_HOME ]]; then
+	CLOUDSDK_INSTALL_DIR="$(dirname $CLOUDSDK_HOME)"
+	CLOUDSDK_CORE_DISABLE_PROMPTS=1
+	mkdir -p $CLOUDSDK_HOME
+	curl -fsSL https://sdk.cloud.google.com | bash
+else
+	source $CLOUDSDK_HOME/completion.zsh.inc
+	source $CLOUDSDK_HOME/path.zsh.inc
+fi
+
 
 # start znap, install if necessary
 ZNAP_DIR="$HOME/.local/share/zsh-snap"

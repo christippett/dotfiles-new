@@ -166,7 +166,10 @@ bindkey $key[Up] up-line-or-search
 # 📋 zsh completions --------------------------------------------------------- #
 
 znap compdef _cloud_sql_proxy 'curl -Ls https://raw.githubusercontent.com/zchee/zsh-completions/main/src/zsh/_cloud_sql_proxy'
+znap compdef _docker 'curl -Ls https://raw.githubusercontent.com/docker/cli/master/contrib/completion/zsh/_docker'
+znap compdef _docker-compose 'curl -Ls https://raw.githubusercontent.com/docker/compose/1.29.2/contrib/completion/zsh/_docker-compose'
 znap compdef _poetry 'poetry completions zsh'
+znap compdef _cargo 'rustup completions zsh cargo'
 znap fpath _yq 'yq shell-completion zsh'
 znap eval pip-completion 'pip completion --zsh'
 znap eval pipx-completion 'register-python-argcomplete pipx'

@@ -29,6 +29,11 @@ log_success "Homebrew installation complete"
 # shellcheck source=./common.sh
 source "$(dirname "$0")/common.sh"
 
+local wallpaper_dir="$HOME/Library/Containers/com.unsplash.Wallpapers/Data/Library/Application Support/com.unsplash.Wallpapers"
+if [[ -d "$wallpaper_dir" ]]; then
+	ln -sf "$wallpaper_dir" "$HOME/Pictures/Unsplash"
+fi
+
 # Done ----------------------------------------------------------------------- #
 
 set +e

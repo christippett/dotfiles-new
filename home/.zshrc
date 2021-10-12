@@ -29,6 +29,12 @@ export MANPAGER="sh -c 'col -bx | bat --pager \"\$PAGER\" -f --italic-text --sty
 export BAT_PAGER="$LESS"
 #export BAT_THEME="Coldark-Dark"
 
+BLK="0B" CHR="0B" DIR="04" EXE="06" REG="00" HARDLINK="06" SYMLINK="06" MISSING="00" ORPHAN="09" FIFO="06" SOCK="0B" OTHER="06"
+export NNN_FCOLORS="$BLK$CHR$DIR$EXE$REG$HARDLINK$SYMLINK$MISSING$ORPHAN$FIFO$SOCK$OTHER"
+export NNN_BMS="p:$HOME/Projects/;d:$HOME/Downloads/"
+export NNN_OPENER="$HOME/.config/nnn/plugins/nuke"
+export NNN_OPTS="cErxo"
+
 export SSH_AUTH_SOCK="$HOME/Library/Containers/org.hejki.osx.sshce.agent/Data/socket.ssh"
 
 if [[ -n $SSH_CONNECTION ]]; then
@@ -71,8 +77,8 @@ read -r -d '' FZF_DEFAULT_OPTS <<- "EOT"
 --pointer='●'
 --marker='‣'
 --multi
---preview-window='right:50:rounded:hidden'
---preview '([[ -f {} && {} == *.json ]] && (cat {} | jq -M | bat -nf -l json)) || ([[ -f {} ]] && (bat -nf -m "config_*:dosini" {} || cat {})) || ([[ -d {} ]] && (exa --tree --icons {} | less)) || echo {} 2> /dev/null | head -200'
+--preview-window='right:70:rounded:hidden'
+--preview "$FZF_PREVIEW_COMMAND" 
 --color=fg:7:dim,bg:-1,hl:7,border:7
 --color=fg+:7:bold,bg+:-1,hl+:1:underline
 --color=prompt:regular:0,pointer:7,marker:7,spinner:regular:3
@@ -85,8 +91,11 @@ read -r -d '' FZF_DEFAULT_OPTS <<- "EOT"
 --bind 'ctrl-v:execute(code {+})'
 --bind 'ctrl-o:execute-silent(open "$(dirname {+})")'
 EOT
+
+
 export FZF_DEFAULT_OPTS
-export FZF_DEFAULT_COMMAND="fd -H -E .git -E node_modules -E .Trash"
+export FZF_DEFAULT_COMMAND="fd -H -E .git -E node_modules -E .venv -E .Trash"
+export FZF_PREVIEW_COMMAND='([[ -f {} && {} == *.json ]] && (cat {} | jq -M | bat -nf -l json)) || ([[ {} == *.zip ]] && unzip -l -UU {}) || ([[ -f {} ]] && (bat -nf -m "config_*:dosini" {} || cat {})) || ([[ -d {} ]] && (exa --tree --icons {} | less)) || echo {} 2> /dev/null | head -200'
 export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
 
 # search only git directories
@@ -126,12 +135,13 @@ fi
 
 # 🚀 prompt ------------------------------------------------------------------ #
 
+# start starship prompt
+znap eval starship 'starship init zsh --print-full-init'
+
 # run neofetch prior to initial prompt
 neofetch --source "$HOME/.dotfiles/home/.config/neofetch/$(hostname -s).txt" --ascii_colors 1 2 3 4 5 6
 
-# start starship prompt
-znap eval starship 'starship init zsh --print-full-init'
-#znap prompt # BUG: causes issue with starship and $pipestatus
+znap prompt # BUG: causes issue with starship and $pipestatus
 
 # 🤠 user config-------------------------------------------------------------- #
 
@@ -142,7 +152,7 @@ zstyle ':completion:*:git-checkout:*' sort false
 zstyle ':completion:*:*:vim:*' file-patterns '^*.(aux|log|pdf):source-files' '*:all-files'
 zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
 
-zstyle ':fzf-tab:complete:(cd|mv|cp|ls):*' fzf-preview 'exa -1 --color=always $realpath'
+zstyle ':fzf-tab:complete:(cd|mv|cp|ls|exa):*' fzf-preview 'exa -laFgm --no-time -I ".DS_Store" --git --icons "$realpath"'
 zstyle ':fzf-tab:complete:docker-*:*' fzf-preview '(docker inspect $word | jq -C)'
 zstyle ':fzf-tab:complete:docker-logs:*' fzf-preview '(docker logs $word | less)'
 zstyle ':fzf-tab:complete:gcloud:*' fzf-preview '((gcloud $word --help 2>/dev/null || gcloud help) | sed "s/  / /g")'
@@ -167,8 +177,7 @@ zstyle ':fzf-tab:*' fzf-command ftb-tmux-popup
 znap install so-fancy/diff-so-fancy
 znap install junegunn/fzf
 znap source asdf-vm/asdf asdf.sh
-# znap source mbhynes/fzf-gcloud fzf-gcloud.plugin.zsh
-znap source rupa/z z.sh
+znap eval direnv 'direnv hook zsh'
 znap eval trapd00r/LS_COLORS "$( whence -a dircolors gdircolors ) -b LS_COLORS"
 znap eval fzf-bindings "curl -fsSL https://raw.githubusercontent.com/junegunn/fzf/master/shell/key-bindings.zsh"
 znap eval fancy-ctrl-z "curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/plugins/fancy-ctrl-z/fancy-ctrl-z.plugin.zsh"
@@ -179,9 +188,11 @@ znap eval iterm2 'curl -fsSL https://iterm2.com/shell_integration/zsh'
 
 # 🪠  zsh plugins ------------------------------------------------------------- #
 
+#znap source rupa/z z.sh
+znap source ajeetdsouza/zoxide 'zoxide.plugin.zsh'
 znap source junegunn/fzf shell/completion.zsh shell/key-bindings.zsh
-
 znap source Aloxaf/fzf-tab fzf-tab.plugin.zsh
+# znap source mbhynes/fzf-gcloud fzf-gcloud.plugin.zsh
 
 ZSH_HIGHLIGHT_HIGHLIGHTERS=( main brackets )
 znap source zsh-users/zsh-syntax-highlighting
@@ -224,3 +235,6 @@ test -n "${HOMEBREW_PREFIX}" && fpath+=( "$HOMEBREW_PREFIX/share/zsh/site-functi
 
 source ~/.aliases
 source ~/.dotfiles/scripts/utils.sh
+
+test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
+

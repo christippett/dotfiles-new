@@ -7,6 +7,7 @@
 # 	iterm2_set_user_var gcloud "$(starship module gcloud)"
 # }
 
+alias cd='z'
 alias mkdir='mkdir -vp'
 alias df='df -H'
 alias rm='rm -iv'

@@ -28,6 +28,9 @@ helper = gcloud
 [url "ssh://git@github.com/"]
 pushInsteadOf = https://github.com/
 
+[url "ssh://git@gitlab.com/"]
+insteadOf = https://gitlab.com/
+
 [help]
 autocorrect = 1 # autocorrect mistyped commands.
 

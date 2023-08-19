@@ -1,5 +1,3 @@
-#!/bin/zsh
-
 export HISTFILE="$HOME/.zsh_history"
 export HISTSIZE=10000000
 export SAVEHIST=$HISTSIZE
@@ -27,7 +25,6 @@ export SYSTEMD_LESS="$LESS -SM"
 export PAGER="less $LESS"
 export MANPAGER="sh -c 'col -bx | bat --pager \"\$PAGER\" -f --italic-text --style=plain --tabs=1 -l=man'"
 export BAT_PAGER="$LESS"
-#export BAT_THEME="Coldark-Dark"
 
 BLK="0B" CHR="0B" DIR="04" EXE="06" REG="00" HARDLINK="06" SYMLINK="06" MISSING="00" ORPHAN="09" FIFO="06" SOCK="0B" OTHER="06"
 export NNN_FCOLORS="$BLK$CHR$DIR$EXE$REG$HARDLINK$SYMLINK$MISSING$ORPHAN$FIFO$SOCK$OTHER"
@@ -35,7 +32,11 @@ export NNN_BMS="p:$HOME/Projects/;d:$HOME/Downloads/"
 export NNN_OPENER="$HOME/.config/nnn/plugins/nuke"
 export NNN_OPTS="cErxo"
 
-export SSH_AUTH_SOCK="$HOME/Library/Containers/org.hejki.osx.sshce.agent/Data/socket.ssh"
+if [[ ! -z "${SSH_AUTH_SOCK}" ]]; then
+  echo "ssh-agent is already running"
+else
+  eval $(ssh-agent -s)
+fi
 
 if [[ -n $SSH_CONNECTION ]]; then
   export EDITOR="nvim"
@@ -67,6 +68,8 @@ export EXA_ICON_SPACING="1"
 
 # FZF ------------------------------------------------------------------------ #
 
+#--preview '([[ -f {} && {} == *.json ]] && (cat {} | jq -M | bat -nf -l json)) || ([[ -f {} ]] && (bat -nf -m "config_*:dosini" {} || cat {})) || ([[ -d {} ]] && (exa --tree --icons {} | less)) || echo {} 2> /dev/null | head -200'
+
 read -r -d '' FZF_DEFAULT_OPTS <<- "EOT"
 --height 90%
 --margin=0,3%,0,0
@@ -78,7 +81,7 @@ read -r -d '' FZF_DEFAULT_OPTS <<- "EOT"
 --marker='‣'
 --multi
 --preview-window='right:70:rounded:hidden'
---preview "$FZF_PREVIEW_COMMAND" 
+--preview "$FZF_PREVIEW_COMMAND"
 --color=fg:7:dim,bg:-1,hl:7,border:7
 --color=fg+:7:bold,bg+:-1,hl+:1:underline
 --color=prompt:regular:0,pointer:7,marker:7,spinner:regular:3
@@ -150,7 +153,6 @@ zstyle ':completion:*' menu select
 zstyle ':completion:*:(cd|mv|cp):*' ignore-parents parent pwd # ignore parent directory when cd ../<TAB>
 zstyle ':completion:*:git-checkout:*' sort false
 zstyle ':completion:*:*:vim:*' file-patterns '^*.(aux|log|pdf):source-files' '*:all-files'
-zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
 
 zstyle ':fzf-tab:complete:(cd|mv|cp|ls|exa):*' fzf-preview 'exa -laFgm --no-time -I ".DS_Store" --git --icons "$realpath"'
 zstyle ':fzf-tab:complete:docker-*:*' fzf-preview '(docker inspect $word | jq -C)'
@@ -212,6 +214,7 @@ znap compdef _docker 'curl -Ls https://raw.githubusercontent.com/docker/cli/mast
 znap compdef _docker-compose 'curl -Ls https://raw.githubusercontent.com/docker/compose/1.29.2/contrib/completion/zsh/_docker-compose'
 znap compdef _poetry 'poetry completions zsh'
 znap compdef _cargo 'rustup completions zsh cargo'
+znap compdef _deno 'deno completions zsh'
 znap fpath _yq 'yq shell-completion zsh'
 znap eval pip-completion 'pip completion --zsh'
 znap eval pipx-completion 'register-python-argcomplete pipx'
@@ -235,6 +238,3 @@ test -n "${HOMEBREW_PREFIX}" && fpath+=( "$HOMEBREW_PREFIX/share/zsh/site-functi
 
 source ~/.aliases
 source ~/.dotfiles/scripts/utils.sh
-
-test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
-
